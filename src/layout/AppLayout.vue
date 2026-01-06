@@ -54,30 +54,63 @@
     <aside 
       :class="[
         'fixed top-14 left-0 bottom-0 bg-surface-900 border-r border-surface-700 transition-all duration-300 z-40 overflow-y-auto',
-        sidebarCollapsed ? 'w-16' : 'w-60'
+        sidebarCollapsed ? 'w-16' : 'w-64'
       ]"
     >
       <nav class="py-4">
         <ul class="space-y-1 px-2">
           <li v-for="item in menuItems" :key="item.path">
-            <router-link
-              :to="item.path"
+            <!-- Parent Menu Item -->
+            <div
+              @click="item.children ? toggleMenu(item.path) : navigateTo(item.path)"
               :class="[
-                'flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors',
-                isActive(item.path) 
+                'flex items-center justify-between px-3 py-2.5 rounded-lg transition-colors cursor-pointer',
+                isActive(item.path) && !item.children
                   ? 'bg-primary text-white' 
                   : 'text-surface-300 hover:bg-surface-800 hover:text-surface-0'
               ]"
               :title="item.title"
             >
-              <i :class="['pi', item.icon, 'text-lg']"></i>
-              <span 
-                v-if="!sidebarCollapsed" 
-                class="text-sm font-medium whitespace-nowrap"
-              >
-                {{ item.title }}
-              </span>
-            </router-link>
+              <div class="flex items-center gap-3">
+                <i :class="['pi', item.icon, 'text-lg']"></i>
+                <span 
+                  v-if="!sidebarCollapsed" 
+                  class="text-sm font-medium whitespace-nowrap"
+                >
+                  {{ item.title }}
+                </span>
+              </div>
+              <!-- Expand/Collapse Icon -->
+              <i 
+                v-if="item.children && !sidebarCollapsed" 
+                :class="[
+                  'pi text-xs transition-transform duration-200',
+                  expandedMenus[item.path] ? 'pi-chevron-down' : 'pi-chevron-right'
+                ]"
+              ></i>
+            </div>
+
+            <!-- Children Menu Items -->
+            <ul 
+              v-if="item.children && !sidebarCollapsed"
+              v-show="expandedMenus[item.path]"
+              class="mt-1 ml-4 pl-3 border-l border-surface-700 space-y-1"
+            >
+              <li v-for="child in item.children" :key="child.path">
+                <router-link
+                  :to="child.path"
+                  :class="[
+                    'flex items-center gap-3 px-3 py-2 rounded-lg transition-colors text-sm',
+                    isActiveExact(child.path) 
+                      ? 'bg-primary/20 text-primary' 
+                      : 'text-surface-400 hover:bg-surface-800 hover:text-surface-0'
+                  ]"
+                >
+                  <i :class="['pi', child.icon, 'text-sm']"></i>
+                  <span class="whitespace-nowrap">{{ child.title }}</span>
+                </router-link>
+              </li>
+            </ul>
           </li>
         </ul>
       </nav>
@@ -87,7 +120,7 @@
     <main 
       :class="[
         'pt-14 min-h-screen transition-all duration-300',
-        sidebarCollapsed ? 'pl-16' : 'pl-60'
+        sidebarCollapsed ? 'pl-16' : 'pl-64'
       ]"
     >
       <div class="p-6">
@@ -98,32 +131,187 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useRoute } from 'vue-router'
+import { ref, reactive, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
 const route = useRoute()
+const router = useRouter()
 const sidebarCollapsed = ref(false)
+const expandedMenus = reactive<Record<string, boolean>>({})
 
 const toggleSidebar = () => {
   sidebarCollapsed.value = !sidebarCollapsed.value
+}
+
+const toggleMenu = (path: string) => {
+  expandedMenus[path] = !expandedMenus[path]
+}
+
+const navigateTo = (path: string) => {
+  router.push(path)
 }
 
 const isActive = (path: string) => {
   return route.path.startsWith(path)
 }
 
-const menuItems = [
-  { path: '/dashboard', title: '儀表板', icon: 'pi-chart-bar' },
-  { path: '/operators', title: '操作員管理', icon: 'pi-users' },
-  { path: '/system-settings', title: '系統設定', icon: 'pi-cog' },
-  { path: '/messages', title: '訊息管理', icon: 'pi-envelope' },
-  { path: '/members', title: '會員管理', icon: 'pi-user' },
-  { path: '/layout', title: '版面設定', icon: 'pi-palette' },
-  { path: '/game-maintenance', title: '遊戲管理', icon: 'pi-play' },
-  { path: '/agents', title: '代理管理', icon: 'pi-sitemap' },
-  { path: '/financials', title: '財務管理', icon: 'pi-wallet' },
-  { path: '/promotions', title: '推廣活動', icon: 'pi-gift' },
-  { path: '/reports', title: '報表管理', icon: 'pi-chart-line' },
-  { path: '/cash-flow', title: '金流平台', icon: 'pi-credit-card' },
+const isActiveExact = (path: string) => {
+  return route.path === path
+}
+
+interface MenuItem {
+  path: string
+  title: string
+  icon: string
+  children?: MenuItem[]
+}
+
+const menuItems: MenuItem[] = [
+  { 
+    path: '/dashboard', 
+    title: '儀表板', 
+    icon: 'pi-chart-bar',
+    children: [
+      { path: '/dashboard', title: '總覽', icon: 'pi-home' },
+      { path: '/dashboard/website-data', title: '網站數據', icon: 'pi-globe' },
+      { path: '/dashboard/operational-data', title: '營運數據', icon: 'pi-chart-bar' },
+      { path: '/dashboard/game-monitor', title: '玩家監控', icon: 'pi-eye' },
+    ]
+  },
+  { 
+    path: '/operators', 
+    title: '操作員管理', 
+    icon: 'pi-users',
+    children: [
+      { path: '/operators', title: '總覽', icon: 'pi-home' },
+      { path: '/operators/maintenance', title: '操作員維護', icon: 'pi-user-edit' },
+      { path: '/operators/groups', title: '群組維護', icon: 'pi-users' },
+      { path: '/operators/logs', title: '操作員日誌', icon: 'pi-history' },
+      { path: '/operators/exports', title: '匯出管理', icon: 'pi-download' },
+    ]
+  },
+  { 
+    path: '/system-settings', 
+    title: '系統設定', 
+    icon: 'pi-cog',
+    children: [
+      { path: '/system-settings', title: '總覽', icon: 'pi-home' },
+      { path: '/system-settings/announcements', title: '公告管理', icon: 'pi-megaphone' },
+      { path: '/system-settings/parameters', title: '系統參數', icon: 'pi-sliders-h' },
+      { path: '/system-settings/bank-wallet', title: '銀行與錢包', icon: 'pi-building-columns' },
+    ]
+  },
+  { 
+    path: '/messages', 
+    title: '訊息管理', 
+    icon: 'pi-envelope',
+    children: [
+      { path: '/messages', title: '總覽', icon: 'pi-home' },
+      { path: '/messages/templates', title: '訊息模板', icon: 'pi-file-edit' },
+      { path: '/messages/system-notify', title: '系統通知', icon: 'pi-bell' },
+      { path: '/messages/records', title: '訊息紀錄', icon: 'pi-inbox' },
+    ]
+  },
+  { 
+    path: '/members', 
+    title: '會員管理', 
+    icon: 'pi-user',
+    children: [
+      { path: '/members', title: '總覽', icon: 'pi-home' },
+      { path: '/members/list', title: '會員列表', icon: 'pi-users' },
+      { path: '/members/memo-record', title: '會員日誌', icon: 'pi-book' },
+      { path: '/members/level-settings', title: '等級維護', icon: 'pi-star' },
+      { path: '/members/tags', title: '標籤管理', icon: 'pi-tag' },
+    ]
+  },
+  { 
+    path: '/layout', 
+    title: '版面設定', 
+    icon: 'pi-palette',
+    children: [
+      { path: '/layout', title: '總覽', icon: 'pi-home' },
+      { path: '/layout/homepage', title: '首頁設定', icon: 'pi-home' },
+      { path: '/layout/games', title: '遊戲版面', icon: 'pi-th-large' },
+      { path: '/layout/articles', title: '文章管理', icon: 'pi-file' },
+      { path: '/layout/payment', title: '支付管理', icon: 'pi-credit-card' },
+      { path: '/layout/popup-ads', title: '彈跳廣告', icon: 'pi-window-maximize' },
+    ]
+  },
+  { 
+    path: '/game-maintenance', 
+    title: '遊戲管理', 
+    icon: 'pi-play',
+    children: [
+      { path: '/game-maintenance', title: '總覽', icon: 'pi-home' },
+      { path: '/game-maintenance/platforms', title: '遊戲平台', icon: 'pi-server' },
+      { path: '/game-maintenance/game-list', title: '遊戲列表', icon: 'pi-list' },
+      { path: '/game-maintenance/game-tags', title: '遊戲標籤', icon: 'pi-tags' },
+    ]
+  },
+  { 
+    path: '/agents', 
+    title: '代理管理', 
+    icon: 'pi-sitemap',
+    children: [
+      { path: '/agents', title: '總覽', icon: 'pi-home' },
+      { path: '/agents/maintenance', title: '代理商維護', icon: 'pi-sitemap' },
+      { path: '/agents/promotion', title: '推廣維護', icon: 'pi-link' },
+    ]
+  },
+  { 
+    path: '/financials', 
+    title: '財務管理', 
+    icon: 'pi-wallet',
+    children: [
+      { path: '/financials', title: '總覽', icon: 'pi-home' },
+      { path: '/financials/records', title: '紀錄類', icon: 'pi-file-edit' },
+      { path: '/financials/audit', title: '審核類', icon: 'pi-check-circle' },
+      { path: '/financials/points', title: '點數與獎勵', icon: 'pi-star-fill' },
+      { path: '/financials/auto-flow', title: '自動金流', icon: 'pi-sync' },
+    ]
+  },
+  { 
+    path: '/promotions', 
+    title: '推廣活動', 
+    icon: 'pi-gift',
+    children: [
+      { path: '/promotions', title: '總覽', icon: 'pi-home' },
+      { path: '/promotions/offers', title: '優惠管理', icon: 'pi-percentage' },
+      { path: '/promotions/special-events', title: '特定活動', icon: 'pi-trophy' },
+      { path: '/promotions/lottery', title: '抽獎系統', icon: 'pi-ticket' },
+    ]
+  },
+  { 
+    path: '/reports', 
+    title: '報表管理', 
+    icon: 'pi-chart-line',
+    children: [
+      { path: '/reports', title: '總覽', icon: 'pi-home' },
+      { path: '/reports/game-performance', title: '遊戲表現', icon: 'pi-chart-bar' },
+      { path: '/reports/cash', title: '現金報表', icon: 'pi-money-bill' },
+      { path: '/reports/deposit', title: '在線存款', icon: 'pi-credit-card' },
+      { path: '/reports/bonus', title: '贈金報表', icon: 'pi-gift' },
+      { path: '/reports/operations', title: '營運報表', icon: 'pi-chart-line' },
+    ]
+  },
+  { 
+    path: '/cash-flow', 
+    title: '金流平台', 
+    icon: 'pi-credit-card',
+    children: [
+      { path: '/cash-flow', title: '總覽', icon: 'pi-home' },
+      { path: '/cash-flow/merchants', title: '商號管理', icon: 'pi-building' },
+      { path: '/cash-flow/banks', title: '銀行管理', icon: 'pi-building-columns' },
+    ]
+  },
 ]
+
+// Auto-expand parent menu when navigating to child
+watch(() => route.path, (newPath) => {
+  menuItems.forEach(item => {
+    if (item.children && item.children.some(child => newPath.startsWith(child.path))) {
+      expandedMenus[item.path] = true
+    }
+  })
+}, { immediate: true })
 </script>
