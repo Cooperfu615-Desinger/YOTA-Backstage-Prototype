@@ -183,7 +183,7 @@ const menuItems: MenuItem[] = [
     title: '操作員管理', 
     icon: 'pi-users',
     children: [
-      { path: '/operators', title: '總覽', icon: 'pi-home' },
+      { path: '/operators/overview', title: '操作員總覽', icon: 'pi-shield' },
       { path: '/operators/maintenance', title: '操作員維護', icon: 'pi-user-edit' },
       { path: '/operators/groups', title: '群組維護', icon: 'pi-users' },
       { path: '/operators/logs', title: '操作員日誌', icon: 'pi-history' },
