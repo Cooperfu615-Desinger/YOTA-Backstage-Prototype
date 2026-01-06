@@ -220,6 +220,12 @@ const routes: RouteRecordRaw[] = [
         meta: { title: '遊戲管理', icon: 'pi-play' }
     },
     {
+        path: '/game-maintenance/overview',
+        name: 'GameMaintenanceOverview',
+        component: () => import('@/views/GameMaintenance/Overview.vue'),
+        meta: { title: '遊戲總覽', icon: 'pi-chart-pie', parent: 'GameMaintenance' }
+    },
+    {
         path: '/game-maintenance/platforms',
         name: 'GamePlatforms',
         component: () => import('@/views/GameMaintenance/Platforms.vue'),
