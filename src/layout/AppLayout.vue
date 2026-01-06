@@ -275,7 +275,7 @@ const menuItems: MenuItem[] = [
     title: '推廣活動', 
     icon: 'pi-gift',
     children: [
-      { path: '/promotions', title: '總覽', icon: 'pi-home' },
+      { path: '/promotions/overview', title: '推廣總覽', icon: 'pi-chart-pie' },
       { path: '/promotions/offers', title: '優惠管理', icon: 'pi-percentage' },
       { path: '/promotions/special-events', title: '特定活動', icon: 'pi-trophy' },
       { path: '/promotions/lottery', title: '抽獎系統', icon: 'pi-ticket' },

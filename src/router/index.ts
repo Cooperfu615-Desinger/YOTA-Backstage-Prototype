@@ -316,6 +316,12 @@ const routes: RouteRecordRaw[] = [
         meta: { title: '推廣活動', icon: 'pi-gift' }
     },
     {
+        path: '/promotions/overview',
+        name: 'PromotionsOverview',
+        component: () => import('@/views/Promotions/Overview.vue'),
+        meta: { title: '推廣總覽', icon: 'pi-chart-pie', parent: 'Promotions' }
+    },
+    {
         path: '/promotions/offers',
         name: 'Offers',
         component: () => import('@/views/Promotions/Offers.vue'),
