@@ -472,15 +472,16 @@ const generateMockMembers = () => {
   const members = []
   for (let i = 0; i < 50; i++) {
     const idx = i % 10
-    const statusInfo = statuses[i % 5]
-    const walletChange = [100, 100, -1000, -3000, 10, 500, -200, 1500, -800, 2000][idx]
-    const wallet = [1000, 100, 11000, 123000, 1000000, 5000, 2500, 88000, 15000, 250000][idx]
+    const statusInfo = statuses[i % 5] || { status: 'active', statusText: '正常' }
+    const walletChange = [100, 100, -1000, -3000, 10, 500, -200, 1500, -800, 2000][idx] || 0
+    const wallet = [1000, 100, 11000, 123000, 1000000, 5000, 2500, 88000, 15000, 250000][idx] || 0
+    const memo = memos[idx] || ''
     
     members.push({
       id: 10010 + i,
       account: accounts[idx] + (i >= 10 ? `_${Math.floor(i / 10)}` : ''),
-      nickname: nicknames[idx],
-      agent: agents[i % 5],
+      nickname: nicknames[idx] || '',
+      agent: agents[i % 5] || '',
       vip: (i % 5) + 1,
       wallet: wallet + (i * 100),
       status: statusInfo.status,
@@ -488,7 +489,7 @@ const generateMockMembers = () => {
       registerDate: '2025-08-19',
       walletChange: walletChange * (1 + (i % 3)),
       createdAt: '2025-08-19 20:20:20',
-      memo: memos[idx]
+      memo: memo
     })
   }
   return members
@@ -581,7 +582,7 @@ const handleAddMember = () => {
     wallet: 0,
     status: 'active',
     statusText: '正常',
-    registerDate: new Date().toISOString().split('T')[0],
+    registerDate: new Date().toISOString().split('T')[0] || '',
     walletChange: 0,
     createdAt: new Date().toLocaleString('zh-TW'),
     memo: ''
