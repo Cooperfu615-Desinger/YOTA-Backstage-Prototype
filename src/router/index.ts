@@ -16,6 +16,12 @@ const routes: RouteRecordRaw[] = [
         meta: { title: '儀表板', icon: 'pi-chart-bar' }
     },
     {
+        path: '/dashboard/overview',
+        name: 'DashboardOverview',
+        component: () => import('@/views/Dashboard/index.vue'),
+        meta: { title: '儀表板總覽', icon: 'pi-chart-bar', parent: 'Dashboard' }
+    },
+    {
         path: '/dashboard/website-data',
         name: 'WebsiteData',
         component: () => import('@/views/Dashboard/WebsiteData.vue'),

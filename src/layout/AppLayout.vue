@@ -172,7 +172,7 @@ const menuItems: MenuItem[] = [
     title: '儀表板', 
     icon: 'pi-chart-bar',
     children: [
-      { path: '/dashboard', title: '總覽', icon: 'pi-home' },
+      { path: '/dashboard/overview', title: '儀表板總覽', icon: 'pi-chart-bar' },
       { path: '/dashboard/website-data', title: '網站數據', icon: 'pi-globe' },
       { path: '/dashboard/operational-data', title: '營運數據', icon: 'pi-chart-bar' },
       { path: '/dashboard/game-monitor', title: '玩家監控', icon: 'pi-eye' },

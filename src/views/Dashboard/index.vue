@@ -1,9 +1,26 @@
 <template>
-  <div class="dashboard">
+  <div class="p-6 space-y-6">
+    <!-- Breadcrumb -->
+    <div class="flex items-center gap-2 text-sm text-surface-400">
+      <i class="pi pi-chart-bar text-blue-400"></i>
+      <span class="text-surface-300">儀表板</span>
+      <span>></span>
+      <span class="text-white font-medium">總覽</span>
+    </div>
+
     <!-- Page Header -->
-    <div class="mb-6">
-      <h1 class="text-2xl font-bold mb-1">儀表板總覽</h1>
-      <p class="text-surface-400">即時監控平台營運數據</p>
+    <div class="flex items-center justify-between">
+      <div>
+        <h1 class="text-2xl font-bold text-white flex items-center gap-3">
+          <i class="pi pi-chart-bar text-blue-400"></i>
+          儀表板總覽
+        </h1>
+        <p class="text-surface-400 mt-1">Dashboard Overview - 即時監控平台營運數據</p>
+      </div>
+      <div class="flex items-center gap-2 text-surface-400 text-sm">
+        <i class="pi pi-clock"></i>
+        <span>最後更新: {{ lastUpdate }}</span>
+      </div>
     </div>
 
     <!-- Stats Cards Grid -->
@@ -62,6 +79,13 @@
 import { ref, computed } from 'vue'
 import Card from 'primevue/card'
 import Chart from 'primevue/chart'
+
+// Last update time
+const lastUpdate = ref(new Date().toLocaleTimeString('zh-TW', { 
+  hour: '2-digit', 
+  minute: '2-digit',
+  second: '2-digit'
+}))
 
 // ========================================
 // Mock Data - 數據卡片
