@@ -258,6 +258,12 @@ const routes: RouteRecordRaw[] = [
         meta: { title: '財務管理', icon: 'pi-wallet' }
     },
     {
+        path: '/financials/overview',
+        name: 'FinancialOverview',
+        component: () => import('@/views/Financials/Overview.vue'),
+        meta: { title: '財務總覽', icon: 'pi-chart-line', parent: 'Financials' }
+    },
+    {
         path: '/financials/records',
         name: 'FinancialRecords',
         component: () => import('@/views/Financials/Records.vue'),

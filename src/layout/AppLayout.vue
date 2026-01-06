@@ -1,7 +1,7 @@
 <template>
   <div class="dark min-h-screen bg-surface-950 text-surface-0">
     <!-- Top Navigation Bar -->
-    <header class="fixed top-0 left-0 right-0 h-14 bg-surface-900 border-b border-surface-700 z-50 flex items-center px-4">
+    <header class="fixed top-0 left-0 right-0 h-14 bg-surface-900 border-b border-surface-700 z-[100] flex items-center px-4">
       <!-- Logo -->
       <div class="flex items-center gap-3">
         <button 
@@ -53,7 +53,7 @@
     <!-- Sidebar -->
     <aside 
       :class="[
-        'fixed top-14 left-0 bottom-0 bg-surface-900 border-r border-surface-700 transition-all duration-300 z-40 overflow-y-auto',
+        'fixed top-14 left-0 bottom-0 bg-surface-900 border-r border-surface-700 transition-all duration-300 z-[90] overflow-y-auto',
         sidebarCollapsed ? 'w-16' : 'w-64'
       ]"
     >
@@ -102,7 +102,7 @@
                   :class="[
                     'flex items-center gap-3 px-3 py-2 rounded-lg transition-colors text-sm',
                     isActiveExact(child.path) 
-                      ? 'bg-primary/20 text-primary' 
+                      ? 'bg-blue-500/20 text-blue-400 font-bold' 
                       : 'text-surface-400 hover:bg-surface-800 hover:text-surface-0'
                   ]"
                 >
@@ -119,11 +119,11 @@
     <!-- Main Content -->
     <main 
       :class="[
-        'pt-14 min-h-screen transition-all duration-300',
+        'pt-14 min-h-screen transition-all duration-300 relative z-0',
         sidebarCollapsed ? 'pl-16' : 'pl-64'
       ]"
     >
-      <div class="p-6">
+      <div class="p-0">
         <router-view />
       </div>
     </main>
@@ -263,7 +263,7 @@ const menuItems: MenuItem[] = [
     title: '財務管理', 
     icon: 'pi-wallet',
     children: [
-      { path: '/financials', title: '總覽', icon: 'pi-home' },
+      { path: '/financials/overview', title: '財務總覽', icon: 'pi-chart-line' },
       { path: '/financials/records', title: '紀錄類', icon: 'pi-file-edit' },
       { path: '/financials/audit', title: '審核類', icon: 'pi-check-circle' },
       { path: '/financials/points', title: '點數與獎勵', icon: 'pi-star-fill' },
