@@ -134,6 +134,12 @@ const routes: RouteRecordRaw[] = [
         meta: { title: '會員管理', icon: 'pi-user' }
     },
     {
+        path: '/members/overview',
+        name: 'MembersOverview',
+        component: () => import('@/views/Members/Overview.vue'),
+        meta: { title: '會員總覽', icon: 'pi-chart-line', parent: 'Members' }
+    },
+    {
         path: '/members/list',
         name: 'MemberList',
         component: () => import('@/views/Members/List.vue'),
