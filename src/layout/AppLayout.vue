@@ -1,7 +1,7 @@
 <template>
   <div class="dark min-h-screen bg-surface-950 text-surface-0">
     <!-- Top Navigation Bar -->
-    <header class="fixed top-0 left-0 right-0 h-14 bg-surface-900 border-b border-surface-700 z-[100] flex items-center px-4">
+    <header class="fixed top-0 left-0 right-0 h-14 bg-[#0a0a0a] border-b border-surface-700 z-[9999] flex items-center px-4 shadow-lg shadow-black/50">
       <!-- Logo -->
       <div class="flex items-center gap-3">
         <button 
@@ -53,7 +53,7 @@
     <!-- Sidebar -->
     <aside 
       :class="[
-        'fixed top-14 left-0 bottom-0 bg-surface-900 border-r border-surface-700 transition-all duration-300 z-[90] overflow-y-auto',
+        'fixed top-14 left-0 bottom-0 bg-[#0a0a0a] border-r border-surface-700 transition-all duration-300 z-[90] overflow-y-auto',
         sidebarCollapsed ? 'w-16' : 'w-64'
       ]"
     >
