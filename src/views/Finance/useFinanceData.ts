@@ -11,6 +11,10 @@ export interface WithdrawalOrder {
     status: '待審核' | '審核中' | '已通過' | '已拒絕' | '已沖正'
     processor: string | null
     lockTime?: string
+    // New Fields
+    rollover: { required: number, current: number }
+    financialStats: { totalDeposit: number, totalWithdrawal: number, balance: number }
+    tags: string[]
 }
 
 export interface DepositOrder {
@@ -38,11 +42,29 @@ export function useFinanceData() {
         // Generate Withdrawals
         const wList: WithdrawalOrder[] = []
         const wStatuses = ['待審核', '審核中', '已通過', '已拒絕', '已沖正']
+
+
         for (let i = 0; i < 30; i++) {
             const amount = Math.floor(Math.random() * 50000) + 1000
             const fee = Math.floor(amount * 0.01)
             const status = wStatuses[Math.floor(Math.random() * wStatuses.length)] as any
             const isLocked = status === '審核中'
+
+            // Random Stats
+            const totalDeposit = Math.floor(Math.random() * 500000) + 10000
+            const totalWithdrawal = Math.floor(Math.random() * 300000)
+            const balance = totalDeposit - totalWithdrawal + Math.floor(Math.random() * 50000)
+
+            // Random Rollover
+            const requiredRollover = amount * (Math.floor(Math.random() * 3) + 1) // 1x to 3x
+            // 70% chance to meet rollover
+            const currentRollover = Math.random() > 0.3 ? requiredRollover + 1000 : Math.floor(requiredRollover * 0.6)
+
+            // Random Tags
+            const orderTags: string[] = []
+            if (Math.random() > 0.7) orderTags.push('高風險')
+            if (Math.random() > 0.8) orderTags.push('套利嫌疑')
+            if (amount > 30000) orderTags.push('VIP')
 
             wList.push({
                 id: i + 1,
@@ -54,7 +76,10 @@ export function useFinanceData() {
                 applyTime: new Date(Date.now() - Math.floor(Math.random() * 86400000 * 3)).toISOString().replace('T', ' ').substring(0, 19),
                 status: status,
                 processor: isLocked ? (Math.random() > 0.5 ? 'Admin' : 'OperatorB') : null,
-                lockTime: isLocked ? new Date(Date.now() - Math.floor(Math.random() * 3600000)).toISOString().replace('T', ' ').substring(0, 19) : undefined
+                lockTime: isLocked ? new Date(Date.now() - Math.floor(Math.random() * 3600000)).toISOString().replace('T', ' ').substring(0, 19) : undefined,
+                rollover: { required: requiredRollover, current: currentRollover },
+                financialStats: { totalDeposit, totalWithdrawal, balance },
+                tags: orderTags
             })
         }
         // Force some pending
@@ -67,7 +92,10 @@ export function useFinanceData() {
             actualAmount: 100000,
             applyTime: new Date().toISOString().replace('T', ' ').substring(0, 19),
             status: '待審核',
-            processor: null
+            processor: null,
+            rollover: { required: 100000, current: 80000 }, // Not Met
+            financialStats: { totalDeposit: 500000, totalWithdrawal: 200000, balance: 350000 },
+            tags: ['VIP', '高風險']
         })
         withdrawalOrders.value = wList
 

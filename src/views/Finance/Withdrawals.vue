@@ -21,7 +21,6 @@
         </div>
       </template>
       <template #content>
-        <!-- Search Fields -->
         <div class="flex flex-wrap gap-4 mb-4">
           <div class="flex flex-col gap-1">
             <label class="text-surface-300 text-sm font-medium">訂單號</label>
@@ -41,7 +40,6 @@
           </div>
         </div>
 
-        <!-- Search & Reset Buttons -->
         <div class="flex justify-end gap-3">
           <Button label="重置" icon="pi pi-refresh" severity="secondary" outlined @click="handleReset" />
           <Button label="搜尋" icon="pi pi-search" :loading="isSearching" @click="handleSearch" class="px-6" />
@@ -73,7 +71,12 @@
             </Column>
             <Column field="memberId" header="會員 ID" style="min-width: 120px">
                  <template #body="slotProps">
-                    <span class="text-blue-400 cursor-pointer hover:underline font-medium" @click="showMemberDetail(slotProps.data.memberId)">{{ slotProps.data.memberId }}</span>
+                    <div class="flex flex-col">
+                         <span class="text-blue-400 cursor-pointer hover:underline font-medium" @click="showMemberDetail(slotProps.data.memberId)">{{ slotProps.data.memberId }}</span>
+                         <div class="flex gap-1 mt-1">
+                             <Tag v-for="tag in slotProps.data.tags" :key="tag" :value="tag" severity="danger" class="text-[10px] px-1 py-0" />
+                         </div>
+                    </div>
                 </template>
             </Column>
             <Column field="amount" header="提款金額" style="min-width: 120px">
@@ -117,17 +120,131 @@
                         icon="pi pi-lock" 
                         severity="warning" 
                         size="small" 
-                        @click="handleLock(slotProps.data)" 
+                        @click="handleOpenAudit(slotProps.data)" 
                     />
-                    <div v-else-if="slotProps.data.status === '審核中' && slotProps.data.processor === currentUser" class="flex gap-2">
-                         <Button icon="pi pi-check" severity="success" rounded text v-tooltip.top="'通過'" @click="handleApprove(slotProps.data)" />
-                         <Button icon="pi pi-times" severity="danger" rounded text v-tooltip.top="'拒絕'" @click="handleReject(slotProps.data)" />
-                    </div>
+                    <Button v-else-if="slotProps.data.status === '審核中' && slotProps.data.processor === currentUser" 
+                        label="查看"
+                        icon="pi pi-file-edit" 
+                        severity="info" 
+                        size="small" 
+                        outlined
+                        @click="handleOpenAudit(slotProps.data)" 
+                    />
                 </template>
             </Column>
          </DataTable>
       </template>
     </Card>
+
+    <!-- Audit Modal -->
+    <Dialog v-model:visible="auditModalVisible" modal header="提款審核決策看板" :style="{ width: '1000px' }" class="p-0">
+        <div v-if="currentOrder" class="flex flex-col h-full">
+            <!-- Upper: Data Dashboard -->
+            <div class="grid grid-cols-12 gap-6 p-6 bg-surface-900/50">
+                <!-- 1. Member Info & Risk -->
+                <div class="col-span-4 border-r border-surface-700 pr-6">
+                    <h3 class="text-surface-400 text-sm mb-3 font-medium">會員資訊與風險</h3>
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="text-2xl font-bold text-white">{{ currentOrder.memberId }}</span>
+                        <Button icon="pi pi-copy" text rounded size="small" class="p-0 h-6 w-6" />
+                    </div>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <Tag v-for="tag in currentOrder.tags" :key="tag" :value="tag" 
+                             :severity="tag === '高風險' ? 'danger' : 'warning'" 
+                             :class="{'animate-pulse': tag === '高風險'}" />
+                    </div>
+                    <div class="flex justify-between items-center text-sm py-1 border-b border-surface-800">
+                        <span class="text-surface-400">註冊時間</span>
+                        <span>2023-11-12</span>
+                    </div>
+                    <div class="flex justify-between items-center text-sm py-1 border-b border-surface-800">
+                         <span class="text-surface-400">最後登入</span>
+                        <span>10 分鐘前</span>
+                    </div>
+                </div>
+
+                <!-- 2. Financial Stats -->
+                <div class="col-span-4 border-r border-surface-700 pr-6 pl-2">
+                     <h3 class="text-surface-400 text-sm mb-3 font-medium">財務統計概覽</h3>
+                     <div class="space-y-3">
+                         <div class="flex justify-between items-center">
+                             <span class="text-surface-400">總存款</span>
+                             <span class="text-emerald-400 font-mono">{{ formatCurrency(currentOrder.financialStats.totalDeposit) }}</span>
+                         </div>
+                         <div class="flex justify-between items-center">
+                             <span class="text-surface-400">總提款</span>
+                             <span class="text-orange-400 font-mono">{{ formatCurrency(currentOrder.financialStats.totalWithdrawal) }}</span>
+                         </div>
+                         <div class="flex justify-between items-center pt-2 border-t border-surface-700">
+                             <span class="text-white font-medium">當前餘額</span>
+                             <span class="text-blue-400 font-mono font-bold">{{ formatCurrency(currentOrder.financialStats.balance) }}</span>
+                         </div>
+                     </div>
+                </div>
+
+                <!-- 3. Rollover Check -->
+                <div class="col-span-4 pl-2">
+                    <h3 class="text-surface-400 text-sm mb-3 font-medium">流水稽核 (Rollover)</h3>
+                    <div class="mb-2 flex justify-between text-sm">
+                        <span>達成率</span>
+                        <span :class="rolloverPercentage >= 100 ? 'text-green-400' : 'text-red-400'">{{ rolloverPercentage }}%</span>
+                    </div>
+                    <ProgressBar :value="Math.min(rolloverPercentage, 100)" :showValue="false" 
+                        :pt="{ 
+                            root: { class: 'h-3 bg-surface-700 rounded-full' }, 
+                            value: { class: rolloverPercentage >= 100 ? 'bg-green-500' : 'bg-red-500' } 
+                        }" 
+                    />
+                    <div class="flex justify-between text-xs mt-2 text-surface-400">
+                        <span>目前: {{ formatCurrency(currentOrder.rollover.current) }}</span>
+                        <span>所需: {{ formatCurrency(currentOrder.rollover.required) }}</span>
+                    </div>
+                    <div v-if="rolloverPercentage < 100" class="mt-3 bg-red-500/10 border border-red-500/30 rounded p-2 flex items-center gap-2 text-red-300 text-xs">
+                        <i class="pi pi-exclamation-triangle"></i>
+                        流水未達標，建議拒絕或扣除手續費
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lower: Action Panel -->
+            <div class="p-6 bg-surface-800 space-y-6">
+                <!-- Channel Selection -->
+                <div class="grid grid-cols-2 gap-6">
+                     <div class="space-y-2">
+                        <label class="text-surface-300 text-sm">出金通道選擇</label>
+                        <Dropdown v-model="outChannel" :options="channelOptions" optionLabel="label" class="w-full" placeholder="請選擇出金商號/銀行卡" />
+                     </div>
+                     <div class="space-y-2">
+                        <label class="text-surface-300 text-sm">預計手續費</label>
+                        <div class="h-[46px] flex items-center px-3 bg-surface-900/50 rounded border border-surface-700 text-surface-300">
+                            {{ formatCurrency(35) }} (由公司承擔)
+                        </div>
+                     </div>
+                </div>
+
+                <!-- Reject Reason Input (Conditionally Validated) -->
+                <div v-if="isRejectMode" class="space-y-2 animate-fade-in">
+                    <label class="text-red-400 text-sm font-bold">拒絕原因 (必填)</label>
+                    <Textarea v-model="rejectReason" rows="3" class="w-full" placeholder="請詳細說明拒絕理由..." :class="{'p-invalid': showRejectError}" />
+                    <small v-if="showRejectError" class="text-red-400">請輸入拒絕理由</small>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex items-center justify-between border-t border-surface-700 pt-6">
+                    <Button label="解鎖並退出" icon="pi pi-lock-open" severity="secondary" outlined @click="handleUnlockAndExit" />
+                    
+                    <div class="flex gap-3">
+                        <Button label="拒絕提款" icon="pi pi-times" severity="danger" :outlined="!isRejectMode" @click="handleRejectClick" />
+                        <Button label="通過審核" icon="pi pi-check" severity="success" @click="handleApproveClick" v-if="!isRejectMode" />
+                        <Button label="確認拒絕" icon="pi pi-times-circle" severity="danger" @click="confirmReject" v-if="isRejectMode" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </Dialog>
+
+    <!-- Confirm Dialog -->
+    <ConfirmDialog />
   </div>
 </template>
 
@@ -141,24 +258,31 @@ import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import Tag from 'primevue/tag'
 import Calendar from 'primevue/calendar'
+import Dialog from 'primevue/dialog'
+import ProgressBar from 'primevue/progressbar'
+import Textarea from 'primevue/textarea'
+import ConfirmDialog from 'primevue/confirmdialog'
 import { useToast } from 'primevue/usetoast'
+import { useConfirm } from 'primevue/useconfirm'
 import { useFinanceData, type WithdrawalOrder } from './useFinanceData'
 
 const toast = useToast()
-const currentUser = 'Admin' // Simulated current user
+const confirm = useConfirm()
+const currentUser = 'Admin' 
 
-const { withdrawalOrders, initData, lockOrder, processOrder } = useFinanceData()
+const { withdrawalOrders, initData, lockOrder, processOrder, unlockOrder } = useFinanceData()
 
 onMounted(() => {
     initData()
 })
 
+// === Search & List Logic ===
 const statusOptions = ref([
     { label: '待審核', value: '待審核' },
     { label: '審核中', value: '審核中' },
     { label: '已通過', value: '已通過' },
     { label: '已拒絕', value: '已拒絕' },
-     { label: '已沖正', value: '已沖正' },
+    { label: '已沖正', value: '已沖正' },
 ])
 
 const filters = ref({
@@ -169,23 +293,20 @@ const filters = ref({
 })
 
 const isSearching = ref(false)
-const hasSearched = ref(false) // Initially false, or true if we want to show all data on load
+const hasSearched = ref(false)
 
-// Computed filtered orders to simulate backend search
 const filteredOrders = computed(() => {
     if (!hasSearched.value) return []
     let result = withdrawalOrders.value
-    if (filters.value.orderId) {
-        result = result.filter(o => o.orderId.includes(filters.value.orderId))
-    }
-    if (filters.value.memberId) {
-        result = result.filter(o => o.memberId.includes(filters.value.memberId))
-    }
-    if (filters.value.status) {
-        result = result.filter(o => o.status === filters.value.status)
-    }
+    if (filters.value.orderId) result = result.filter(o => o.orderId.includes(filters.value.orderId))
+    if (filters.value.memberId) result = result.filter(o => o.memberId.includes(filters.value.memberId))
+    if (filters.value.status) result = result.filter(o => o.status === filters.value.status)
     return result
 })
+
+const showMemberDetail = (id: string) => {
+    toast.add({ severity: 'info', summary: '會員詳情', detail: `即將開啟會員 ${id} 詳情...`, life: 1000 })
+}
 
 const handleSearch = () => {
     isSearching.value = true
@@ -198,31 +319,7 @@ const handleSearch = () => {
 
 const handleReset = () => {
     filters.value = { orderId: '', memberId: '', status: null, dateRange: null }
-    hasSearched.value = false // Optional: reset list or keep it
-}
-
-const handleLock = (order: WithdrawalOrder) => {
-    // Optimistic UI update handled by shared store
-    const success = lockOrder(order.orderId, currentUser)
-    if (success) {
-        toast.add({ severity: 'success', summary: '已鎖定', detail: '訂單已鎖定，請開始審核', life: 2000 })
-    } else {
-        toast.add({ severity: 'error', summary: '鎖定失敗', detail: '訂單狀態可能已變更', life: 2000 })
-    }
-}
-
-const handleApprove = (order: WithdrawalOrder) => {
-     const success = processOrder(order.orderId, '已通過')
-     if (success) toast.add({ severity: 'success', summary: '審核通過', detail: '提款已批准', life: 2000 })
-}
-
-const handleReject = (order: WithdrawalOrder) => {
-      const success = processOrder(order.orderId, '已拒絕')
-      if (success) toast.add({ severity: 'error', summary: '審核拒絕', detail: '提款已駁回', life: 2000 })
-}
-
-const showMemberDetail = (id: string) => {
-    toast.add({ severity: 'info', summary: '會員詳情', detail: `即將開啟會員 ${id} 詳情...`, life: 1000 })
+    hasSearched.value = false
 }
 
 const formatCurrency = (val: number) => {
@@ -239,9 +336,95 @@ const getStatusSeverity = (status: string) => {
         default: return 'info'
     }
 }
+const rowClass = (data: WithdrawalOrder) => data.status === '審核中' ? 'bg-orange-500/10' : ''
 
-const rowClass = (data: WithdrawalOrder) => {
-    return data.status === '審核中' ? 'bg-orange-500/10' : ''
+// === Modal & Audit Logic ===
+const auditModalVisible = ref(false)
+const currentOrder = ref<WithdrawalOrder | null>(null)
+const outChannel = ref(null)
+const rejectReason = ref('')
+const isRejectMode = ref(false)
+const showRejectError = ref(false)
+
+const channelOptions = ref([
+    { label: 'Merchant_A (綠界)', value: 'A' },
+    { label: 'Merchant_B (藍新)', value: 'B' },
+    { label: 'Bank_01 (公司中信)', value: 'Bank1' },
+])
+
+const rolloverPercentage = computed(() => {
+    if (!currentOrder.value || currentOrder.value.rollover.required === 0) return 100
+    return Math.floor((currentOrder.value.rollover.current / currentOrder.value.rollover.required) * 100)
+})
+
+const handleOpenAudit = (order: WithdrawalOrder) => {
+    // If pending, try to lock
+    if (order.status === '待審核') {
+        const success = lockOrder(order.orderId, currentUser)
+        if (!success) {
+            toast.add({ severity: 'error', summary: '無法鎖定', detail: '訂單可能已被處理', life: 2000 })
+            return
+        }
+        toast.add({ severity: 'success', summary: '鎖定成功', detail: '進入審核模式', life: 1000 })
+    }
+    
+    // Prepare Modal
+    currentOrder.value = order
+    outChannel.value = null
+    rejectReason.value = ''
+    isRejectMode.value = false
+    showRejectError.value = false
+    auditModalVisible.value = true
+}
+
+const handleUnlockAndExit = () => {
+    if (currentOrder.value) {
+        unlockOrder(currentOrder.value.orderId)
+        auditModalVisible.value = false
+        toast.add({ severity: 'info', summary: '已解鎖', detail: '已退出審核', life: 1000 })
+    }
+}
+
+const handleApproveClick = () => {
+    if (!outChannel.value) {
+        toast.add({ severity: 'warn', summary: '請選擇通道', detail: '必須選擇出金通道', life: 2000 })
+        return
+    }
+
+    confirm.require({
+        message: `確定要通過此提款申請？\n金額: ${formatCurrency(currentOrder.value!.amount)}`,
+        header: '二次確認',
+        icon: 'pi pi-exclamation-triangle',
+        acceptClass: 'p-button-success',
+        accept: () => {
+            if (currentOrder.value) {
+                const success = processOrder(currentOrder.value.orderId, '已通過')
+                if (success) {
+                    auditModalVisible.value = false
+                    toast.add({ severity: 'success', summary: '訂單處理完成', detail: `訂單 ${currentOrder.value.orderId} 已成功出金`, life: 3000 })
+                }
+            }
+        }
+    })
+}
+
+const handleRejectClick = () => {
+    isRejectMode.value = true
+}
+
+const confirmReject = () => {
+    if (!rejectReason.value.trim()) {
+        showRejectError.value = true
+        return
+    }
+    
+    if (currentOrder.value) {
+        const success = processOrder(currentOrder.value.orderId, '已拒絕')
+        if (success) {
+            auditModalVisible.value = false
+            toast.add({ severity: 'error', summary: '已拒絕', detail: `訂單 ${currentOrder.value.orderId} 已駁回`, life: 3000 })
+        }
+    }
 }
 </script>
 
@@ -255,4 +438,6 @@ const rowClass = (data: WithdrawalOrder) => {
 :deep(.p-datatable .p-datatable-tbody > tr:hover) { background-color: rgba(59, 130, 246, 0.1); }
 :deep(.p-inputtext), :deep(.p-dropdown), :deep(.p-calendar) { background-color: rgba(30, 41, 59, 0.5); border-color: rgba(71, 85, 105, 0.5); }
 :deep(.bg-orange-500\/10) { background-color: rgba(249, 115, 22, 0.1) !important; }
+.animate-fade-in { animation: fadeIn 0.3s ease-in-out; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 </style>
