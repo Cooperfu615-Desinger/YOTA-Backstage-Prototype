@@ -418,6 +418,51 @@
 
             <!-- Tab 4: 遊戲紀錄 -->
             <TabPanel value="3" header="遊戲紀錄">
+              <!-- Gaming Stats Summary Cards -->
+              <div class="grid grid-cols-4 gap-4 mb-4">
+                <div class="bg-gradient-to-br from-blue-900/30 to-surface-800 rounded-lg p-3 border border-blue-600/30 text-center">
+                  <p class="text-surface-400 text-xs mb-1">總投注金額</p>
+                  <p class="text-xl font-bold text-blue-400">${{ formatCurrency(memberDetail.gaming.totalBet) }}</p>
+                </div>
+                <div class="bg-gradient-to-br from-green-900/30 to-surface-800 rounded-lg p-3 border border-green-600/30 text-center">
+                  <p class="text-surface-400 text-xs mb-1">總派彩金額</p>
+                  <p class="text-xl font-bold text-green-400">${{ formatCurrency(memberDetail.gaming.totalPayout) }}</p>
+                </div>
+                <div class="bg-gradient-to-br rounded-lg p-3 border text-center" :class="memberDetail.gaming.netProfit >= 0 ? 'from-emerald-900/30 to-surface-800 border-emerald-600/30' : 'from-red-900/30 to-surface-800 border-red-600/30'">
+                  <p class="text-surface-400 text-xs mb-1">淨盈虧</p>
+                  <p class="text-xl font-bold" :class="memberDetail.gaming.netProfit >= 0 ? 'text-emerald-400' : 'text-red-400'">
+                    {{ memberDetail.gaming.netProfit >= 0 ? '+' : '' }}${{ formatCurrency(memberDetail.gaming.netProfit) }}
+                  </p>
+                </div>
+                <div class="bg-gradient-to-br from-purple-900/30 to-surface-800 rounded-lg p-3 border border-purple-600/30 text-center">
+                  <p class="text-surface-400 text-xs mb-1">有效流水</p>
+                  <p class="text-xl font-bold text-purple-400">${{ formatCurrency(memberDetail.gaming.validBet) }}</p>
+                </div>
+              </div>
+
+              <!-- Charts Row -->
+              <div class="grid grid-cols-2 gap-4 mb-4">
+                <!-- Game Category Doughnut Chart -->
+                <div class="bg-surface-800/50 rounded-lg p-4 border border-surface-700">
+                  <h4 class="text-white font-medium mb-3 flex items-center gap-2">
+                    <i class="pi pi-chart-pie text-cyan-400"></i>遊戲類型佔比
+                  </h4>
+                  <div class="h-48">
+                    <Chart type="doughnut" :data="categoryChartData" :options="categoryChartOptions" class="h-full" />
+                  </div>
+                </div>
+                
+                <!-- Profit Trend Line Chart -->
+                <div class="bg-surface-800/50 rounded-lg p-4 border border-surface-700">
+                  <h4 class="text-white font-medium mb-3 flex items-center gap-2">
+                    <i class="pi pi-chart-line text-blue-400"></i>近 7 日損益走勢
+                  </h4>
+                  <div class="h-48">
+                    <Chart type="line" :data="profitChartData" :options="profitChartOptions" class="h-full" />
+                  </div>
+                </div>
+              </div>
+
               <!-- Platform Stats -->
               <div class="grid grid-cols-4 gap-4 mb-4">
                 <div v-for="platform in memberDetail.gaming.platforms" :key="platform.name" class="bg-surface-800/50 rounded-lg p-3 border border-surface-700">
@@ -434,11 +479,59 @@
                 </div>
               </div>
               
-              <!-- Profit Trend Chart -->
-              <h4 class="text-white font-medium mb-2">近 7 日損益走勢</h4>
-              <div class="bg-surface-800/50 rounded-lg p-4 border border-surface-700 h-64">
-                <Chart type="line" :data="profitChartData" :options="profitChartOptions" class="h-full" />
-              </div>
+              <!-- Betting Records DataTable -->
+              <h4 class="text-white font-medium mb-2 flex items-center gap-2">
+                <i class="pi pi-list text-orange-400"></i>投注明細
+              </h4>
+              <DataTable 
+                :value="memberDetail.gaming.bettingRecords" 
+                stripedRows 
+                class="p-datatable-sm" 
+                paginator 
+                :rows="10" 
+                :rowsPerPageOptions="[5, 10, 20]"
+                sortField="betTime"
+                :sortOrder="-1"
+              >
+                <Column field="orderId" header="注單編號" sortable style="min-width: 140px">
+                  <template #body="slotProps"><span class="text-blue-400 font-mono text-sm">{{ slotProps.data.orderId }}</span></template>
+                </Column>
+                <Column field="gameName" header="遊戲名稱" sortable style="min-width: 140px">
+                  <template #body="slotProps">
+                    <div class="flex flex-col">
+                      <span class="text-white">{{ slotProps.data.gameName }}</span>
+                      <Tag :value="slotProps.data.platform" severity="secondary" class="text-xs w-fit mt-1" />
+                    </div>
+                  </template>
+                </Column>
+                <Column field="betTime" header="投注時間" sortable style="min-width: 150px">
+                  <template #body="slotProps"><span class="text-surface-400 text-sm">{{ slotProps.data.betTime }}</span></template>
+                </Column>
+                <Column field="betAmount" header="投注金額" sortable style="min-width: 100px">
+                  <template #body="slotProps"><span class="text-white font-medium">${{ formatCurrency(slotProps.data.betAmount) }}</span></template>
+                </Column>
+                <Column field="validBet" header="有效投注" sortable style="min-width: 100px">
+                  <template #body="slotProps"><span class="text-surface-300">${{ formatCurrency(slotProps.data.validBet) }}</span></template>
+                </Column>
+                <Column field="payout" header="派彩金額" sortable style="min-width: 100px">
+                  <template #body="slotProps"><span class="text-green-400 font-medium">${{ formatCurrency(slotProps.data.payout) }}</span></template>
+                </Column>
+                <Column field="profit" header="盈虧" sortable style="min-width: 100px">
+                  <template #body="slotProps">
+                    <span :class="slotProps.data.profit >= 0 ? 'text-emerald-400' : 'text-red-400'" class="font-bold">
+                      {{ slotProps.data.profit >= 0 ? '+' : '' }}${{ formatCurrency(slotProps.data.profit) }}
+                    </span>
+                  </template>
+                </Column>
+                <Column field="status" header="狀態" style="min-width: 90px">
+                  <template #body="slotProps">
+                    <Tag 
+                      :value="slotProps.data.status" 
+                      :severity="slotProps.data.status === '已結算' ? 'success' : slotProps.data.status === '待開獎' ? 'warn' : 'secondary'" 
+                    />
+                  </template>
+                </Column>
+              </DataTable>
             </TabPanel>
           </TabView>
         </div>
@@ -552,6 +645,23 @@ const memberDetail = ref<{
   gaming: {
     platforms: Array<{ name: string; icon: string; totalBet: number; profit: number }>
     profitTrend: number[]
+    // Enhanced gaming data
+    totalBet: number
+    totalPayout: number
+    netProfit: number
+    validBet: number
+    categoryDistribution: { live: number; slots: number; sports: number; lottery: number }
+    bettingRecords: Array<{
+      orderId: string
+      gameName: string
+      platform: string
+      betTime: string
+      betAmount: number
+      validBet: number
+      payout: number
+      profit: number
+      status: string
+    }>
   }
 } | null>(null)
 
@@ -738,15 +848,94 @@ const generateMemberDetail = (member: typeof members.value[0]) => {
       requiredRollover,
       recentTransactions: transactions
     },
-    gaming: {
-      platforms: [
-        { name: '真人娛樂', icon: 'pi pi-video text-purple-400', totalBet: Math.floor(Math.random() * 1000000), profit: Math.floor((Math.random() - 0.5) * 100000) },
-        { name: '電子遊戲', icon: 'pi pi-star text-yellow-400', totalBet: Math.floor(Math.random() * 500000), profit: Math.floor((Math.random() - 0.5) * 50000) },
-        { name: '體育投注', icon: 'pi pi-flag text-green-400', totalBet: Math.floor(Math.random() * 300000), profit: Math.floor((Math.random() - 0.5) * 30000) },
-        { name: '彩票遊戲', icon: 'pi pi-ticket text-orange-400', totalBet: Math.floor(Math.random() * 200000), profit: Math.floor((Math.random() - 0.5) * 20000) }
-      ],
-      profitTrend
-    }
+    gaming: (() => {
+      // Generate 25 betting records
+      const gameNames = [
+        { name: '百家樂', platform: '真人娛樂' },
+        { name: '龍虎鬥', platform: '真人娛樂' },
+        { name: '21點', platform: '真人娛樂' },
+        { name: '輪盤', platform: '真人娛樂' },
+        { name: '財神到', platform: '電子遊戲' },
+        { name: '金龍獻瑞', platform: '電子遊戲' },
+        { name: '水果樂園', platform: '電子遊戲' },
+        { name: '狂野西部', platform: '電子遊戲' },
+        { name: '瘋狂麻將', platform: '電子遊戲' },
+        { name: '足球', platform: '體育投注' },
+        { name: '籃球 NBA', platform: '體育投注' },
+        { name: '網球', platform: '體育投注' },
+        { name: '電競 LOL', platform: '體育投注' },
+        { name: '時時彩', platform: '彩票遊戲' },
+        { name: '快三', platform: '彩票遊戲' },
+        { name: '六合彩', platform: '彩票遊戲' },
+        { name: 'PK10', platform: '彩票遊戲' }
+      ]
+      const betStatuses = ['已結算', '已結算', '已結算', '已結算', '待開獎', '已撤單']
+
+      const bettingRecords = []
+      let liveBet = 0, slotsBet = 0, sportsBet = 0, lotteryBet = 0
+      let totalBetAmt = 0, totalPayout = 0, totalValidBet = 0
+
+      for (let i = 0; i < 25; i++) {
+        const gameInfo = gameNames[Math.floor(Math.random() * gameNames.length)]!
+        const betAmount = Math.floor(Math.random() * 10000) + 100
+        const validBet = Math.floor(betAmount * (0.8 + Math.random() * 0.2))
+        const status = betStatuses[Math.floor(Math.random() * betStatuses.length)]!
+        let payout = 0, profit = 0
+        
+        if (status === '已結算') {
+          const isWin = Math.random() > 0.45
+          payout = isWin ? Math.floor(betAmount * (1 + Math.random() * 2)) : 0
+          profit = payout - betAmount
+          totalPayout += payout
+        } else if (status === '待開獎') {
+          profit = 0
+        } else {
+          profit = 0
+        }
+
+        totalBetAmt += betAmount
+        totalValidBet += validBet
+
+        // Track by category
+        if (gameInfo.platform === '真人娛樂') liveBet += betAmount
+        else if (gameInfo.platform === '電子遊戲') slotsBet += betAmount
+        else if (gameInfo.platform === '體育投注') sportsBet += betAmount
+        else lotteryBet += betAmount
+
+        bettingRecords.push({
+          orderId: `BET${Date.now().toString(36).toUpperCase()}${String(i).padStart(3, '0')}`,
+          gameName: gameInfo.name,
+          platform: gameInfo.platform,
+          betTime: generateRandomDate(),
+          betAmount,
+          validBet,
+          payout,
+          profit,
+          status
+        })
+      }
+
+      // Sort by time desc
+      bettingRecords.sort((a, b) => new Date(b.betTime).getTime() - new Date(a.betTime).getTime())
+
+      const netProfit = totalPayout - totalBetAmt
+
+      return {
+        platforms: [
+          { name: '真人娛樂', icon: 'pi pi-video text-purple-400', totalBet: liveBet, profit: Math.floor((Math.random() - 0.5) * (liveBet * 0.2)) },
+          { name: '電子遊戲', icon: 'pi pi-star text-yellow-400', totalBet: slotsBet, profit: Math.floor((Math.random() - 0.5) * (slotsBet * 0.2)) },
+          { name: '體育投注', icon: 'pi pi-flag text-green-400', totalBet: sportsBet, profit: Math.floor((Math.random() - 0.5) * (sportsBet * 0.2)) },
+          { name: '彩票遊戲', icon: 'pi pi-ticket text-orange-400', totalBet: lotteryBet, profit: Math.floor((Math.random() - 0.5) * (lotteryBet * 0.2)) }
+        ],
+        profitTrend,
+        totalBet: totalBetAmt,
+        totalPayout,
+        netProfit,
+        validBet: totalValidBet,
+        categoryDistribution: { live: liveBet, slots: slotsBet, sports: sportsBet, lottery: lotteryBet },
+        bettingRecords
+      }
+    })()
   }
 }
 
@@ -779,6 +968,42 @@ const profitChartOptions = computed(() => ({
   scales: {
     x: { grid: { color: chartColors.value.gridColor }, ticks: { color: chartColors.value.textColor } },
     y: { grid: { color: chartColors.value.gridColor }, ticks: { color: chartColors.value.textColor, callback: (v: number) => `$${v >= 1000 ? (v / 1000).toFixed(0) + 'K' : v}` } }
+  }
+}))
+
+// Category Doughnut Chart
+const categoryChartData = computed(() => {
+  const dist = memberDetail.value?.gaming.categoryDistribution ?? { live: 0, slots: 0, sports: 0, lottery: 0 }
+  return {
+    labels: ['真人娛樂', '電子遊戲', '體育投注', '彩票遊戲'],
+    datasets: [{
+      data: [dist.live, dist.slots, dist.sports, dist.lottery],
+      backgroundColor: ['#a855f7', '#eab308', '#22c55e', '#f97316'],
+      hoverBackgroundColor: ['#c084fc', '#facc15', '#4ade80', '#fb923c'],
+      borderWidth: 0
+    }]
+  }
+})
+
+const categoryChartOptions = computed(() => ({
+  responsive: true,
+  maintainAspectRatio: false,
+  cutout: '60%',
+  plugins: {
+    legend: {
+      position: 'right' as const,
+      labels: { color: chartColors.value.textColor, usePointStyle: true, padding: 15 }
+    },
+    tooltip: {
+      backgroundColor: chartColors.value.tooltipBg,
+      titleColor: chartColors.value.tooltipTitle,
+      bodyColor: chartColors.value.tooltipBody,
+      borderColor: chartColors.value.tooltipBorder,
+      borderWidth: 1,
+      callbacks: {
+        label: (ctx: { parsed: number; label: string }) => `${ctx.label}: $${formatCurrency(ctx.parsed)}`
+      }
+    }
   }
 }))
 
