@@ -360,6 +360,18 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/Finance/OrderLocks.vue'),
         meta: { title: '鎖單管理', icon: 'pi-lock', parent: 'Financials' }
     },
+    {
+        path: '/finance/balance-logs',
+        name: 'BalanceLogs',
+        component: () => import('@/views/Finance/BalanceLogs.vue'),
+        meta: { title: '資金流水紀錄', icon: 'pi-list', parent: 'Financials' }
+    },
+    {
+        path: '/finance/adjustment-logs',
+        name: 'AdjustmentLogs',
+        component: () => import('@/views/Finance/AdjustmentLogs.vue'),
+        meta: { title: '人工存提紀錄', icon: 'pi-pencil', parent: 'Financials' }
+    },
 
     // ========================================
     // 10. 推廣活動 (Promotions)

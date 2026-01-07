@@ -325,16 +325,25 @@ const menuItems: MenuItem[] = [
     icon: 'pi-wallet',
     children: [
       { path: '/financials/overview', title: '財務總覽', icon: 'pi-chart-line' },
-      { path: '/financials/records', title: '紀錄類', icon: 'pi-file-edit' },
-      { 
-        path: '/finance', 
-        title: '審核管理', 
-        icon: 'pi-check-circle',
+      {
+        path: '#',
+        title: '審核管理',
+        icon: 'pi-verified',
         children: [
-            { path: '/finance/manual-deposit', title: '手工存款審核', icon: 'pi-file-edit' },
-            { path: '/finance/online-deposit', title: '在線存款查詢', icon: 'pi-search' },
-            { path: '/finance/withdrawals', title: '提款審核', icon: 'pi-wallet' },
-            { path: '/finance/order-locks', title: '鎖單管理', icon: 'pi-lock' }
+          { path: '/finance/manual-deposit', title: '手工存款審核', icon: 'pi-file-edit' },
+          { path: '/finance/online-deposit', title: '在線存款查詢', icon: 'pi-search' },
+          { path: '/finance/withdrawals', title: '提款審核', icon: 'pi-money-bill' },
+          { path: '/finance/order-locks', title: '鎖單管理', icon: 'pi-lock' },
+        ]
+      },
+      {
+        path: '#',
+        title: '紀錄查詢',
+        icon: 'pi-file-edit',
+        children: [
+          { path: '/financials/records', title: '下注紀錄', icon: 'pi-th-large' },
+          { path: '/finance/balance-logs', title: '資金流水紀錄', icon: 'pi-list' },
+          { path: '/finance/adjustment-logs', title: '人工存提紀錄', icon: 'pi-pencil' },
         ]
       },
       { path: '/financials/points', title: '點數與獎勵', icon: 'pi-star-fill' },
