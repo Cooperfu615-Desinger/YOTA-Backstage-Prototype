@@ -288,6 +288,24 @@ const routes: RouteRecordRaw[] = [
         meta: { title: '代理總覽', icon: 'pi-chart-pie', parent: 'Agents' }
     },
     {
+        path: '/agent/list',
+        name: 'AgentList',
+        component: () => import('@/views/Agents/AgentList.vue'),
+        meta: { title: '代理列表', icon: 'pi-users', parent: 'Agents' }
+    },
+    {
+        path: '/agent/levels',
+        name: 'AgentLevels',
+        component: () => import('@/views/Agents/AgentLevels.vue'),
+        meta: { title: '代理等級', icon: 'pi-star', parent: 'Agents' }
+    },
+    {
+        path: '/agent/commission',
+        name: 'AgentCommission',
+        component: () => import('@/views/Agents/CommissionSettings.vue'),
+        meta: { title: '佣金設定', icon: 'pi-percentage', parent: 'Agents' }
+    },
+    {
         path: '/agents/maintenance',
         name: 'AgentMaintenance',
         component: () => import('@/views/Agents/AgentMaintenance.vue'),

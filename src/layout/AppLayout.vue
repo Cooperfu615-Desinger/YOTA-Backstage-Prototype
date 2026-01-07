@@ -314,7 +314,10 @@ const menuItems: MenuItem[] = [
     title: '代理管理', 
     icon: 'pi-sitemap',
     children: [
-      { path: '/agents/overview', title: '總覽', icon: 'pi-chart-pie' },
+      { path: '/agents/overview', title: '代理總覽', icon: 'pi-chart-pie' },
+      { path: '/agent/list', title: '代理列表', icon: 'pi-users' },
+      { path: '/agent/levels', title: '代理等級', icon: 'pi-star' },
+      { path: '/agent/commission', title: '佣金設定', icon: 'pi-percentage' },
       { path: '/agents/maintenance', title: '代理商維護', icon: 'pi-sitemap' },
       { path: '/agents/promotion', title: '推廣維護', icon: 'pi-link' },
     ]

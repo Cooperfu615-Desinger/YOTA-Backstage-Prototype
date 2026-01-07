@@ -66,6 +66,13 @@
 - `/members/level-settings` - Member Levels (會員等級)
 - `/members/tags` - Member Tags (會員標籤)
 
+### Agents (代理管理)
+
+- `/agents/overview` - Agent Overview (代理總覽)
+- `/agent/list` - Agent List (代理列表)
+- `/agent/levels` - Agent Levels (代理等級)
+- `/agent/commission` - Commission Settings (佣金設定)
+
 ### Finance Core (財務核心)
 
 - `/finance` - Finance Dashboard (財務儀表板)
