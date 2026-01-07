@@ -164,9 +164,7 @@
                             <i class="pi pi-star text-yellow-400"></i>
                             <span class="text-white font-medium">真人遊戲佔成</span>
                         </div>
-                        <div class="flex items-center gap-2">
-                            <InputNumber v-model="currentAgent.commissions.live" suffix="%" :min="0" :max="100" showButtons buttonLayout="horizontal" class="w-[150px]" />
-                        </div>
+                        <InputNumber v-model="currentAgent.commissions.live" suffix="%" :min="0" :max="100" showButtons buttonLayout="horizontal" style="width: 150px" />
                     </div>
                     
                     <div class="flex items-center justify-between p-3 bg-surface-900 rounded">
@@ -174,9 +172,7 @@
                             <i class="pi pi-bolt text-purple-400"></i>
                             <span class="text-white font-medium">電子遊戲佔成</span>
                         </div>
-                        <div class="flex items-center gap-2">
-                            <InputNumber v-model="currentAgent.commissions.slot" suffix="%" :min="0" :max="100" showButtons buttonLayout="horizontal" class="w-[150px]" />
-                        </div>
+                        <InputNumber v-model="currentAgent.commissions.slot" suffix="%" :min="0" :max="100" showButtons buttonLayout="horizontal" style="width: 150px" />
                     </div>
                     
                     <div class="flex items-center justify-between p-3 bg-surface-900 rounded">
@@ -184,9 +180,7 @@
                             <i class="pi pi-trophy text-green-400"></i>
                             <span class="text-white font-medium">體育投注佔成</span>
                         </div>
-                        <div class="flex items-center gap-2">
-                            <InputNumber v-model="currentAgent.commissions.sports" suffix="%" :min="0" :max="100" showButtons buttonLayout="horizontal" class="w-[150px]" />
-                        </div>
+                        <InputNumber v-model="currentAgent.commissions.sports" suffix="%" :min="0" :max="100" showButtons buttonLayout="horizontal" style="width: 150px" />
                     </div>
 
                     <div class="pt-4 border-t border-surface-700">
