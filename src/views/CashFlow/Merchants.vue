@@ -84,7 +84,10 @@
             <Column field="name" header="商號資訊" sortable style="min-width: 200px">
               <template #body="slotProps">
                 <div class="flex flex-col">
-                  <span class="text-blue-400 font-medium cursor-pointer hover:underline text-lg" @click="openDetail(slotProps.data)">{{ slotProps.data.name }}</span>
+                  <div class="flex items-center gap-2">
+                    <span class="text-blue-400 font-medium cursor-pointer hover:underline text-lg" @click="openDetail(slotProps.data)">{{ slotProps.data.name }}</span>
+                    <i v-if="slotProps.data.currentDailyAmount / slotProps.data.dailyLimit > 0.9" class="pi pi-exclamation-triangle text-red-500" v-tooltip.top="'今日額度已使用超過 90%'"></i>
+                  </div>
                   <span class="text-surface-400 text-sm font-mono">{{ slotProps.data.code }}</span>
                 </div>
               </template>
@@ -94,9 +97,14 @@
                 <Tag :value="slotProps.data.group" :severity="getGroupSeverity(slotProps.data.group)" />
               </template>
             </Column>
-            <Column field="balance" header="餘額" sortable style="min-width: 140px">
+            <Column field="balance" header="系統餘額" sortable style="min-width: 140px">
               <template #body="slotProps">
                 <span class="font-mono text-emerald-400 font-bold">{{ formatCurrency(slotProps.data.balance) }}</span>
+              </template>
+            </Column>
+            <Column field="channelBalance" header="渠道餘額" sortable style="min-width: 140px">
+              <template #body="slotProps">
+                <span class="font-mono text-blue-400 font-bold">{{ formatCurrency(slotProps.data.channelBalance) }}</span>
               </template>
             </Column>
             <Column field="feeRate" header="手續費" style="min-width: 100px">
@@ -176,16 +184,16 @@
             <div class="space-y-4">
               <div class="flex flex-col gap-2">
                 <label class="text-surface-400 text-sm">API Key</label>
-                <div class="p-inputgroup">
-                  <InputText :value="selectedMerchant.apiKey" class="w-full font-mono" readonly />
+                <div class="flex gap-2">
+                  <Password v-model="selectedMerchant.apiKey" class="flex-1" :feedback="false" toggleMask :pt="{ input: { class: 'w-full font-mono' } }" />
                   <Button icon="pi pi-copy" severity="secondary" @click="copyToClipboard(selectedMerchant.apiKey)" />
                 </div>
               </div>
               <div class="flex flex-col gap-2">
                 <label class="text-surface-400 text-sm">API Secret</label>
-                <div class="p-inputgroup">
-                  <InputText :value="selectedMerchant.apiSecret" class="w-full font-mono text-surface-500" type="password" readonly />
-                  <Button icon="pi pi-eye" severity="secondary" />
+                <div class="flex gap-2">
+                  <Password v-model="selectedMerchant.apiSecret" class="flex-1" :feedback="false" toggleMask :pt="{ input: { class: 'w-full font-mono' } }" />
+                  <Button icon="pi pi-copy" severity="secondary" @click="copyToClipboard(selectedMerchant.apiSecret)" />
                 </div>
               </div>
               <div class="flex flex-col gap-2">
@@ -235,6 +243,7 @@ import { ref, computed } from 'vue'
 import Card from 'primevue/card'
 import InputText from 'primevue/inputtext'
 import InputNumber from 'primevue/inputnumber'
+import Password from 'primevue/password'
 import Dropdown from 'primevue/dropdown'
 import Button from 'primevue/button'
 import DataTable from 'primevue/datatable'
@@ -285,6 +294,7 @@ interface Merchant {
   code: string
   group: string
   balance: number
+  channelBalance: number
   feeRate: number
   depositStatus: boolean
   withdrawStatus: boolean
@@ -311,9 +321,9 @@ const getGroupSeverity = (group: string) => {
 
 const getProgressBarColor = (current: number, max: number) => {
   const ratio = current / max
-  if (ratio > 0.9) return '!bg-red-500' // Use custom class or PrimeVue color classes logic if possible, but basic color classes work
-  if (ratio > 0.7) return '!bg-yellow-500'
-  return '!bg-emerald-500'
+  if (ratio > 0.95) return '!bg-red-500' // Danger > 95%
+  if (ratio > 0.8) return '!bg-yellow-500' // Warning > 80%
+  return '!bg-emerald-500' // Success < 80%
 }
 
 const generateApiKey = () => Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
@@ -326,17 +336,23 @@ const generateMockMerchants = () => {
   for (let i = 0; i < 20; i++) {
     const name = names[i % names.length] + ` ${Math.floor(i / names.length) + 1 > 1 ? i : ''}`
     const limit = Math.floor(Math.random() * 5000000) + 1000000
+    // Generate some high quota usage scenarios
+    let currentUsageRatio = Math.random() * 0.8
+    if (i % 5 === 0) currentUsageRatio = 0.92 + Math.random() * 0.08 // Some > 90%
+    if (i % 7 === 0) currentUsageRatio = 0.85 + Math.random() * 0.1 // Some > 80%
+
     list.push({
       id: 100 + i,
       name: name,
       code: `MCH_${1000 + i}`,
       group: groups[Math.floor(Math.random() * groups.length)] ?? 'C',
       balance: Math.floor(Math.random() * 10000000),
+      channelBalance: Math.floor(Math.random() * 8000000), // Enriched data
       feeRate: Number((Math.random() * 2 + 0.5).toFixed(2)),
       depositStatus: Math.random() > 0.2,
       withdrawStatus: Math.random() > 0.3,
       dailyLimit: limit,
-      currentDailyAmount: Math.floor(Math.random() * limit * 0.8),
+      currentDailyAmount: Math.floor(limit * currentUsageRatio),
       apiKey: generateApiKey(),
       apiSecret: generateApiKey() + generateApiKey(),
       callbackUrl: `https://api.merchant-${1000+i}.com/callback`,
