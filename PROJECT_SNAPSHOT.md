@@ -81,6 +81,7 @@
 
 ### Finance Records (財務紀錄查詢)
 
+- `/finance/betting-records` - Betting Records (下注紀錄)
 - `/finance/balance-logs` - Balance Transaction Logs
 - `/finance/adjustment-logs` - Manual Adjustment Logs
 
@@ -204,6 +205,24 @@ autoApprove = rolloverPercentage >= 100 && amount <= maxAmount && vipLevel >= mi
 - Weight-based distribution
 - Success rate monitoring
 - Auto-failover on threshold breach
+
+### 7. Valid Bet Tracking
+
+**Location**: `BettingRecords.vue`
+
+**Purpose**: Track effective wagering for rollover requirements
+
+**Logic**:
+
+- `validBet` may be less than `betAmount` for hedged or cancelled bets
+- Warning indicator shown when `validBet < betAmount`
+- Used for rollover completion calculations
+
+**Visual Indicators**:
+
+- Yellow warning icon for partial validity
+- Tooltip explaining the discrepancy
+- Highlighted in detail dialog
 
 ---
 

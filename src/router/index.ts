@@ -322,6 +322,12 @@ const routes: RouteRecordRaw[] = [
         meta: { title: '紀錄類', icon: 'pi-file-edit', parent: 'Finance' }
     },
     {
+        path: '/finance/betting-records',
+        name: 'BettingRecords',
+        component: () => import('@/views/Finance/BettingRecords.vue'),
+        meta: { title: '下注紀錄', icon: 'pi-th-large', parent: 'Finance' }
+    },
+    {
         path: '/finance/points-rewards',
         name: 'PointsRewards',
         component: () => import('@/views/Finance/PointsRewards.vue'),

@@ -341,7 +341,7 @@ const menuItems: MenuItem[] = [
         title: '紀錄查詢',
         icon: 'pi-file-edit',
         children: [
-          { path: '/finance/records', title: '下注紀錄', icon: 'pi-th-large' },
+          { path: '/finance/betting-records', title: '下注紀錄', icon: 'pi-th-large' },
           { path: '/finance/balance-logs', title: '資金流水紀錄', icon: 'pi-list' },
           { path: '/finance/adjustment-logs', title: '人工存提紀錄', icon: 'pi-pencil' },
         ]
