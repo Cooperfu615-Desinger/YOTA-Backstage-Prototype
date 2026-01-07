@@ -356,6 +356,12 @@ const routes: RouteRecordRaw[] = [
         meta: { title: '報表管理', icon: 'pi-chart-line' }
     },
     {
+        path: '/reports/overview',
+        name: 'ReportsOverview',
+        component: () => import('@/views/Reports/Overview.vue'),
+        meta: { title: '報表總覽', icon: 'pi-chart-pie', parent: 'Reports' }
+    },
+    {
         path: '/reports/game-performance',
         name: 'GamePerformance',
         component: () => import('@/views/Reports/GamePerformance.vue'),

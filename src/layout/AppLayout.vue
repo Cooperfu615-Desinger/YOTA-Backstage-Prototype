@@ -286,7 +286,7 @@ const menuItems: MenuItem[] = [
     title: '報表管理', 
     icon: 'pi-chart-line',
     children: [
-      { path: '/reports', title: '總覽', icon: 'pi-home' },
+      { path: '/reports/overview', title: '總覽', icon: 'pi-chart-pie' },
       { path: '/reports/game-performance', title: '遊戲表現', icon: 'pi-chart-bar' },
       { path: '/reports/cash', title: '現金報表', icon: 'pi-money-bill' },
       { path: '/reports/deposit', title: '在線存款', icon: 'pi-credit-card' },
