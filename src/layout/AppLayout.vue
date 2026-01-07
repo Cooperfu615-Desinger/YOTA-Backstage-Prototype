@@ -319,6 +319,7 @@ const menuItems: MenuItem[] = [
     children: [
       { path: '/payments/overview', title: '總覽', icon: 'pi-chart-pie' },
       { path: '/payments/merchants', title: '商號管理', icon: 'pi-building' },
+      { path: '/payments/app-purchase', title: '行動支付管理', icon: 'pi-apple' },
       { path: '/payments/banks', title: '銀行管理', icon: 'pi-building-columns' },
     ]
   },
