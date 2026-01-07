@@ -66,7 +66,11 @@
             </template>
             <Column field="orderId" header="訂單號" style="min-width: 180px">
                 <template #body="slotProps">
-                    <span class="font-mono text-sm text-blue-400 cursor-pointer hover:underline">{{ slotProps.data.orderId }}</span>
+                    <span class="font-mono text-sm text-blue-400 cursor-pointer hover:underline" 
+                          @click="handleOrderClick(slotProps.data)"
+                          v-tooltip.top="'點擊查看訂單詳細資訊與審核進度'">
+                        {{ slotProps.data.orderId }}
+                    </span>
                 </template>
             </Column>
             <Column field="businessType" header="業務類型" style="min-width: 120px">
@@ -114,6 +118,110 @@
       </template>
     </Card>
 
+
+    <!-- Withdrawal Audit Modal -->
+    <Dialog v-model:visible="withdrawalModalVisible" modal :header="`提款審核決策看板 - ${currentWithdrawalOrder?.orderId}`" :style="{ width: '1000px' }" class="p-0">
+        <div v-if="currentWithdrawalOrder" class="flex flex-col h-full">
+            <div class="grid grid-cols-12 gap-6 p-6 bg-surface-900/50">
+                <div class="col-span-4 border-r border-surface-700 pr-6">
+                    <h3 class="text-surface-400 text-sm mb-3 font-medium">會員資訊與風險</h3>
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="text-2xl font-bold text-white">{{ currentWithdrawalOrder.memberId }}</span>
+                    </div>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <Tag v-for="tag in currentWithdrawalOrder.tags" :key="tag" :value="tag" 
+                             :severity="tag === '高風險' ? 'danger' : 'warning'" 
+                             :class="{'animate-pulse': tag === '高風險'}" />
+                    </div>
+                </div>
+                <div class="col-span-4 border-r border-surface-700 pr-6 pl-2">
+                     <h3 class="text-surface-400 text-sm mb-3 font-medium">財務統計概覽</h3>
+                     <div class="space-y-3">
+                         <div class="flex justify-between items-center">
+                             <span class="text-surface-400">總存款</span>
+                             <span class="text-emerald-400 font-mono">{{ formatCurrency(currentWithdrawalOrder.financialStats.totalDeposit) }}</span>
+                         </div>
+                         <div class="flex justify-between items-center">
+                             <span class="text-surface-400">總提款</span>
+                             <span class="text-orange-400 font-mono">{{ formatCurrency(currentWithdrawalOrder.financialStats.totalWithdrawal) }}</span>
+                         </div>
+                         <div class="flex justify-between items-center pt-2 border-t border-surface-700">
+                             <span class="text-white font-medium">當前餘額</span>
+                             <span class="text-blue-400 font-mono font-bold">{{ formatCurrency(currentWithdrawalOrder.financialStats.balance) }}</span>
+                         </div>
+                     </div>
+                </div>
+                <div class="col-span-4 pl-2">
+                    <h3 class="text-surface-400 text-sm mb-3 font-medium">流水稽核 (Rollover)</h3>
+                    <div class="mb-2 flex justify-between text-sm">
+                        <span>達成率</span>
+                        <span :class="getRolloverPercentage(currentWithdrawalOrder) >= 100 ? 'text-green-400' : 'text-red-400'">
+                            {{ getRolloverPercentage(currentWithdrawalOrder) }}%
+                        </span>
+                    </div>
+                    <ProgressBar :value="Math.min(getRolloverPercentage(currentWithdrawalOrder), 100)" :showValue="false" 
+                        :pt="{ 
+                            root: { class: 'h-3 bg-surface-700 rounded-full' }, 
+                            value: { class: getRolloverPercentage(currentWithdrawalOrder) >= 100 ? 'bg-green-500' : 'bg-red-500' } 
+                        }" 
+                    />
+                    <div class="flex justify-between text-xs mt-2 text-surface-400">
+                        <span>目前: {{ formatCurrency(currentWithdrawalOrder.rollover.current) }}</span>
+                        <span>所需: {{ formatCurrency(currentWithdrawalOrder.rollover.required) }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-6 bg-surface-800">
+                <div class="flex items-center justify-between border-t border-surface-700 pt-4">
+                    <div class="text-sm text-surface-400">
+                        <i class="pi pi-lock text-orange-400 mr-2"></i>
+                        此訂單已被 <span class="text-white font-bold">{{ currentWithdrawalOrder.processor }}</span> 鎖定
+                    </div>
+                    <Button label="強制解鎖並退出" icon="pi pi-lock-open" severity="danger" outlined @click="handleForceUnlockFromModal" />
+                </div>
+            </div>
+        </div>
+    </Dialog>
+
+    <!-- Manual Deposit Audit Modal -->
+    <Dialog v-model:visible="depositModalVisible" modal :header="`手工存款審核 - ${currentDepositOrder?.orderId}`" :style="{ width: '500px' }">
+        <div v-if="currentDepositOrder" class="flex flex-col gap-4">
+             <div class="bg-surface-900/50 p-4 rounded border border-surface-700">
+                 <h4 class="text-surface-400 text-sm mb-3 font-bold">會員風險快照</h4>
+                 <div class="grid grid-cols-2 gap-4">
+                     <div>
+                         <span class="text-surface-500 text-xs block">當前餘額</span>
+                         <span class="text-emerald-400 font-mono font-bold">{{ formatCurrency(currentDepositOrder.memberSnapshot?.currentBalance || 0) }}</span>
+                     </div>
+                     <div>
+                         <span class="text-surface-500 text-xs block">近7日補單 (筆/額)</span>
+                         <span class="text-white font-mono">{{ currentDepositOrder.memberSnapshot?.recentDepositCount }} 筆</span>
+                     </div>
+                 </div>
+             </div>
+             
+             <div class="space-y-2">
+                 <div class="flex justify-between text-sm">
+                     <span class="text-surface-400">申請金額</span>
+                     <span class="text-green-400 font-bold font-mono text-lg">{{ formatCurrency(currentDepositOrder.amount) }}</span>
+                 </div>
+                 <div class="flex justify-between text-sm">
+                     <span class="text-surface-400">類型</span>
+                     <span>{{ currentDepositOrder.type }}</span>
+                 </div>
+             </div>
+
+             <div class="flex justify-end gap-2 pt-4 border-t border-surface-700">
+                <div class="text-sm text-surface-400 flex-1">
+                    <i class="pi pi-lock text-orange-400 mr-2"></i>
+                    此訂單已被 <span class="text-white font-bold">{{ currentDepositOrder.applicant }}</span> 鎖定
+                </div>
+                <Button label="強制解鎖" severity="danger" outlined @click="handleForceUnlockFromModal" />
+             </div>
+        </div>
+    </Dialog>
+
     <ConfirmDialog />
   </div>
 </template>
@@ -127,6 +235,8 @@ import Button from 'primevue/button'
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import Tag from 'primevue/tag'
+import Dialog from 'primevue/dialog'
+import ProgressBar from 'primevue/progressbar'
 import ConfirmDialog from 'primevue/confirmdialog'
 import { useToast } from 'primevue/usetoast'
 import { useConfirm } from 'primevue/useconfirm'
@@ -134,7 +244,7 @@ import { useFinanceData } from './useFinanceData'
 
 const toast = useToast()
 const confirm = useConfirm()
-const { lockedOrders, unlockOrder, initData } = useFinanceData()
+const { lockedOrders, unlockOrder, initData, withdrawalOrders, manualDepositOrders } = useFinanceData()
 
 onMounted(() => {
     initData()
@@ -224,6 +334,62 @@ const formatDuration = (lockTime: string): string => {
 
 const rowClass = (data: any) => {
     return getDuration(data.lockTime) > 15 * 60 ? 'bg-red-500/5' : ''
+}
+
+// Modal state
+const withdrawalModalVisible = ref(false)
+const depositModalVisible = ref(false)
+const currentWithdrawalOrder = ref<any>(null)
+const currentDepositOrder = ref<any>(null)
+
+const handleOrderClick = (lockData: any) => {
+    if (lockData.businessType === '提款審核') {
+        // Find the full withdrawal order
+        const fullOrder = withdrawalOrders.value.find(o => o.orderId === lockData.orderId)
+        if (fullOrder) {
+            currentWithdrawalOrder.value = fullOrder
+            withdrawalModalVisible.value = true
+        }
+    } else if (lockData.businessType === '手存審核') {
+        // Find the full deposit order
+        const fullOrder = manualDepositOrders.value.find(o => o.orderId === lockData.orderId)
+        if (fullOrder) {
+            currentDepositOrder.value = fullOrder
+            depositModalVisible.value = true
+        }
+    }
+}
+
+const getRolloverPercentage = (order: any): number => {
+    if (!order || order.rollover.required === 0) return 100
+    return Math.floor((order.rollover.current / order.rollover.required) * 100)
+}
+
+const formatCurrency = (val: number) => new Intl.NumberFormat('zh-TW', { style: 'currency', currency: 'TWD', minimumFractionDigits: 0 }).format(val)
+
+const handleForceUnlockFromModal = () => {
+    const orderId = currentWithdrawalOrder.value?.orderId || currentDepositOrder.value?.orderId
+    if (!orderId) return
+    
+    confirm.require({
+        message: `確定要強制解鎖此訂單？\n訂單號: ${orderId}\n\n解鎖後該訂單將回歸待審核池。`,
+        header: '強制解鎖確認',
+        icon: 'pi pi-exclamation-triangle',
+        acceptClass: 'p-button-danger',
+        accept: () => {
+            const success = unlockOrder(orderId)
+            if (success) {
+                withdrawalModalVisible.value = false
+                depositModalVisible.value = false
+                toast.add({ 
+                    severity: 'warn', 
+                    summary: '解鎖成功', 
+                    detail: `訂單 ${orderId} 已成功解鎖，回歸待審核池`, 
+                    life: 3000 
+                })
+            }
+        }
+    })
 }
 
 const handleForceUnlock = (order: any) => {
