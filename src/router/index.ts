@@ -444,7 +444,7 @@ const routes: RouteRecordRaw[] = [
     {
         path: '/payments/banks',
         name: 'Banks',
-        component: () => import('@/views/CashFlow/Banks.vue'),
+        component: () => import('@/views/Payments/Banks.vue'),
         meta: { title: '銀行管理', icon: 'pi-building-columns', parent: 'Payments' }
     },
     {
