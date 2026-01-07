@@ -346,7 +346,7 @@ const menuItems: MenuItem[] = [
           { path: '/finance/adjustment-logs', title: '人工存提紀錄', icon: 'pi-pencil' },
         ]
       },
-      { path: '/financials/points', title: '點數與獎勵', icon: 'pi-star-fill' },
+      { path: '/finance/points-rewards', title: '點數與獎勵', icon: 'pi-star-fill' },
       { path: '/financials/auto-flow', title: '自動金流', icon: 'pi-sync' },
     ]
   },

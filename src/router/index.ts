@@ -322,10 +322,10 @@ const routes: RouteRecordRaw[] = [
         meta: { title: '紀錄類', icon: 'pi-file-edit', parent: 'Financials', group: '紀錄類' }
     },
     {
-        path: '/financials/points',
-        name: 'Points',
-        component: () => import('@/views/Financials/Points.vue'),
-        meta: { title: '點數與獎勵', icon: 'pi-star-fill', parent: 'Financials', group: '點數類' }
+        path: '/finance/points-rewards',
+        name: 'PointsRewards',
+        component: () => import('@/views/Finance/PointsRewards.vue'),
+        meta: { title: '點數與獎勵', icon: 'pi-star-fill', parent: 'Financials' }
     },
     {
         path: '/financials/auto-flow',
