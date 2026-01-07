@@ -26,11 +26,19 @@ export interface DepositOrder {
     amount: number
     applyTime: string
     status: '待審核' | '已通過' | '已拒絕' | '支付成功' | '支付失敗' | '待支付'
-    // New Fields
+    // Manual Deposit Fields
     remark?: string
     applicant?: string
     attachmentUrl?: string
     memberSnapshot?: { currentBalance: number, recentDepositCount: number, recentDepositTotal: number }
+    // Online Deposit Fields
+    fee?: number
+    actualAmount?: number
+    callbackStatus?: 'received' | 'pending'
+    dispatchStatus?: 'success' | 'failed' | 'pending'
+    paymentChannel?: string
+    lifecycleLogs?: Array<{ time: string, event: string, status: string }>
+    rawCallbackJson?: string
 }
 
 // Singleton state
@@ -139,16 +147,67 @@ export function useFinanceData() {
         const oList: DepositOrder[] = []
         const oStatuses = ['支付成功', '支付失敗', '待支付']
         const merchants = ['MCH_888 (綠界)', 'MCH_999 (藍新)', 'MCH_777 (LinePay)']
-        for (let i = 0; i < 25; i++) {
+        const channels = ['NetBank', 'USDT', 'iOS', 'GP']
+
+        for (let i = 0; i < 30; i++) {
+            const amount = Math.floor(Math.random() * 50000) * 10
+            const fee = Math.floor(amount * 0.02)
+            const actualAmount = amount - fee
+            const status = oStatuses[Math.floor(Math.random() * oStatuses.length)] as any
+            const merchant = merchants[Math.floor(Math.random() * merchants.length)]
+            const channel = channels[Math.floor(Math.random() * channels.length)]
+
+            // Anomalies: Paid but Dispatch Failed
+            let dispatchStatus: 'success' | 'failed' | 'pending' = 'pending'
+            let callbackStatus: 'received' | 'pending' = 'pending'
+
+            if (status === '支付成功') {
+                callbackStatus = 'received'
+                // 10% chance fail dispatch
+                dispatchStatus = Math.random() > 0.9 ? 'failed' : 'success'
+            } else if (status === '支付失敗') {
+                callbackStatus = 'received'
+                dispatchStatus = 'failed'
+            }
+
+            const logs = [
+                { time: new Date(Date.now() - 100000).toISOString(), event: '訂單創建', status: 'Success' },
+                { time: new Date(Date.now() - 80000).toISOString(), event: '提交三方', status: 'Success' },
+            ]
+            if (callbackStatus === 'received') {
+                logs.push({ time: new Date(Date.now() - 50000).toISOString(), event: '接收回調', status: 'Success' })
+            }
+            if (status === '支付成功') {
+                if (dispatchStatus === 'success') {
+                    logs.push({ time: new Date(Date.now() - 40000).toISOString(), event: '派發點數', status: 'Success' })
+                } else {
+                    logs.push({ time: new Date(Date.now() - 40000).toISOString(), event: '派發點數', status: 'Failed' })
+                }
+            }
+
             oList.push({
                 id: i,
                 orderId: `OD${20240107000 + i}`,
                 memberId: `user${2000 + i}`,
-                merchant: merchants[Math.floor(Math.random() * merchants.length)],
-                type: Math.random() > 0.5 ? 'Credit Card' : 'Virtual Account', // re-using type field
-                amount: Math.floor(Math.random() * 50000) * 10,
+                merchant: merchant,
+                type: channel!, // Assert non-null as we know the array exists
+                amount: amount,
+                fee: fee,
+                actualAmount: actualAmount,
                 applyTime: new Date(Date.now() - Math.floor(Math.random() * 86400 * 1000)).toISOString().replace('T', ' ').substring(0, 19),
-                status: oStatuses[Math.floor(Math.random() * oStatuses.length)] as any
+                status: status,
+                callbackStatus: callbackStatus,
+                dispatchStatus: dispatchStatus,
+                paymentChannel: channel,
+                lifecycleLogs: logs,
+                rawCallbackJson: JSON.stringify({
+                    order_id: `OD${20240107000 + i}`,
+                    amount: amount,
+                    merch_id: merchant?.split(' ')[0] || 'UNKNOWN',
+                    timestamp: Date.now(),
+                    sign: 'e8f90a887...321',
+                    status: status === '支付成功' ? 'PAID' : 'FAILED'
+                }, null, 2)
             })
         }
         onlineDepositOrders.value = oList
@@ -190,6 +249,20 @@ export function useFinanceData() {
         return false
     }
 
+    const reissueOrder = (orderId: string) => {
+        const order = onlineDepositOrders.value.find(o => o.orderId === orderId)
+        if (order && order.status === '支付成功' && order.dispatchStatus === 'failed') {
+            order.dispatchStatus = 'success'
+            order.lifecycleLogs?.push({
+                time: new Date().toISOString(),
+                event: '手動補發',
+                status: 'Success'
+            })
+            return true
+        }
+        return false
+    }
+
     // Locked Orders View (Derived state)
     const lockedOrders = computed(() => {
         return withdrawalOrders.value.filter(o => o.status === '審核中').map(o => ({
@@ -207,6 +280,7 @@ export function useFinanceData() {
         initData,
         lockOrder,
         unlockOrder,
-        processOrder
+        processOrder,
+        reissueOrder
     }
 }
