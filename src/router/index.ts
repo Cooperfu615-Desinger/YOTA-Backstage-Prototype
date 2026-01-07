@@ -446,6 +446,12 @@ const routes: RouteRecordRaw[] = [
         name: 'Banks',
         component: () => import('@/views/CashFlow/Banks.vue'),
         meta: { title: '銀行管理', icon: 'pi-building-columns', parent: 'Payments' }
+    },
+    {
+        path: '/payments/app-purchase',
+        name: 'AppPurchase',
+        component: () => import('@/views/Payments/AppPurchase.vue'),
+        meta: { title: '行動支付管理', icon: 'pi-apple', parent: 'Payments' }
     }
 ]
 
