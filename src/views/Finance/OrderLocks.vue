@@ -15,8 +15,8 @@
       <template #title>
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-2 text-white text-lg">
-            <i class="pi pi-lock text-orange-400"></i>
-            鎖定訂單搜尋
+            <i class="pi pi-search text-blue-400"></i>
+            鎖單查詢
           </div>
         </div>
       </template>
@@ -27,8 +27,16 @@
             <InputText v-model="filters.orderId" placeholder="輸入訂單號" class="w-[220px]" />
           </div>
            <div class="flex flex-col gap-1">
-            <label class="text-surface-300 text-sm font-medium">處理人 (鎖單者)</label>
-            <InputText v-model="filters.processor" placeholder="輸入處理人帳號" class="w-[220px]" />
+            <label class="text-surface-300 text-sm font-medium">處理人</label>
+            <InputText v-model="filters.processor" placeholder="輸入處理人" class="w-[220px]" />
+          </div>
+          <div class="flex flex-col gap-1">
+            <label class="text-surface-300 text-sm font-medium">業務類型</label>
+            <Dropdown v-model="filters.businessType" :options="businessTypeOptions" optionLabel="label" optionValue="value" placeholder="選擇業務類型" class="w-[220px]" showClear />
+          </div>
+          <div class="flex flex-col gap-1">
+            <label class="text-surface-300 text-sm font-medium">鎖定時長超過</label>
+            <Dropdown v-model="filters.minDuration" :options="durationOptions" optionLabel="label" optionValue="value" placeholder="選擇時長" class="w-[220px]" showClear />
           </div>
         </div>
 
@@ -39,95 +47,152 @@
       </template>
     </Card>
 
-    <!-- List Section -->
+    <!-- Lock Orders List Section -->
     <Card class="bg-surface-800/50 border border-surface-700">
       <template #title>
         <div class="flex items-center gap-2 text-white text-lg">
-          <i class="pi pi-list text-purple-400"></i>
-          鎖定中訂單列表
+          <i class="pi pi-lock text-orange-400"></i>
+          鎖定訂單列表
            <span v-if="hasSearched" class="text-sm text-surface-400 font-normal ml-2">(共 {{ filteredOrders.length }} 筆)</span>
         </div>
       </template>
       <template #content>
-         <DataTable :value="filteredOrders" :loading="isSearching" stripedRows class="p-datatable-sm" :pt="{ table: { class: 'min-w-full' }, tbody: { class: 'text-surface-300' } }">
+         <DataTable :value="filteredOrders" :loading="isSearching" stripedRows class="p-datatable-sm" :rowClass="rowClass" :pt="{ table: { class: 'min-w-full' }, tbody: { class: 'text-surface-300' } }">
             <template #empty>
               <div class="flex flex-col items-center justify-center py-12 text-center">
                 <i :class="['pi text-5xl mb-3', hasSearched ? 'pi-inbox text-surface-500' : 'pi-search text-surface-600']"></i>
-                <p class="text-surface-400">{{ hasSearched ? '暫無鎖定訂單' : '請點擊「搜尋」查看目前鎖定項目' }}</p>
+                <p class="text-surface-400">{{ hasSearched ? '暫無鎖定訂單' : '請先設定搜尋條件並點擊「搜尋」按鈕' }}</p>
               </div>
             </template>
-            <Column field="orderId" header="訂單號" sortable style="min-width: 180px">
-                <template #body="slotProps"><span class="font-mono text-sm">{{ slotProps.data.orderId }}</span></template>
+            <Column field="orderId" header="訂單號" style="min-width: 180px">
+                <template #body="slotProps">
+                    <span class="font-mono text-sm text-blue-400 cursor-pointer hover:underline">{{ slotProps.data.orderId }}</span>
+                </template>
             </Column>
-            <Column field="type" header="訂單類型" style="min-width: 120px">
-                 <template #body="slotProps"><Tag :value="slotProps.data.type" severity="info" /></template>
-            </Column>
-            <Column field="processor" header="處理人" sortable style="min-width: 120px">
+            <Column field="businessType" header="業務類型" style="min-width: 120px">
                  <template #body="slotProps">
-                    <div class="flex items-center gap-2">
-                         <div class="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center text-xs text-white">
-                             {{ slotProps.data.processor.charAt(0) }}
-                         </div>
-                         <span class="text-white">{{ slotProps.data.processor }}</span>
+                    <Tag :value="slotProps.data.businessType" severity="info" />
+                </template>
+            </Column>
+            <Column field="processor" header="處理人" style="min-width: 100px">
+                 <template #body="slotProps">
+                    <div class="flex items-center gap-1">
+                        <i class="pi pi-user text-xs"></i>
+                        <span>{{ slotProps.data.processor }}</span>
                     </div>
                 </template>
             </Column>
-            <Column field="lockTime" header="鎖定時間" sortable style="min-width: 160px">
-                 <template #body="slotProps"><span class="text-sm text-surface-400">{{ slotProps.data.lockTime }}</span></template>
+            <Column field="lockTime" header="鎖定時間" style="min-width: 160px">
+                 <template #body="slotProps">
+                    <span class="text-sm text-surface-400">{{ slotProps.data.lockTime }}</span>
+                </template>
             </Column>
-             <Column field="duration" header="已鎖定時長" style="min-width: 120px">
-                 <template #body="slotProps"><span class="text-orange-400 font-mono">{{ slotProps.data.duration }}</span></template>
+            <Column header="已鎖定時長" style="min-width: 140px">
+                 <template #body="slotProps">
+                    <div class="flex items-center gap-2">
+                        <span :class="getDuration(slotProps.data.lockTime) > 15 * 60 ? 'text-red-400 font-bold' : 'text-surface-300'">
+                            {{ formatDuration(slotProps.data.lockTime) }}
+                        </span>
+                        <i v-if="getDuration(slotProps.data.lockTime) > 15 * 60" 
+                           class="pi pi-exclamation-triangle text-red-400 animate-pulse" 
+                           v-tooltip.top="'超時警告：鎖定超過15分鐘'"></i>
+                    </div>
+                </template>
             </Column>
-            <Column header="操作" style="min-width: 120px">
+            <Column header="操作" style="min-width: 120px" frozen alignFrozen="right">
                 <template #body="slotProps">
-                     <Button label="強制解鎖" icon="pi pi-unlock" severity="danger" size="small" outlined @click="handleUnlock(slotProps.data)" />
+                    <Button label="強制解鎖" 
+                        icon="pi pi-lock-open" 
+                        severity="danger" 
+                        size="small" 
+                        outlined
+                        @click="handleForceUnlock(slotProps.data)" 
+                    />
                 </template>
             </Column>
          </DataTable>
       </template>
     </Card>
+
+    <ConfirmDialog />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, onUnmounted } from 'vue'
 import Card from 'primevue/card'
 import InputText from 'primevue/inputtext'
+import Dropdown from 'primevue/dropdown'
 import Button from 'primevue/button'
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import Tag from 'primevue/tag'
+import ConfirmDialog from 'primevue/confirmdialog'
 import { useToast } from 'primevue/usetoast'
+import { useConfirm } from 'primevue/useconfirm'
 import { useFinanceData } from './useFinanceData'
 
 const toast = useToast()
-const { lockedOrders, initData, unlockOrder } = useFinanceData()
+const confirm = useConfirm()
+const { lockedOrders, unlockOrder, initData } = useFinanceData()
 
 onMounted(() => {
     initData()
+    // Start live update timer
+    updateTimer.value = setInterval(() => {
+        currentTime.value = Date.now()
+    }, 1000)
 })
+
+onUnmounted(() => {
+    if (updateTimer.value) {
+        clearInterval(updateTimer.value)
+    }
+})
+
+const businessTypeOptions = ref([
+    { label: '提款審核', value: '提款審核' },
+    { label: '手存審核', value: '手存審核' },
+])
+
+const durationOptions = ref([
+    { label: '5分鐘', value: 5 },
+    { label: '10分鐘', value: 10 },
+    { label: '30分鐘', value: 30 },
+])
 
 const filters = ref({
     orderId: '',
-    processor: ''
+    processor: '',
+    businessType: null,
+    minDuration: null
 })
 
 const isSearching = ref(false)
 const hasSearched = ref(false)
+const currentTime = ref(Date.now())
+const updateTimer = ref<any>(null)
 
-// Computed filtered list
 const filteredOrders = computed(() => {
     if (!hasSearched.value) return []
     let result = lockedOrders.value
+    
     if (filters.value.orderId) {
         result = result.filter(o => o.orderId.includes(filters.value.orderId))
     }
     if (filters.value.processor) {
-        result = result.filter(o => o.processor?.includes(filters.value.processor))
+        result = result.filter(o => o.processor.toLowerCase().includes(filters.value.processor.toLowerCase()))
     }
+    if (filters.value.businessType) {
+        result = result.filter(o => o.businessType === filters.value.businessType)
+    }
+    if (filters.value.minDuration) {
+        const minSeconds = filters.value.minDuration * 60
+        result = result.filter(o => getDuration(o.lockTime) >= minSeconds)
+    }
+    
     return result
 })
-
 
 const handleSearch = () => {
     isSearching.value = true
@@ -139,17 +204,48 @@ const handleSearch = () => {
 }
 
 const handleReset = () => {
-    filters.value = { orderId: '', processor: '' }
+    filters.value = { orderId: '', processor: '', businessType: null, minDuration: null }
     hasSearched.value = false
 }
 
-const handleUnlock = (order: any) => {
-    const success = unlockOrder(order.orderId)
-    if (success) {
-        toast.add({ severity: 'warn', summary: '已解鎖', detail: `訂單 ${order.orderId} 已強制解鎖`, life: 2000 })
-    } else {
-        toast.add({ severity: 'error', summary: '解鎖失敗', detail: '可能已被處理', life: 2000 })
-    }
+// Duration helpers
+const getDuration = (lockTime: string): number => {
+    const lockDate = new Date(lockTime)
+    return Math.floor((currentTime.value - lockDate.getTime()) / 1000)
+}
+
+const formatDuration = (lockTime: string): string => {
+    const seconds = getDuration(lockTime)
+    const h = Math.floor(seconds / 3600)
+    const m = Math.floor((seconds % 3600) / 60)
+    const s = seconds % 60
+    return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`
+}
+
+const rowClass = (data: any) => {
+    return getDuration(data.lockTime) > 15 * 60 ? 'bg-red-500/5' : ''
+}
+
+const handleForceUnlock = (order: any) => {
+    confirm.require({
+        message: `確定要強制解鎖此訂單？\n訂單號: ${order.orderId}\n處理人: ${order.processor}\n\n解鎖後該訂單將回歸待審核池，該操作將記錄至系統日誌。`,
+        header: '強制解鎖確認',
+        icon: 'pi pi-exclamation-triangle',
+        acceptClass: 'p-button-danger',
+        accept: () => {
+            const success = unlockOrder(order.orderId)
+            if (success) {
+                toast.add({ 
+                    severity: 'warn', 
+                    summary: '解鎖成功', 
+                    detail: `訂單 ${order.orderId} 已成功解鎖，回歸待審核池`, 
+                    life: 3000 
+                })
+            } else {
+                toast.add({ severity: 'error', summary: '解鎖失敗', detail: '訂單狀態異常', life: 2000 })
+            }
+        }
+    })
 }
 </script>
 
@@ -161,5 +257,6 @@ const handleUnlock = (order: any) => {
 :deep(.p-datatable .p-datatable-tbody > tr:nth-child(even)) { background-color: rgba(30, 41, 59, 0.3); }
 :deep(.p-datatable .p-datatable-tbody > tr > td) { border-color: rgba(71, 85, 105, 0.3); padding: 0.75rem 1rem; }
 :deep(.p-datatable .p-datatable-tbody > tr:hover) { background-color: rgba(59, 130, 246, 0.1); }
-:deep(.p-inputtext) { background-color: rgba(30, 41, 59, 0.5); border-color: rgba(71, 85, 105, 0.5); }
+:deep(.p-inputtext), :deep(.p-dropdown) { background-color: rgba(30, 41, 59, 0.5); border-color: rgba(71, 85, 105, 0.5); }
+:deep(.bg-red-500\/5) { background-color: rgba(239, 68, 68, 0.05) !important; }
 </style>

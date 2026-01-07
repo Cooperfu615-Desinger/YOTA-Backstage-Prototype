@@ -95,7 +95,7 @@ export function useFinanceData() {
                 tags: orderTags
             })
         }
-        // Force some pending
+        // Force some pending + some with long lock times for testing
         wList.unshift({
             id: 999,
             orderId: `WD${20240107999}`,
@@ -106,10 +106,44 @@ export function useFinanceData() {
             applyTime: new Date().toISOString().replace('T', ' ').substring(0, 19),
             status: '待審核',
             processor: null,
-            rollover: { required: 100000, current: 80000 }, // Not Met
+            rollover: { required: 100000, current: 80000 },
             financialStats: { totalDeposit: 500000, totalWithdrawal: 200000, balance: 350000 },
             tags: ['VIP', '高風險']
         })
+
+        // Add timeout test cases - locked > 20 minutes
+        wList.push({
+            id: 1001,
+            orderId: `WD${20240107888}`,
+            memberId: `user_timeout1`,
+            amount: 25000,
+            fee: 250,
+            actualAmount: 24750,
+            applyTime: new Date(Date.now() - 1500000).toISOString().replace('T', ' ').substring(0, 19),
+            status: '審核中',
+            processor: 'Admin',
+            lockTime: new Date(Date.now() - 1500000).toISOString().replace('T', ' ').substring(0, 19), // 25 min ago
+            rollover: { required: 25000, current: 25000 },
+            financialStats: { totalDeposit: 100000, totalWithdrawal: 50000, balance: 50000 },
+            tags: []
+        })
+
+        wList.push({
+            id: 1002,
+            orderId: `WD${20240107777}`,
+            memberId: `user_timeout2`,
+            amount: 15000,
+            fee: 150,
+            actualAmount: 14850,
+            applyTime: new Date(Date.now() - 2000000).toISOString().replace('T', ' ').substring(0, 19),
+            status: '審核中',
+            processor: 'OperatorB',
+            lockTime: new Date(Date.now() - 2000000).toISOString().replace('T', ' ').substring(0, 19), // 33 min ago
+            rollover: { required: 15000, current: 15000 },
+            financialStats: { totalDeposit: 80000, totalWithdrawal: 30000, balance: 50000 },
+            tags: []
+        })
+
         withdrawalOrders.value = wList
 
         // Generate Manual Deposits
@@ -266,9 +300,11 @@ export function useFinanceData() {
     // Locked Orders View (Derived state)
     const lockedOrders = computed(() => {
         return withdrawalOrders.value.filter(o => o.status === '審核中').map(o => ({
-            ...o,
-            type: '提款審核', // For now only withdrawals have lock logic
-            duration: o.lockTime ? Math.floor((Date.now() - new Date(o.lockTime).getTime()) / 60000) + ' 分鐘' : '0 分鐘'
+            orderId: o.orderId,
+            businessType: '提款審核',
+            processor: o.processor || 'Unknown',
+            lockTime: o.lockTime || new Date().toISOString(),
+            amount: o.amount
         }))
     })
 
