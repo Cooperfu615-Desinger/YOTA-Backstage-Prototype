@@ -1,7 +1,7 @@
 <template>
-  <div class="dark min-h-screen bg-surface-950 text-surface-0">
+  <div :class="[isDark ? 'dark' : 'light', 'min-h-screen', isDark ? 'bg-surface-950 text-surface-0' : 'bg-gray-100 text-gray-900']">
     <!-- Top Navigation Bar -->
-    <header class="fixed top-0 left-0 right-0 h-14 bg-[#0a0a0a] border-b border-surface-700 z-[9999] flex items-center px-4 shadow-lg shadow-black/50">
+    <header :class="['fixed top-0 left-0 right-0 h-14 border-b z-[9999] flex items-center px-4 shadow-lg', isDark ? 'bg-[#0a0a0a] border-surface-700 shadow-black/50' : 'bg-white border-gray-200 shadow-gray-200/50']">
       <!-- Logo -->
       <div class="flex items-center gap-3">
         <button 
@@ -37,14 +37,23 @@
           <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
         </button>
 
+        <!-- Theme Toggle -->
+        <button 
+          @click="toggleTheme" 
+          :class="['p-2 rounded-lg transition-colors', isDark ? 'hover:bg-surface-800' : 'hover:bg-gray-100']"
+          :title="isDark ? '切換為淺色模式' : '切換為深色模式'"
+        >
+          <i :class="['pi text-lg', isDark ? 'pi-sun text-yellow-400' : 'pi-moon text-indigo-500']"></i>
+        </button>
+
         <!-- User Menu -->
-        <div class="flex items-center gap-2 pl-3 border-l border-surface-700">
+        <div :class="['flex items-center gap-2 pl-3 border-l', isDark ? 'border-surface-700' : 'border-gray-200']">
           <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
-            <i class="pi pi-user text-sm"></i>
+            <i class="pi pi-user text-sm text-white"></i>
           </div>
           <div class="hidden sm:block">
             <div class="text-sm font-medium">Admin</div>
-            <div class="text-xs text-surface-400">超級管理員</div>
+            <div :class="['text-xs', isDark ? 'text-surface-400' : 'text-gray-500']">超級管理員</div>
           </div>
         </div>
       </div>
@@ -53,7 +62,8 @@
     <!-- Sidebar -->
     <aside 
       :class="[
-        'fixed top-14 left-0 bottom-0 bg-[#0a0a0a] border-r border-surface-700 transition-all duration-300 z-[90] overflow-y-auto',
+        'fixed top-14 left-0 bottom-0 border-r transition-all duration-300 z-[90] overflow-y-auto',
+        isDark ? 'bg-[#0a0a0a] border-surface-700' : 'bg-white border-gray-200',
         sidebarCollapsed ? 'w-16' : 'w-64'
       ]"
     >
@@ -131,13 +141,21 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, watch } from 'vue'
+import { ref, reactive, watch, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useTheme } from '@/composables/useTheme'
 
 const route = useRoute()
 const router = useRouter()
+const { isDark, toggleTheme, initTheme } = useTheme()
+
 const sidebarCollapsed = ref(false)
 const expandedMenus = reactive<Record<string, boolean>>({})
+
+// Initialize theme on mount
+onMounted(() => {
+  initTheme()
+})
 
 const toggleSidebar = () => {
   sidebarCollapsed.value = !sidebarCollapsed.value

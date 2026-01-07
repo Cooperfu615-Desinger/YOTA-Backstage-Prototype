@@ -247,6 +247,9 @@ import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import ProgressBar from 'primevue/progressbar'
 import Timeline from 'primevue/timeline'
+import { useTheme } from '@/composables/useTheme'
+
+const { chartColors } = useTheme()
 
 // Currency formatter with thousand separators
 const formatCurrency = (value: number): string => {
@@ -317,7 +320,7 @@ const chartData = computed(() => ({
   ]
 }))
 
-const chartOptions = ref({
+const chartOptions = computed(() => ({
   responsive: true,
   maintainAspectRatio: false,
   interaction: {
@@ -329,16 +332,16 @@ const chartOptions = ref({
       position: 'top',
       align: 'end',
       labels: {
-        color: '#94a3b8',
+        color: chartColors.value.legendColor,
         usePointStyle: true,
         padding: 20
       }
     },
     tooltip: {
-      backgroundColor: '#1e293b',
-      titleColor: '#f8fafc',
-      bodyColor: '#cbd5e1',
-      borderColor: '#334155',
+      backgroundColor: chartColors.value.tooltipBg,
+      titleColor: chartColors.value.tooltipTitle,
+      bodyColor: chartColors.value.tooltipBody,
+      borderColor: chartColors.value.tooltipBorder,
       borderWidth: 1,
       padding: 12,
       callbacks: {
@@ -351,19 +354,19 @@ const chartOptions = ref({
   scales: {
     x: {
       grid: {
-        color: 'rgba(148, 163, 184, 0.1)'
+        color: chartColors.value.gridColor
       },
       ticks: {
-        color: '#64748b',
+        color: chartColors.value.textColorLight,
         maxTicksLimit: 12
       }
     },
     y: {
       grid: {
-        color: 'rgba(148, 163, 184, 0.1)'
+        color: chartColors.value.gridColor
       },
       ticks: {
-        color: '#64748b',
+        color: chartColors.value.textColorLight,
         callback: (value: number) => {
           if (value >= 1000) {
             return `$${(value / 1000).toFixed(0)}K`
@@ -373,7 +376,7 @@ const chartOptions = ref({
       }
     }
   }
-})
+}))
 
 // Payment Channels Mock Data
 const paymentChannels = ref([

@@ -242,6 +242,9 @@ import Tag from 'primevue/tag'
 import Chart from 'primevue/chart'
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
+import { useTheme } from '@/composables/useTheme'
+
+const { chartColors } = useTheme()
 
 // Currency formatter
 const formatCurrency = (value: number): string => {
@@ -328,7 +331,7 @@ const areaChartData = computed(() => ({
   ]
 }))
 
-const areaChartOptions = ref({
+const areaChartOptions = computed(() => ({
   responsive: true,
   maintainAspectRatio: false,
   interaction: {
@@ -340,16 +343,16 @@ const areaChartOptions = ref({
       position: 'top',
       align: 'end',
       labels: {
-        color: '#94a3b8',
+        color: chartColors.value.legendColor,
         usePointStyle: true,
         padding: 20
       }
     },
     tooltip: {
-      backgroundColor: '#1e293b',
-      titleColor: '#f8fafc',
-      bodyColor: '#cbd5e1',
-      borderColor: '#334155',
+      backgroundColor: chartColors.value.tooltipBg,
+      titleColor: chartColors.value.tooltipTitle,
+      bodyColor: chartColors.value.tooltipBody,
+      borderColor: chartColors.value.tooltipBorder,
       borderWidth: 1,
       padding: 12,
       callbacks: {
@@ -361,13 +364,13 @@ const areaChartOptions = ref({
   },
   scales: {
     x: {
-      grid: { color: 'rgba(148, 163, 184, 0.1)' },
-      ticks: { color: '#64748b', maxTicksLimit: 12 }
+      grid: { color: chartColors.value.gridColor },
+      ticks: { color: chartColors.value.textColorLight, maxTicksLimit: 12 }
     },
     y: {
-      grid: { color: 'rgba(148, 163, 184, 0.1)' },
+      grid: { color: chartColors.value.gridColor },
       ticks: {
-        color: '#64748b',
+        color: chartColors.value.textColorLight,
         callback: (value: number) => {
           if (value >= 1000000) return `$${(value / 1000000).toFixed(1)}M`
           if (value >= 1000) return `$${(value / 1000).toFixed(0)}K`
@@ -376,7 +379,7 @@ const areaChartOptions = ref({
       }
     }
   }
-})
+}))
 
 // ========================================
 // Horizontal Bar Chart - Product Performance
@@ -406,17 +409,17 @@ const barChartData = computed(() => ({
   ]
 }))
 
-const barChartOptions = ref({
+const barChartOptions = computed(() => ({
   indexAxis: 'y',
   responsive: true,
   maintainAspectRatio: false,
   plugins: {
     legend: { display: false },
     tooltip: {
-      backgroundColor: '#1e293b',
-      titleColor: '#f8fafc',
-      bodyColor: '#cbd5e1',
-      borderColor: '#334155',
+      backgroundColor: chartColors.value.tooltipBg,
+      titleColor: chartColors.value.tooltipTitle,
+      bodyColor: chartColors.value.tooltipBody,
+      borderColor: chartColors.value.tooltipBorder,
       borderWidth: 1,
       padding: 12,
       callbacks: {
@@ -428,9 +431,9 @@ const barChartOptions = ref({
   },
   scales: {
     x: {
-      grid: { color: 'rgba(148, 163, 184, 0.1)' },
+      grid: { color: chartColors.value.gridColor },
       ticks: {
-        color: '#64748b',
+        color: chartColors.value.textColorLight,
         callback: (value: number) => {
           if (value >= 1000000) return `$${(value / 1000000).toFixed(1)}M`
           if (value >= 1000) return `$${(value / 1000).toFixed(0)}K`
@@ -440,10 +443,10 @@ const barChartOptions = ref({
     },
     y: {
       grid: { display: false },
-      ticks: { color: '#f8fafc', font: { weight: 500 } }
+      ticks: { color: chartColors.value.textColorWhite, font: { weight: 500 } }
     }
   }
-})
+}))
 
 // ========================================
 // Anomaly Data Table

@@ -79,6 +79,9 @@
 import { ref, computed } from 'vue'
 import Card from 'primevue/card'
 import Chart from 'primevue/chart'
+import { useTheme } from '@/composables/useTheme'
+
+const { chartColors } = useTheme()
 
 // Last update time
 const lastUpdate = ref(new Date().toLocaleTimeString('zh-TW', { 
@@ -161,9 +164,9 @@ const chartData = computed(() => ({
 }))
 
 // ========================================
-// Chart.js 配置 (暗色主題)
+// Chart.js 配置 (動態主題適應)
 // ========================================
-const chartOptions = ref({
+const chartOptions = computed(() => ({
   responsive: true,
   maintainAspectRatio: false,
   plugins: {
@@ -173,10 +176,10 @@ const chartOptions = ref({
     tooltip: {
       mode: 'index',
       intersect: false,
-      backgroundColor: 'rgba(30, 30, 30, 0.9)',
-      titleColor: '#fff',
-      bodyColor: '#ccc',
-      borderColor: 'rgba(255, 255, 255, 0.1)',
+      backgroundColor: chartColors.value.tooltipBg,
+      titleColor: chartColors.value.tooltipTitle,
+      bodyColor: chartColors.value.tooltipBody,
+      borderColor: chartColors.value.tooltipBorder,
       borderWidth: 1,
       padding: 12,
       callbacks: {
@@ -191,20 +194,20 @@ const chartOptions = ref({
   scales: {
     x: {
       grid: {
-        color: 'rgba(255, 255, 255, 0.05)',
+        color: chartColors.value.gridColor,
         drawBorder: false
       },
       ticks: {
-        color: 'rgba(255, 255, 255, 0.5)'
+        color: chartColors.value.textColor
       }
     },
     y: {
       grid: {
-        color: 'rgba(255, 255, 255, 0.05)',
+        color: chartColors.value.gridColor,
         drawBorder: false
       },
       ticks: {
-        color: 'rgba(255, 255, 255, 0.5)',
+        color: chartColors.value.textColor,
         callback: (value: number) => {
           if (value >= 1000000) {
             return `$${(value / 1000000).toFixed(1)}M`
@@ -219,7 +222,7 @@ const chartOptions = ref({
     axis: 'x',
     intersect: false
   }
-})
+}))
 </script>
 
 <style scoped>
