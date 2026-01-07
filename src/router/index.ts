@@ -406,6 +406,22 @@ const routes: RouteRecordRaw[] = [
         name: 'Banks',
         component: () => import('@/views/CashFlow/Banks.vue'),
         meta: { title: '銀行管理', icon: 'pi-building-columns', parent: 'CashFlow' }
+    },
+
+    // ========================================
+    // 13. 金流平台 (Payments)
+    // ========================================
+    {
+        path: '/payments',
+        name: 'Payments',
+        component: () => import('@/views/Payments/Overview.vue'),
+        meta: { title: '金流平台', icon: 'pi-credit-card' }
+    },
+    {
+        path: '/payments/overview',
+        name: 'PaymentsOverview',
+        component: () => import('@/views/Payments/Overview.vue'),
+        meta: { title: '金流平台總覽', icon: 'pi-chart-pie', parent: 'Payments' }
     }
 ]
 
