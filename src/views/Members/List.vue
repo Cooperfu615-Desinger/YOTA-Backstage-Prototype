@@ -52,17 +52,17 @@
             <div class="flex items-center gap-2">
               <InputNumber 
                 v-model="filters.balanceMin" 
-                placeholder="最小金額" 
-                class="flex-1"
+                placeholder="最小" 
+                class="w-28"
                 mode="currency"
                 currency="USD"
                 locale="en-US"
               />
-              <span class="text-surface-400">-</span>
+              <span class="text-surface-400 font-medium">-</span>
               <InputNumber 
                 v-model="filters.balanceMax" 
-                placeholder="最大金額" 
-                class="flex-1"
+                placeholder="最大" 
+                class="w-28"
                 mode="currency"
                 currency="USD"
                 locale="en-US"
@@ -151,17 +151,10 @@
         </div>
       </template>
       <template #content>
-        <!-- Empty State (Before Search) -->
-        <div v-if="!hasSearched" class="flex flex-col items-center justify-center py-16 text-center">
-          <i class="pi pi-search text-6xl text-surface-600 mb-4"></i>
-          <h3 class="text-xl font-medium text-surface-300 mb-2">請先設定搜尋條件</h3>
-          <p class="text-surface-400">輸入篩選條件後點擊「搜尋」按鈕查看會員資料</p>
-        </div>
-
-        <!-- Pagination & DataTable (After Search) -->
-        <template v-else>
-          <!-- Pagination Top -->
-          <div class="flex items-center justify-center gap-2 mb-4">
+        <!-- DataTable with fixed structure -->
+        <div class="min-h-[400px]">
+          <!-- Pagination (only show when has data) -->
+          <div v-if="hasSearched && members.length > 0" class="flex items-center justify-center gap-2 mb-4">
             <Button icon="pi pi-angle-double-left" text @click="goToPage(1)" :disabled="currentPage === 1" />
             <Button icon="pi pi-angle-left" text @click="goToPage(currentPage - 1)" :disabled="currentPage === 1" />
             <template v-for="page in visiblePages" :key="page">
@@ -190,9 +183,9 @@
             </div>
           </div>
 
-          <!-- DataTable -->
+          <!-- DataTable - Always render with headers -->
           <DataTable 
-            :value="paginatedMembers" 
+            :value="hasSearched ? paginatedMembers : []" 
             :loading="isSearching"
             stripedRows
             class="p-datatable-sm"
@@ -201,13 +194,21 @@
               tbody: { class: 'text-surface-300' }
             }"
           >
+            <template #empty>
+              <div class="flex flex-col items-center justify-center py-12 text-center">
+                <i :class="['pi text-5xl mb-3', hasSearched ? 'pi-inbox text-surface-500' : 'pi-search text-surface-600']"></i>
+                <p class="text-surface-400">
+                  {{ hasSearched ? '暫無搜尋結果' : '請先設定搜尋條件並點擊「搜尋」按鈕' }}
+                </p>
+              </div>
+            </template>
             <Column selectionMode="multiple" headerStyle="width: 3rem" />
             <Column field="id" header="編號" sortable style="min-width: 80px">
               <template #body="slotProps">
                 <span class="text-surface-400">{{ slotProps.data.id }}</span>
               </template>
             </Column>
-            <Column field="account" header="帳號" sortable style="min-width: 100px">
+            <Column field="account" header="帳號" sortable style="min-width: 140px">
               <template #body="slotProps">
                 <span class="text-blue-400 font-medium">{{ slotProps.data.account }}</span>
               </template>
@@ -222,12 +223,17 @@
                 <span class="text-surface-300">{{ slotProps.data.agent }}</span>
               </template>
             </Column>
+            <Column field="loginIp" header="登入IP" sortable style="min-width: 140px">
+              <template #body="slotProps">
+                <span class="text-surface-400 text-sm font-mono">{{ slotProps.data.loginIp }}</span>
+              </template>
+            </Column>
             <Column field="vip" header="VIP" sortable style="min-width: 60px">
               <template #body="slotProps">
                 <span class="text-amber-400 font-bold">{{ slotProps.data.vip }}</span>
               </template>
             </Column>
-            <Column field="wallet" header="錢包" sortable style="min-width: 120px">
+            <Column field="wallet" header="錢包" sortable style="min-width: 130px">
               <template #body="slotProps">
                 <span class="text-white font-medium">{{ formatCurrency(slotProps.data.wallet) }}</span>
               </template>
@@ -245,19 +251,9 @@
                 <span class="text-surface-400">{{ slotProps.data.registerDate }}</span>
               </template>
             </Column>
-            <Column field="walletChange" header="最近錢包變動" sortable style="min-width: 130px">
+            <Column field="lastLogin" header="最後登入" sortable style="min-width: 160px">
               <template #body="slotProps">
-                <span 
-                  class="font-bold"
-                  :class="getWalletChangeColor(slotProps.data.walletChange)"
-                >
-                  {{ formatWalletChange(slotProps.data.walletChange) }}
-                </span>
-              </template>
-            </Column>
-            <Column field="createdAt" header="建立時間" sortable style="min-width: 160px">
-              <template #body="slotProps">
-                <span class="text-surface-400 text-sm">{{ slotProps.data.createdAt }}</span>
+                <span class="text-surface-400 text-sm">{{ slotProps.data.lastLogin }}</span>
               </template>
             </Column>
             <Column field="memo" header="備註" style="min-width: 100px">
@@ -271,7 +267,7 @@
               </template>
             </Column>
           </DataTable>
-        </template>
+        </div>
       </template>
     </Card>
 
@@ -354,7 +350,7 @@ const agentOptions = ref([
   { label: 'repzen14', value: 'repzen14' }
 ])
 
-// Filter state - simplified without checkboxes
+// Filter state
 const filters = ref({
   nickname: '',
   loginIp: '',
@@ -390,53 +386,104 @@ const members = ref<Array<{
   account: string
   nickname: string
   agent: string
+  loginIp: string
   vip: number
   wallet: number
   status: string
   statusText: string
   registerDate: string
-  walletChange: number
-  createdAt: string
+  lastLogin: string
   memo: string
 }>>([])
 
-// Mock data generator
+// Realistic random mock data generator
 const generateMockMembers = () => {
-  const accounts = ['nexora7', 'veyric12', 'calden88', 'orynt3', 'drivon21', 'zephyx5', 'krypton9', 'voltar11', 'pyxel22', 'nexum8']
-  const nicknames = ['瀾城七號', '御城十二苑', '凱登雅城', '奧廷三號府', '帝御二一坊', '翎風五殿', '氪金九閣', '沃特十一堡', '象素廿二軒', '聯盟八館']
-  const agents = ['proxial7', 'delegrix21', 'mandatrx9', 'subven88', 'repzen14']
+  // Chaotic account names - varying lengths and formats
+  const accountPrefixes = ['VIP_user_', 'player', 'verylongaccountname_', 'x', 'pro_', 'mega', '玩家', 'user', 'big_', 'new_']
+  const accountSuffixes = ['999', '123', '88', 'A1', '_elite', '007', '', 'X', '666', '2024']
+  
+  // Chaotic nicknames - mixing Chinese, English, numbers, special chars
+  const nicknames = [
+    '瀾城七號', '御城十二苑', '888發發發', 'DragonKing', '玩家123', 
+    'Winner_X', '金牌高手', 'LuckyOne_99', '深夜玩家', 'pro_gamer',
+    '財神爺', 'VIPMaster', '高富帥88', 'slot_lover', '博彩達人',
+    '夜貓族', 'BetKing2024', '賭神再現', 'jackpot_hunter', '月光下的賭徒',
+    'TopPlayer_Elite', '逆襲之王', '暴富達人', '', 'NoName',
+    '超級長的暱稱測試用戶名稱', 'A', '123', 'xxx', '測試帳號'
+  ]
+  
+  const agents = ['proxial7', 'delegrix21', 'mandatrx9', 'subven88', 'repzen14', '', 'agent_vip', 'direct']
+  
   const statuses = [
     { status: 'active', statusText: '正常' },
     { status: 'frozen', statusText: '凍結' },
+    { status: 'pending', statusText: '待審' },
     { status: 'active', statusText: '正常' },
-    { status: 'active', statusText: '正常' },
-    { status: 'pending', statusText: '待審' }
+    { status: 'active', statusText: '正常' }
   ]
-  const memos = ['', '', '', '黑名單', '', '高風險', '', '', 'VIP', '']
   
+  const memos = ['', '', '', '黑名單', '', '高風險', '', '', 'VIP', '', '觀察中', '首充獎勵', '', '異常IP', '']
+  
+  // Generate random IPv4 or IPv6
+  const generateIp = () => {
+    const useIPv6 = Math.random() > 0.85
+    if (useIPv6) {
+      const segments = []
+      for (let i = 0; i < 8; i++) {
+        segments.push(Math.floor(Math.random() * 65536).toString(16).padStart(4, '0'))
+      }
+      return segments.join(':')
+    } else {
+      return `${Math.floor(Math.random() * 256)}.${Math.floor(Math.random() * 256)}.${Math.floor(Math.random() * 256)}.${Math.floor(Math.random() * 256)}`
+    }
+  }
+  
+  // Generate random date within past year
+  const generateRandomDate = () => {
+    const now = new Date()
+    const pastYear = new Date(now.getTime() - 365 * 24 * 60 * 60 * 1000)
+    const randomTime = pastYear.getTime() + Math.random() * (now.getTime() - pastYear.getTime())
+    const date = new Date(randomTime)
+    return date.toISOString().replace('T', ' ').substring(0, 19)
+  }
+  
+  // Generate random wallet balance (0 to 9,527,143.20)
+  const generateWallet = () => {
+    const rand = Math.random()
+    if (rand < 0.1) return 0
+    if (rand < 0.3) return Math.random() * 100
+    if (rand < 0.6) return Math.random() * 10000
+    if (rand < 0.85) return Math.random() * 500000
+    return Math.random() * 9527143.20
+  }
+  
+  const memberCount = 20 + Math.floor(Math.random() * 31) // 20-50 members
   const memberList = []
-  for (let i = 0; i < 50; i++) {
-    const idx = i % 10
-    const statusInfo = statuses[i % 5] || { status: 'active', statusText: '正常' }
-    const walletChange = [100, 100, -1000, -3000, 10, 500, -200, 1500, -800, 2000][idx] || 0
-    const wallet = [1000, 100, 11000, 123000, 1000000, 5000, 2500, 88000, 15000, 250000][idx] || 0
-    const memo = memos[idx] || ''
+  
+  for (let i = 0; i < memberCount; i++) {
+    const prefix = accountPrefixes[Math.floor(Math.random() * accountPrefixes.length)]
+    const suffix = accountSuffixes[Math.floor(Math.random() * accountSuffixes.length)]
+    const randomNum = Math.floor(Math.random() * 10000)
+    const account = `${prefix}${randomNum}${suffix}`
+    
+    const statusInfo = statuses[Math.floor(Math.random() * statuses.length)]
     
     memberList.push({
       id: 10010 + i,
-      account: accounts[idx] + (i >= 10 ? `_${Math.floor(i / 10)}` : ''),
-      nickname: nicknames[idx] || '',
-      agent: agents[i % 5] || '',
-      vip: (i % 5) + 1,
-      wallet: wallet + (i * 100),
-      status: statusInfo.status,
-      statusText: statusInfo.statusText,
-      registerDate: '2025-08-19',
-      walletChange: walletChange * (1 + (i % 3)),
-      createdAt: '2025-08-19 20:20:20',
-      memo: memo
+      account: account,
+      nickname: nicknames[Math.floor(Math.random() * nicknames.length)] || '',
+      agent: agents[Math.floor(Math.random() * agents.length)] || '',
+      loginIp: generateIp(),
+      vip: Math.floor(Math.random() * 6),
+      wallet: generateWallet(),
+      status: statusInfo?.status ?? 'active',
+      statusText: statusInfo?.statusText ?? '正常',
+      registerDate: generateRandomDate().split(' ')[0] || '',
+      lastLogin: generateRandomDate(),
+      memo: memos[Math.floor(Math.random() * memos.length)] || ''
     })
   }
+  
   return memberList
 }
 
@@ -467,18 +514,6 @@ const formatCurrency = (value: number): string => {
   }).format(value)
 }
 
-const formatWalletChange = (value: number): string => {
-  const formatted = new Intl.NumberFormat('en-US', {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2
-  }).format(Math.abs(value))
-  return value >= 0 ? formatted : `-${formatted}`
-}
-
-const getWalletChangeColor = (value: number): string => {
-  return value >= 0 ? 'text-blue-400' : 'text-red-400'
-}
-
 const getStatusSeverity = (status: string) => {
   const map: Record<string, string> = {
     active: 'success',
@@ -498,7 +533,6 @@ const goToPage = (page: number) => {
 
 const handleSearch = () => {
   isSearching.value = true
-  // Simulate search delay
   setTimeout(() => {
     members.value = generateMockMembers()
     currentPage.value = 1
@@ -533,20 +567,19 @@ const handleReset = () => {
 }
 
 const handleAddMember = () => {
-  // Add new member to list
   const newId = members.value.length > 0 ? Math.max(...members.value.map(m => m.id)) + 1 : 10010
   members.value.unshift({
     id: newId,
     account: newMember.value.account,
     nickname: newMember.value.nickname,
     agent: newMember.value.agent,
+    loginIp: '0.0.0.0',
     vip: newMember.value.vip,
     wallet: 0,
     status: 'active',
     statusText: '正常',
     registerDate: new Date().toISOString().split('T')[0] || '',
-    walletChange: 0,
-    createdAt: new Date().toLocaleString('zh-TW'),
+    lastLogin: new Date().toISOString().replace('T', ' ').substring(0, 19),
     memo: ''
   })
   
