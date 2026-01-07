@@ -38,6 +38,12 @@
             <label class="text-surface-300 text-sm font-medium">狀態</label>
             <Dropdown v-model="filters.status" :options="statusOptions" optionLabel="label" optionValue="value" placeholder="選擇狀態" class="w-[220px]" showClear />
           </div>
+          <div class="flex flex-col gap-1 justify-end pb-2">
+            <div class="flex items-center gap-2">
+                 <Checkbox v-model="filters.hasBalance" :binary="true" inputId="hasBalance" />
+                 <label for="hasBalance" class="text-surface-300 text-sm font-medium cursor-pointer">僅顯示有餘額</label>
+            </div>
+          </div>
         </div>
 
         <!-- Search & Reset Buttons - Right Aligned -->
@@ -90,6 +96,18 @@
                    </div>
                  </div>
                </template>
+            </Column>
+            <Column field="currentBalance" header="當前餘額" sortable style="min-width: 150px">
+              <template #body="slotProps">
+                 <span :class="['font-mono', slotProps.data.currentBalance > 500000 ? 'text-white font-bold' : 'text-surface-300']">
+                    {{ formatCurrency(slotProps.data.currentBalance) }}
+                 </span>
+              </template>
+            </Column>
+             <Column field="lastUsedTime" header="最後使用時間" sortable style="min-width: 180px">
+              <template #body="slotProps">
+                 <span class="text-surface-400 font-mono text-sm">{{ slotProps.data.lastUsedTime }}</span>
+              </template>
             </Column>
             <Column field="dailyLimit" header="收款限額 (今日/上限)" style="min-width: 200px">
                <template #body="slotProps">
@@ -198,7 +216,8 @@ const filters = ref({
     bankName: null,
     holderName: '',
     accountNumber: '',
-    status: null
+    status: null,
+    hasBalance: false
 })
 
 // UI State
@@ -215,6 +234,8 @@ interface BankAccount {
     accountNumber: string
     todayReceived: number
     dailyLimit: number
+    currentBalance: number
+    lastUsedTime: string
     levels: string[]
     status: boolean
 }
@@ -245,6 +266,8 @@ const generateMockBanks = () => {
             accountNumber: `822${Math.floor(Math.random() * 100000000000)}`,
             todayReceived: Math.floor(Math.random() * limit * 0.9),
             dailyLimit: limit,
+            currentBalance: Math.floor(Math.random() * 1000000),
+            lastUsedTime: new Date(Date.now() - Math.floor(Math.random() * 172800000)).toISOString().replace('T', ' ').substring(0, 19),
             levels: ['VIP1', 'VIP2', 'VIP3'].slice(0, Math.floor(Math.random() * 3) + 1),
             status: Math.random() > 0.1
         })
@@ -264,7 +287,7 @@ const handleSearch = () => {
 }
 
 const handleReset = () => {
-    filters.value = { bankName: null, holderName: '', accountNumber: '', status: null }
+    filters.value = { bankName: null, holderName: '', accountNumber: '', status: null, hasBalance: false }
     toast.add({ severity: 'info', summary: '已重置', detail: '搜尋條件已清空', life: 1000 })
 }
 
