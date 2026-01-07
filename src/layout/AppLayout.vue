@@ -106,8 +106,50 @@
               v-show="expandedMenus[item.path]"
               class="mt-1 ml-4 pl-3 border-l border-surface-700 space-y-1"
             >
-              <li v-for="child in item.children" :key="child.path">
+              <li v-for="child in item.children" :key="child.path || child.title">
+                <!-- Level 3 Parent -->
+                <div v-if="child.children"
+                  @click.stop="toggleMenu(child.path)"
+                  :class="[
+                    'flex items-center justify-between px-3 py-2 rounded-lg transition-colors cursor-pointer text-sm mb-1',
+                    isActive(child.path)
+                      ? 'text-white font-medium' 
+                      : 'text-surface-400 hover:bg-surface-800 hover:text-surface-0'
+                  ]"
+                >
+                  <div class="flex items-center gap-3">
+                    <i :class="['pi', child.icon, 'text-sm']"></i>
+                    <span class="whitespace-nowrap">{{ child.title }}</span>
+                  </div>
+                  <i 
+                    :class="[
+                      'pi text-[10px] transition-transform duration-200',
+                      expandedMenus[child.path] ? 'pi-chevron-down' : 'pi-chevron-right'
+                    ]"
+                  ></i>
+                </div>
+
+                <!-- Level 3 Children -->
+                <ul v-if="child.children" v-show="expandedMenus[child.path]" class="pl-3 border-l border-surface-700 space-y-1 ml-4 mb-2">
+                   <li v-for="subChild in child.children" :key="subChild.path">
+                      <router-link
+                        :to="subChild.path"
+                        :class="[
+                          'flex items-center gap-3 px-3 py-2 rounded-lg transition-colors text-sm',
+                          isActiveExact(subChild.path) 
+                            ? 'bg-blue-500/20 text-blue-400 font-bold' 
+                            : 'text-surface-400 hover:bg-surface-800 hover:text-surface-0'
+                        ]"
+                      >
+                        <i :class="['pi', subChild.icon, 'text-sm']"></i>
+                        <span class="whitespace-nowrap">{{ subChild.title }}</span>
+                      </router-link>
+                   </li>
+                </ul>
+
+                <!-- Level 2 Item (Standard) -->
                 <router-link
+                  v-else
                   :to="child.path"
                   :class="[
                     'flex items-center gap-3 px-3 py-2 rounded-lg transition-colors text-sm',
@@ -170,6 +212,7 @@ const navigateTo = (path: string) => {
 }
 
 const isActive = (path: string) => {
+  if (!path) return false
   return route.path.startsWith(path)
 }
 
@@ -283,7 +326,17 @@ const menuItems: MenuItem[] = [
     children: [
       { path: '/financials/overview', title: '財務總覽', icon: 'pi-chart-line' },
       { path: '/financials/records', title: '紀錄類', icon: 'pi-file-edit' },
-      { path: '/financials/audit', title: '審核類', icon: 'pi-check-circle' },
+      { 
+        path: '/finance', 
+        title: '審核管理', 
+        icon: 'pi-check-circle',
+        children: [
+            { path: '/finance/manual-deposit', title: '手工存款審核', icon: 'pi-file-edit' },
+            { path: '/finance/online-deposit', title: '在線存款查詢', icon: 'pi-search' },
+            { path: '/finance/withdrawals', title: '提款審核', icon: 'pi-wallet' },
+            { path: '/finance/order-locks', title: '鎖單管理', icon: 'pi-lock' }
+        ]
+      },
       { path: '/financials/points', title: '點數與獎勵', icon: 'pi-star-fill' },
       { path: '/financials/auto-flow', title: '自動金流', icon: 'pi-sync' },
     ]
@@ -328,8 +381,19 @@ const menuItems: MenuItem[] = [
 // Auto-expand parent menu when navigating to child
 watch(() => route.path, (newPath) => {
   menuItems.forEach(item => {
-    if (item.children && item.children.some(child => newPath.startsWith(child.path))) {
-      expandedMenus[item.path] = true
+    if (item.children) {
+      // Check for Level 2 match (Standard)
+      if (item.children.some(child => newPath.startsWith(child.path))) {
+        expandedMenus[item.path] = true
+      }
+      
+      // Check for Level 3 match (Deeply nested)
+      item.children.forEach(child => {
+        if (child.children && child.children.some(grandChild => newPath.startsWith(grandChild.path))) {
+           expandedMenus[item.path] = true // Expand Parent (Level 1)
+           expandedMenus[child.path] = true // Expand Child (Level 2)
+        }
+      })
     }
   })
 }, { immediate: true })

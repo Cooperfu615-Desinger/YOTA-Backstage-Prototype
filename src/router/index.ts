@@ -322,12 +322,6 @@ const routes: RouteRecordRaw[] = [
         meta: { title: '紀錄類', icon: 'pi-file-edit', parent: 'Financials', group: '紀錄類' }
     },
     {
-        path: '/financials/audit',
-        name: 'FinancialAudit',
-        component: () => import('@/views/Financials/Audit.vue'),
-        meta: { title: '審核類', icon: 'pi-check-circle', parent: 'Financials', group: '審核類' }
-    },
-    {
         path: '/financials/points',
         name: 'Points',
         component: () => import('@/views/Financials/Points.vue'),
@@ -338,6 +332,33 @@ const routes: RouteRecordRaw[] = [
         name: 'AutoFlow',
         component: () => import('@/views/Financials/AutoFlow.vue'),
         meta: { title: '自動金流', icon: 'pi-sync', parent: 'Financials', group: '金流類' }
+    },
+    // ========================================
+    // 12. 財務審核管理 (Finance Audit)
+    // ========================================
+    {
+        path: '/finance/manual-deposit',
+        name: 'ManualDeposit',
+        component: () => import('@/views/Finance/ManualDeposit.vue'),
+        meta: { title: '手工存款審核', icon: 'pi-file-edit', parent: 'Financials' }
+    },
+    {
+        path: '/finance/online-deposit',
+        name: 'OnlineDeposit',
+        component: () => import('@/views/Finance/OnlineDeposit.vue'),
+        meta: { title: '在線存款查詢', icon: 'pi-search', parent: 'Financials' }
+    },
+    {
+        path: '/finance/withdrawals',
+        name: 'Withdrawals',
+        component: () => import('@/views/Finance/Withdrawals.vue'),
+        meta: { title: '提款審核', icon: 'pi-wallet', parent: 'Financials' }
+    },
+    {
+        path: '/finance/order-locks',
+        name: 'OrderLocks',
+        component: () => import('@/views/Finance/OrderLocks.vue'),
+        meta: { title: '鎖單管理', icon: 'pi-lock', parent: 'Financials' }
     },
 
     // ========================================
