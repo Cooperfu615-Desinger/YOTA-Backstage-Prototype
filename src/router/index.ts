@@ -304,34 +304,34 @@ const routes: RouteRecordRaw[] = [
     // 9. 財務管理 (Financials)
     // ========================================
     {
-        path: '/financials',
-        name: 'Financials',
-        component: () => import('@/views/Financials/index.vue'),
+        path: '/finance',
+        name: 'Finance',
+        component: () => import('@/views/Finance/index.vue'),
         meta: { title: '財務管理', icon: 'pi-wallet' }
     },
     {
-        path: '/financials/overview',
-        name: 'FinancialOverview',
-        component: () => import('@/views/Financials/Overview.vue'),
-        meta: { title: '財務總覽', icon: 'pi-chart-line', parent: 'Financials' }
+        path: '/finance/overview',
+        name: 'FinanceOverview',
+        component: () => import('@/views/Finance/Overview.vue'),
+        meta: { title: '財務總覽', icon: 'pi-chart-line', parent: 'Finance' }
     },
     {
-        path: '/financials/records',
-        name: 'FinancialRecords',
-        component: () => import('@/views/Financials/Records.vue'),
-        meta: { title: '紀錄類', icon: 'pi-file-edit', parent: 'Financials', group: '紀錄類' }
+        path: '/finance/records',
+        name: 'FinanceRecords',
+        component: () => import('@/views/Finance/Records.vue'),
+        meta: { title: '紀錄類', icon: 'pi-file-edit', parent: 'Finance' }
     },
     {
         path: '/finance/points-rewards',
         name: 'PointsRewards',
         component: () => import('@/views/Finance/PointsRewards.vue'),
-        meta: { title: '點數與獎勵', icon: 'pi-star-fill', parent: 'Financials' }
+        meta: { title: '點數與獎勵', icon: 'pi-star-fill', parent: 'Finance' }
     },
     {
         path: '/finance/auto-payment',
         name: 'AutoPayment',
         component: () => import('@/views/Finance/AutoPayment.vue'),
-        meta: { title: '自動金流', icon: 'pi-sync', parent: 'Financials' }
+        meta: { title: '自動金流', icon: 'pi-sync', parent: 'Finance' }
     },
     // ========================================
     // 12. 財務審核管理 (Finance Audit)

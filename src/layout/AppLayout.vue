@@ -320,11 +320,11 @@ const menuItems: MenuItem[] = [
     ]
   },
   { 
-    path: '/financials', 
+    path: '/finance', 
     title: '財務管理', 
     icon: 'pi-wallet',
     children: [
-      { path: '/financials/overview', title: '財務總覽', icon: 'pi-chart-line' },
+      { path: '/finance/overview', title: '財務總覽', icon: 'pi-chart-line' },
       {
         path: '#',
         title: '審核管理',
@@ -341,7 +341,7 @@ const menuItems: MenuItem[] = [
         title: '紀錄查詢',
         icon: 'pi-file-edit',
         children: [
-          { path: '/financials/records', title: '下注紀錄', icon: 'pi-th-large' },
+          { path: '/finance/records', title: '下注紀錄', icon: 'pi-th-large' },
           { path: '/finance/balance-logs', title: '資金流水紀錄', icon: 'pi-list' },
           { path: '/finance/adjustment-logs', title: '人工存提紀錄', icon: 'pi-pencil' },
         ]

@@ -3,6 +3,23 @@
 **Generated**: 2026-01-07  
 **Version**: 1.0
 
+## Naming Convention
+
+### Route Path Standards
+
+- **Format**: Singular, lowercase, kebab-case (e.g., `/finance/`, `/member/`, `/operator/`)
+- **NOT**: Plural forms (`/financials/`), mixed case, or underscores
+- **Consistency**: All routes follow `/module/sub-page` pattern
+
+### Why Singular?
+
+- Cleaner URLs and easier to remember
+- Consistent with modern web standards
+- Avoids confusion between plural/singular forms
+- Better for i18n and localization
+
+---
+
 ## UI Design Specifications
 
 ### Input Field Standards
@@ -48,6 +65,12 @@
 - `/members/memo-record` - Member Logs
 - `/members/level-settings` - Level Settings
 - `/members/tags` - Tag Management
+
+### Finance Core (財務核心)
+
+- `/finance` - Finance Dashboard
+- `/finance/overview` - Finance Overview
+- `/finance/records` - Transaction Records
 
 ### Finance Audit Management (財務審核管理)
 
