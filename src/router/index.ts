@@ -192,6 +192,12 @@ const routes: RouteRecordRaw[] = [
         meta: { title: '版面設定', icon: 'pi-palette' }
     },
     {
+        path: '/layout/overview',
+        name: 'LayoutOverview',
+        component: () => import('@/views/Layout/Overview.vue'),
+        meta: { title: '版面總覽', icon: 'pi-chart-pie', parent: 'Layout' }
+    },
+    {
         path: '/layout/homepage',
         name: 'Homepage',
         component: () => import('@/views/Layout/Homepage.vue'),

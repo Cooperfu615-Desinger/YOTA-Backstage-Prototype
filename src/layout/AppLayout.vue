@@ -229,7 +229,7 @@ const menuItems: MenuItem[] = [
     title: '版面設定', 
     icon: 'pi-palette',
     children: [
-      { path: '/layout', title: '總覽', icon: 'pi-home' },
+      { path: '/layout/overview', title: '總覽', icon: 'pi-chart-pie' },
       { path: '/layout/homepage', title: '首頁設定', icon: 'pi-home' },
       { path: '/layout/games', title: '遊戲版面', icon: 'pi-th-large' },
       { path: '/layout/articles', title: '文章管理', icon: 'pi-file' },
