@@ -17,54 +17,45 @@
         </div>
       </template>
       <template #content>
-        <!-- Row 1: Nickname, Login IP, Agent Account -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-          <div class="flex flex-col gap-2">
+        <!-- Search Fields - Flex Wrap Layout -->
+        <div class="flex flex-wrap items-end gap-4 mb-4">
+          <div class="flex flex-col gap-1">
             <label class="text-surface-300 text-sm font-medium">暱稱</label>
-            <InputText v-model="filters.nickname" placeholder="輸入會員暱稱" class="w-full" />
+            <InputText v-model="filters.nickname" placeholder="輸入會員暱稱" class="w-[220px]" />
           </div>
-          <div class="flex flex-col gap-2">
+          <div class="flex flex-col gap-1">
             <label class="text-surface-300 text-sm font-medium">登入 IP</label>
-            <InputText v-model="filters.loginIp" placeholder="輸入 IP 地址" class="w-full" />
+            <InputText v-model="filters.loginIp" placeholder="輸入 IP 地址" class="w-[220px]" />
           </div>
-          <div class="flex flex-col gap-2">
+          <div class="flex flex-col gap-1">
             <label class="text-surface-300 text-sm font-medium">代理帳號</label>
-            <InputText v-model="filters.agentAccount" placeholder="輸入代理帳號" class="w-full" />
+            <InputText v-model="filters.agentAccount" placeholder="輸入代理帳號" class="w-[220px]" />
           </div>
-        </div>
-
-        <!-- Row 2: Balance Range, Balance Change Date -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-          <div class="flex flex-col gap-2">
+          <div class="flex flex-col gap-1">
             <label class="text-surface-300 text-sm font-medium">錢包餘額範圍</label>
             <div class="flex items-center gap-2">
-              <InputNumber v-model="filters.balanceMin" placeholder="最小" class="w-28" mode="currency" currency="USD" locale="en-US" />
+              <InputNumber v-model="filters.balanceMin" placeholder="最小" class="w-[100px]" mode="currency" currency="USD" locale="en-US" />
               <span class="text-surface-400 font-medium">-</span>
-              <InputNumber v-model="filters.balanceMax" placeholder="最大" class="w-28" mode="currency" currency="USD" locale="en-US" />
+              <InputNumber v-model="filters.balanceMax" placeholder="最大" class="w-[100px]" mode="currency" currency="USD" locale="en-US" />
             </div>
           </div>
-          <div class="flex flex-col gap-2">
+          <div class="flex flex-col gap-1">
             <label class="text-surface-300 text-sm font-medium">錢包異動日期</label>
-            <Calendar v-model="filters.balanceChangeDateRange" selectionMode="range" placeholder="選擇日期區間" class="w-full" dateFormat="yy-mm-dd" showIcon :manualInput="false" />
+            <Calendar v-model="filters.balanceChangeDateRange" selectionMode="range" placeholder="選擇日期區間" class="w-[220px]" dateFormat="yy-mm-dd" showIcon :manualInput="false" />
           </div>
-        </div>
-
-        <!-- Row 3: Registration Time, Last Login Time -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-          <div class="flex flex-col gap-2">
+          <div class="flex flex-col gap-1">
             <label class="text-surface-300 text-sm font-medium">註冊時間</label>
-            <Calendar v-model="filters.registrationDateRange" selectionMode="range" placeholder="選擇日期區間" class="w-full" dateFormat="yy-mm-dd" showIcon :manualInput="false" />
+            <Calendar v-model="filters.registrationDateRange" selectionMode="range" placeholder="選擇日期區間" class="w-[220px]" dateFormat="yy-mm-dd" showIcon :manualInput="false" />
           </div>
-          <div class="flex flex-col gap-2">
+          <div class="flex flex-col gap-1">
             <label class="text-surface-300 text-sm font-medium">上次登入時間</label>
-            <Calendar v-model="filters.lastLoginDateRange" selectionMode="range" placeholder="選擇日期區間" class="w-full" dateFormat="yy-mm-dd" showIcon :manualInput="false" />
+            <Calendar v-model="filters.lastLoginDateRange" selectionMode="range" placeholder="選擇日期區間" class="w-[220px]" dateFormat="yy-mm-dd" showIcon :manualInput="false" />
           </div>
-        </div>
-
-        <!-- Search & Reset Buttons -->
-        <div class="flex justify-end gap-3">
-          <Button label="重置" icon="pi pi-refresh" severity="secondary" outlined @click="handleReset" />
-          <Button label="搜尋" icon="pi pi-search" :loading="isSearching" @click="handleSearch" class="px-8" />
+          <!-- Search & Reset Buttons -->
+          <div class="flex items-end gap-3">
+            <Button label="重置" icon="pi pi-refresh" severity="secondary" outlined @click="handleReset" />
+            <Button label="搜尋" icon="pi pi-search" :loading="isSearching" @click="handleSearch" class="px-6" />
+          </div>
         </div>
       </template>
     </Card>
@@ -92,7 +83,9 @@
             </template>
             <Button icon="pi pi-angle-right" text @click="goToPage(currentPage + 1)" :disabled="currentPage === totalPages" />
             <Button icon="pi pi-angle-double-right" text @click="goToPage(totalPages)" :disabled="currentPage === totalPages" />
-            <Dropdown v-model="rowsPerPage" :options="[10, 20, 50, 100]" class="w-20" />
+            <span class="text-surface-400 text-sm ml-2">每頁</span>
+            <Dropdown v-model="rowsPerPage" :options="[10, 20, 50, 100]" class="w-24" />
+            <span class="text-surface-400 text-sm">筆</span>
           </div>
 
           <!-- DataTable -->
@@ -107,7 +100,7 @@
             <Column field="id" header="編號" sortable style="min-width: 80px">
               <template #body="slotProps"><span class="text-surface-400">{{ slotProps.data.id }}</span></template>
             </Column>
-            <Column field="account" header="帳號" sortable style="min-width: 140px">
+            <Column field="account" header="ID" sortable style="min-width: 140px">
               <template #body="slotProps">
                 <span class="text-blue-400 font-medium cursor-pointer hover:underline" @click="openMemberDetail(slotProps.data)">{{ slotProps.data.account }}</span>
               </template>
