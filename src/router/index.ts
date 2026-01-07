@@ -118,6 +118,12 @@ const routes: RouteRecordRaw[] = [
         meta: { title: '訊息管理', icon: 'pi-envelope' }
     },
     {
+        path: '/messages/overview',
+        name: 'MessagesOverview',
+        component: () => import('@/views/Messages/Overview.vue'),
+        meta: { title: '訊息總覽', icon: 'pi-chart-pie', parent: 'Messages' }
+    },
+    {
         path: '/messages/templates',
         name: 'MessageTemplates',
         component: () => import('@/views/Messages/Templates.vue'),

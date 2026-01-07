@@ -206,7 +206,7 @@ const menuItems: MenuItem[] = [
     title: '訊息管理', 
     icon: 'pi-envelope',
     children: [
-      { path: '/messages', title: '總覽', icon: 'pi-home' },
+      { path: '/messages/overview', title: '總覽', icon: 'pi-chart-pie' },
       { path: '/messages/templates', title: '訊息模板', icon: 'pi-file-edit' },
       { path: '/messages/system-notify', title: '系統通知', icon: 'pi-bell' },
       { path: '/messages/records', title: '訊息紀錄', icon: 'pi-inbox' },
