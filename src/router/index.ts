@@ -328,10 +328,10 @@ const routes: RouteRecordRaw[] = [
         meta: { title: '點數與獎勵', icon: 'pi-star-fill', parent: 'Financials' }
     },
     {
-        path: '/financials/auto-flow',
-        name: 'AutoFlow',
-        component: () => import('@/views/Financials/AutoFlow.vue'),
-        meta: { title: '自動金流', icon: 'pi-sync', parent: 'Financials', group: '金流類' }
+        path: '/finance/auto-payment',
+        name: 'AutoPayment',
+        component: () => import('@/views/Finance/AutoPayment.vue'),
+        meta: { title: '自動金流', icon: 'pi-sync', parent: 'Financials' }
     },
     // ========================================
     // 12. 財務審核管理 (Finance Audit)

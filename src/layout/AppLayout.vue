@@ -347,7 +347,7 @@ const menuItems: MenuItem[] = [
         ]
       },
       { path: '/finance/points-rewards', title: '點數與獎勵', icon: 'pi-star-fill' },
-      { path: '/financials/auto-flow', title: '自動金流', icon: 'pi-sync' },
+      { path: '/finance/auto-payment', title: '自動金流', icon: 'pi-sync' },
     ]
   },
   { 
