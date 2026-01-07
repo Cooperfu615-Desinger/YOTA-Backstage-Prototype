@@ -1,5 +1,13 @@
 <template>
   <div class="p-6 space-y-6">
+    <!-- Breadcrumb -->
+    <div class="flex items-center gap-2 text-sm text-surface-400">
+      <i class="pi pi-wallet text-emerald-400"></i>
+      <span class="text-surface-300">財務管理</span>
+      <span>></span>
+      <span class="text-white font-medium">總覽</span>
+    </div>
+
     <!-- Page Header -->
     <div class="flex items-center justify-between">
       <div>
