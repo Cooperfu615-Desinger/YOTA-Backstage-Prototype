@@ -172,8 +172,12 @@ const routes: RouteRecordRaw[] = [
     {
         path: '/members/memo-record',
         name: 'MemoRecord',
-        component: () => import('@/views/Members/MemoRecord.vue'),
+        component: () => import('@/views/Members/Logs.vue'),
         meta: { title: '會員日誌', icon: 'pi-book', parent: 'Members' }
+    },
+    {
+        path: '/members/logs',
+        redirect: '/members/memo-record'
     },
     {
         path: '/members/level-settings',
