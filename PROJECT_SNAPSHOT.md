@@ -45,69 +45,69 @@
 
 ### Dashboard (儀表板)
 
-- `/dashboard/overview` - Dashboard Overview
-- `/dashboard/website-data` - Website Data
-- `/dashboard/operational-data` - Operational Data
-- `/dashboard/game-monitor` - Game Monitor
+- `/dashboard/overview` - Dashboard Overview (儀表板總覽)
+- `/dashboard/website-data` - Website Data (網站數據)
+- `/dashboard/operational-data` - Operational Data (營運數據)
+- `/dashboard/game-monitor` - Game Monitor (遊戲監控)
 
 ### Operators (操作員管理)
 
-- `/operators/overview` - Operators Overview
-- `/operators/maintenance` - Operator Maintenance
-- `/operators/groups` - Group Maintenance
-- `/operators/logs` - Operator Logs
-- `/operators/exports` - Data Export
+- `/operators/overview` - Operator Overview (操作員總覽)
+- `/operators/maintenance` - Operator Maintenance (操作員維護)
+- `/operators/groups` - Group Maintenance (權限群組維護)
+- `/operators/logs` - Operator Logs (操作員日誌)
+- `/operators/exports` - Data Export (數據匯出)
 
 ### Members (會員管理)
 
-- `/members/overview` - Members Overview
-- `/members/list` - Member List
-- `/members/memo-record` - Member Logs
-- `/members/level-settings` - Level Settings
-- `/members/tags` - Tag Management
+- `/members/overview` - Member Overview (會員總覽)
+- `/members/list` - Member List (會員列表)
+- `/members/memo-record` - Member Logs (會員日誌)
+- `/members/level-settings` - Member Levels (會員等級)
+- `/members/tags` - Member Tags (會員標籤)
 
 ### Finance Core (財務核心)
 
-- `/finance` - Finance Dashboard
-- `/finance/overview` - Finance Overview
-- `/finance/records` - Transaction Records
+- `/finance` - Finance Dashboard (財務儀表板)
+- `/finance/overview` - Finance Overview (財務總覽)
+- `/finance/records` - Transaction Records (交易紀錄)
 
 ### Finance Audit Management (財務審核管理)
 
-- `/finance/manual-deposit` - Manual Deposit Audit
-- `/finance/online-deposit` - Online Deposit Query
-- `/finance/withdrawals` - Withdrawal Audit
-- `/finance/order-locks` - Lock Order Management
+- `/finance/manual-deposit` - Manual Deposit Audit (手工存款審核)
+- `/finance/online-deposit` - Online Deposit Inquiry (在線存款查詢)
+- `/finance/withdrawals` - Withdrawal Audit (提款審核)
+- `/finance/order-locks` - Order Lock Management (鎖單管理)
 
 ### Finance Records (財務紀錄查詢)
 
 - `/finance/betting-records` - Betting Records (下注紀錄)
-- `/finance/balance-logs` - Balance Transaction Logs
-- `/finance/adjustment-logs` - Manual Adjustment Logs
+- `/finance/balance-logs` - Balance Transaction Logs (資金流水紀錄)
+- `/finance/adjustment-logs` - Manual Adjustment Logs (人工存提紀錄)
 
 ### Finance Tools (財務工具)
 
-- `/finance/points-rewards` - Points and Rewards Management
-- `/finance/auto-payment` - Auto Payment Configuration
+- `/finance/points-rewards` - Points & Rewards Management (點數與獎勵管理)
+- `/finance/auto-payment` - Auto Payment Configuration (自動金流配置)
 
 ### Game Management (遊戲管理)
 
-- `/game-maintenance/overview` - Game Overview
-- `/game-maintenance/platforms` - Game Platforms
-- `/game-maintenance/game-list` - Game List
-- `/game-maintenance/game-tags` - Game Tags
+- `/game-maintenance/overview` - Game Overview (遊戲總覽)
+- `/game-maintenance/platforms` - Game Platforms (遊戲平台)
+- `/game-maintenance/game-list` - Game List (遊戲列表)
+- `/game-maintenance/game-tags` - Game Tags (遊戲標籤)
 
 ### Messages (訊息管理)
 
-- `/messages/overview` - Messages Overview
-- `/messages/records` - Message Records
-- `/messages/system-notify` - System Notifications
+- `/messages/overview` - Messages Overview (訊息總覽)
+- `/messages/records` - Message Records (訊息紀錄)
+- `/messages/system-notify` - System Notifications (系統通知)
 
 ### Payments (支付管理)
 
-- `/payments/overview` - Payments Overview
-- `/payments/banks` - Bank Management
-- `/payments/merchants` - Merchant Management
+- `/payments/overview` - Payments Overview (支付總覽)
+- `/payments/banks` - Bank Management (銀行管理)
+- `/payments/merchants` - Merchant Management (商號管理)
 
 ---
 
