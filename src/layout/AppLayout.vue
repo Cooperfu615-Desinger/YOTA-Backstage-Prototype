@@ -253,7 +253,7 @@ const menuItems: MenuItem[] = [
     title: '代理管理', 
     icon: 'pi-sitemap',
     children: [
-      { path: '/agents', title: '總覽', icon: 'pi-home' },
+      { path: '/agents/overview', title: '總覽', icon: 'pi-chart-pie' },
       { path: '/agents/maintenance', title: '代理商維護', icon: 'pi-sitemap' },
       { path: '/agents/promotion', title: '推廣維護', icon: 'pi-link' },
     ]

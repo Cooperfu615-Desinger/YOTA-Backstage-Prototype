@@ -278,6 +278,12 @@ const routes: RouteRecordRaw[] = [
         meta: { title: '代理管理', icon: 'pi-sitemap' }
     },
     {
+        path: '/agents/overview',
+        name: 'AgentsOverview',
+        component: () => import('@/views/Agents/Overview.vue'),
+        meta: { title: '代理總覽', icon: 'pi-chart-pie', parent: 'Agents' }
+    },
+    {
         path: '/agents/maintenance',
         name: 'AgentMaintenance',
         component: () => import('@/views/Agents/AgentMaintenance.vue'),
