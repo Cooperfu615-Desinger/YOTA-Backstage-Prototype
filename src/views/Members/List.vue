@@ -17,45 +17,55 @@
         </div>
       </template>
       <template #content>
-        <!-- Search Fields - Flex Wrap Layout -->
-        <div class="flex flex-wrap items-end gap-4 mb-4">
+        <!-- Search Fields - Responsive Grid Layout -->
+        <!-- Row 1: Nickname, IP, Agent -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
           <div class="flex flex-col gap-1">
             <label class="text-surface-300 text-sm font-medium">暱稱</label>
-            <InputText v-model="filters.nickname" placeholder="輸入會員暱稱" class="w-[220px]" />
+            <InputText v-model="filters.nickname" placeholder="輸入會員暱稱" class="w-full max-w-[220px]" />
           </div>
           <div class="flex flex-col gap-1">
             <label class="text-surface-300 text-sm font-medium">登入 IP</label>
-            <InputText v-model="filters.loginIp" placeholder="輸入 IP 地址" class="w-[220px]" />
+            <InputText v-model="filters.loginIp" placeholder="輸入 IP 地址" class="w-full max-w-[220px]" />
           </div>
           <div class="flex flex-col gap-1">
             <label class="text-surface-300 text-sm font-medium">代理帳號</label>
-            <InputText v-model="filters.agentAccount" placeholder="輸入代理帳號" class="w-[220px]" />
+            <InputText v-model="filters.agentAccount" placeholder="輸入代理帳號" class="w-full max-w-[220px]" />
           </div>
+        </div>
+
+        <!-- Row 2: Balance Range, Balance Change Date -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
           <div class="flex flex-col gap-1">
             <label class="text-surface-300 text-sm font-medium">錢包餘額範圍</label>
-            <div class="flex items-center gap-2">
-              <InputNumber v-model="filters.balanceMin" placeholder="最小" class="w-[100px]" mode="currency" currency="USD" locale="en-US" />
-              <span class="text-surface-400 font-medium">-</span>
-              <InputNumber v-model="filters.balanceMax" placeholder="最大" class="w-[100px]" mode="currency" currency="USD" locale="en-US" />
+            <div class="flex flex-nowrap items-center gap-2">
+              <InputNumber v-model="filters.balanceMin" placeholder="最小" class="w-full max-w-[100px]" mode="currency" currency="USD" locale="en-US" />
+              <span class="text-surface-400 font-medium shrink-0">-</span>
+              <InputNumber v-model="filters.balanceMax" placeholder="最大" class="w-full max-w-[100px]" mode="currency" currency="USD" locale="en-US" />
             </div>
           </div>
           <div class="flex flex-col gap-1">
             <label class="text-surface-300 text-sm font-medium">錢包異動日期</label>
-            <Calendar v-model="filters.balanceChangeDateRange" selectionMode="range" placeholder="選擇日期區間" class="w-[220px]" dateFormat="yy-mm-dd" showIcon :manualInput="false" />
+            <Calendar v-model="filters.balanceChangeDateRange" selectionMode="range" placeholder="選擇日期區間" class="w-full max-w-[220px]" dateFormat="yy-mm-dd" showIcon :manualInput="false" />
           </div>
+        </div>
+
+        <!-- Row 3: Registration Time, Last Login Time -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
           <div class="flex flex-col gap-1">
             <label class="text-surface-300 text-sm font-medium">註冊時間</label>
-            <Calendar v-model="filters.registrationDateRange" selectionMode="range" placeholder="選擇日期區間" class="w-[220px]" dateFormat="yy-mm-dd" showIcon :manualInput="false" />
+            <Calendar v-model="filters.registrationDateRange" selectionMode="range" placeholder="選擇日期區間" class="w-full max-w-[220px]" dateFormat="yy-mm-dd" showIcon :manualInput="false" />
           </div>
           <div class="flex flex-col gap-1">
             <label class="text-surface-300 text-sm font-medium">上次登入時間</label>
-            <Calendar v-model="filters.lastLoginDateRange" selectionMode="range" placeholder="選擇日期區間" class="w-[220px]" dateFormat="yy-mm-dd" showIcon :manualInput="false" />
+            <Calendar v-model="filters.lastLoginDateRange" selectionMode="range" placeholder="選擇日期區間" class="w-full max-w-[220px]" dateFormat="yy-mm-dd" showIcon :manualInput="false" />
           </div>
-          <!-- Search & Reset Buttons -->
-          <div class="flex items-end gap-3">
-            <Button label="重置" icon="pi pi-refresh" severity="secondary" outlined @click="handleReset" />
-            <Button label="搜尋" icon="pi pi-search" :loading="isSearching" @click="handleSearch" class="px-6" />
-          </div>
+        </div>
+
+        <!-- Search & Reset Buttons -->
+        <div class="flex justify-start gap-3">
+          <Button label="重置" icon="pi pi-refresh" severity="secondary" outlined @click="handleReset" />
+          <Button label="搜尋" icon="pi pi-search" :loading="isSearching" @click="handleSearch" class="px-6" />
         </div>
       </template>
     </Card>
