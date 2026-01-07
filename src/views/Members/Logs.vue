@@ -35,6 +35,10 @@
             <label class="text-surface-300 text-sm font-medium">時間範圍</label>
             <Calendar v-model="filters.dateRange" selectionMode="range" placeholder="選擇日期區間" class="w-[220px]" dateFormat="yy-mm-dd" showIcon :manualInput="false" />
           </div>
+          <div class="flex flex-col gap-1">
+            <label class="text-surface-300 text-sm font-medium">會員標籤</label>
+            <MultiSelect v-model="filters.tags" :options="tagOptions" optionLabel="label" optionValue="value" placeholder="選擇標籤" class="w-[220px]" display="chip" />
+          </div>
         </div>
 
         <!-- Search & Reset Buttons - Right Aligned -->
@@ -83,11 +87,16 @@
             <Column field="time" header="時間" sortable style="min-width: 160px">
               <template #body="slotProps"><span class="text-surface-400 text-sm">{{ slotProps.data.time }}</span></template>
             </Column>
-            <Column field="account" header="會員 ID / 暱稱" sortable style="min-width: 180px">
+            <Column field="account" header="會員 ID / 暱稱" sortable style="min-width: 200px">
               <template #body="slotProps">
-                <div class="flex flex-col">
-                  <span class="text-blue-400 font-medium cursor-pointer hover:underline" @click="openMemberDetail(slotProps.data)">{{ slotProps.data.account }}</span>
+                <div class="flex flex-col gap-1">
+                  <div class="flex items-center gap-2">
+                    <span class="text-blue-400 font-medium cursor-pointer hover:underline" @click="openMemberDetail(slotProps.data)">{{ slotProps.data.account }}</span>
+                  </div>
                   <span class="text-surface-500 text-xs">{{ slotProps.data.nickname || '未設定暱稱' }}</span>
+                  <div v-if="slotProps.data.tags.length > 0" class="flex flex-wrap gap-1">
+                    <Tag v-for="tag in slotProps.data.tags" :key="tag.name" :value="tag.name" :style="{ backgroundColor: tag.color }" class="text-xs" />
+                  </div>
                 </div>
               </template>
             </Column>
@@ -163,6 +172,7 @@ import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import Tag from 'primevue/tag'
 import Dialog from 'primevue/dialog'
+import MultiSelect from 'primevue/multiselect'
 import { useToast } from 'primevue/usetoast'
 
 const toast = useToast()
@@ -176,12 +186,25 @@ const actionTypeOptions = ref([
   { label: '層級調整', value: '層級調整' }
 ])
 
+// Tag options for search
+const tagOptions = ref([
+  { label: '高風險', value: '高風險', color: '#ef4444' },
+  { label: '大額玩家', value: '大額玩家', color: '#22c55e' },
+  { label: 'VIP客戶', value: 'VIP客戶', color: '#8b5cf6' },
+  { label: '新用戶', value: '新用戶', color: '#3b82f6' },
+  { label: '活躍用戶', value: '活躍用戶', color: '#06b6d4' },
+  { label: '沉睡用戶', value: '沉睡用戶', color: '#6b7280' },
+  { label: '異常IP', value: '異常IP', color: '#f97316' },
+  { label: '首充用戶', value: '首充用戶', color: '#eab308' }
+])
+
 // Filter state
 const filters = ref({
   nickname: '',
   ip: '',
   actionType: null as string | null,
-  dateRange: null as Date[] | null
+  dateRange: null as Date[] | null,
+  tags: [] as string[]
 })
 
 // Search state
@@ -207,6 +230,7 @@ const logs = ref<Array<{
   ip: string
   location: string
   device: string
+  tags: Array<{ name: string; color: string }>
 }>>([])
 
 // Generate random IP
@@ -220,6 +244,27 @@ const generateRandomDate = () => {
   const past30Days = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000)
   const date = new Date(past30Days.getTime() + Math.random() * (now.getTime() - past30Days.getTime()))
   return date.toISOString().replace('T', ' ').substring(0, 19)
+}
+
+// Generate random member tags
+const generateMemberTags = () => {
+  const allTags = [
+    { name: '高風險', color: '#ef4444' },
+    { name: '大額玩家', color: '#22c55e' },
+    { name: 'VIP客戶', color: '#8b5cf6' },
+    { name: '新用戶', color: '#3b82f6' },
+    { name: '活躍用戶', color: '#06b6d4' },
+    { name: '沉睡用戶', color: '#6b7280' },
+    { name: '異常IP', color: '#f97316' },
+    { name: '首充用戶', color: '#eab308' }
+  ]
+  const tagCount = Math.random() > 0.3 ? Math.floor(Math.random() * 3) : 0
+  const selected: typeof allTags = []
+  for (let i = 0; i < tagCount; i++) {
+    const tag = allTags[Math.floor(Math.random() * allTags.length)]!
+    if (!selected.some(t => t.name === tag.name)) selected.push(tag)
+  }
+  return selected
 }
 
 // Generate mock logs
@@ -259,7 +304,8 @@ const generateMockLogs = () => {
       description: descList[Math.floor(Math.random() * descList.length)] ?? '操作記錄',
       ip: generateIp(),
       location: locations[Math.floor(Math.random() * locations.length)] ?? '未知',
-      device: devices[Math.floor(Math.random() * devices.length)] ?? '未知'
+      device: devices[Math.floor(Math.random() * devices.length)] ?? '未知',
+      tags: generateMemberTags()
     })
   }
   
@@ -311,7 +357,7 @@ const handleSearch = () => {
 }
 
 const handleReset = () => {
-  filters.value = { nickname: '', ip: '', actionType: null, dateRange: null }
+  filters.value = { nickname: '', ip: '', actionType: null, dateRange: null, tags: [] }
   toast.add({ severity: 'info', summary: '已重置', detail: '所有搜尋條件已清空', life: 2000 })
 }
 </script>

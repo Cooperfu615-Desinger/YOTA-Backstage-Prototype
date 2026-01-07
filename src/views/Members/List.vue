@@ -60,6 +60,10 @@
             <label class="text-surface-300 text-sm font-medium">上次登入時間</label>
             <Calendar v-model="filters.lastLoginDateRange" selectionMode="range" placeholder="選擇日期區間" class="w-[220px]" dateFormat="yy-mm-dd" showIcon :manualInput="false" />
           </div>
+          <div class="flex flex-col gap-1">
+            <label class="text-surface-300 text-sm font-medium">會員標籤</label>
+            <MultiSelect v-model="filters.tags" :options="tagOptions" optionLabel="label" optionValue="value" placeholder="選擇標籤" class="w-[220px]" display="chip" />
+          </div>
         </div>
 
         <!-- Search & Reset Buttons - Right Aligned -->
@@ -141,6 +145,13 @@
             </Column>
             <Column field="memo" header="備註" style="min-width: 100px">
               <template #body="slotProps"><Tag v-if="slotProps.data.memo" :value="slotProps.data.memo" severity="contrast" class="text-xs" /></template>
+            </Column>
+            <Column field="tags" header="標籤" style="min-width: 150px">
+              <template #body="slotProps">
+                <div class="flex flex-wrap gap-1">
+                  <Tag v-for="tag in slotProps.data.tags" :key="tag.name" :value="tag.name" :style="{ backgroundColor: tag.color }" class="text-xs" />
+                </div>
+              </template>
             </Column>
           </DataTable>
         </div>
@@ -555,6 +566,7 @@ import TabView from 'primevue/tabview'
 import TabPanel from 'primevue/tabpanel'
 import Chart from 'primevue/chart'
 import ProgressBar from 'primevue/progressbar'
+import MultiSelect from 'primevue/multiselect'
 import { useToast } from 'primevue/usetoast'
 import { useTheme } from '@/composables/useTheme'
 
@@ -579,6 +591,18 @@ const agentOptions = ref([
   { label: 'repzen14', value: 'repzen14' }
 ])
 
+// Tag options for search
+const tagOptions = ref([
+  { label: '高風險', value: '高風險', color: '#ef4444' },
+  { label: '大額玩家', value: '大額玩家', color: '#22c55e' },
+  { label: 'VIP客戶', value: 'VIP客戶', color: '#8b5cf6' },
+  { label: '新用戶', value: '新用戶', color: '#3b82f6' },
+  { label: '活躍用戶', value: '活躍用戶', color: '#06b6d4' },
+  { label: '沉睡用戶', value: '沉睡用戶', color: '#6b7280' },
+  { label: '異常IP', value: '異常IP', color: '#f97316' },
+  { label: '首充用戶', value: '首充用戶', color: '#eab308' }
+])
+
 // Filter state
 const filters = ref({
   nickname: '',
@@ -588,7 +612,8 @@ const filters = ref({
   balanceMaxText: '',
   balanceChangeDateRange: null as Date[] | null,
   registrationDateRange: null as Date[] | null,
-  lastLoginDateRange: null as Date[] | null
+  lastLoginDateRange: null as Date[] | null,
+  tags: [] as string[]
 })
 
 // Search state
@@ -679,6 +704,7 @@ const members = ref<Array<{
   registerDate: string
   lastLogin: string
   memo: string
+  tags: Array<{ name: string; color: string }>
 }>>([])
 
 // Generate random IP
@@ -697,6 +723,27 @@ const generateRandomDate = () => {
   const pastYear = new Date(now.getTime() - 365 * 24 * 60 * 60 * 1000)
   const date = new Date(pastYear.getTime() + Math.random() * (now.getTime() - pastYear.getTime()))
   return date.toISOString().replace('T', ' ').substring(0, 19)
+}
+
+// Generate random member tags
+const generateMemberTags = () => {
+  const allTags = [
+    { name: '高風險', color: '#ef4444' },
+    { name: '大額玩家', color: '#22c55e' },
+    { name: 'VIP客戶', color: '#8b5cf6' },
+    { name: '新用戶', color: '#3b82f6' },
+    { name: '活躍用戶', color: '#06b6d4' },
+    { name: '沉睡用戶', color: '#6b7280' },
+    { name: '異常IP', color: '#f97316' },
+    { name: '首充用戶', color: '#eab308' }
+  ]
+  const tagCount = Math.random() > 0.3 ? Math.floor(Math.random() * 3) : 0
+  const selected: typeof allTags = []
+  for (let i = 0; i < tagCount; i++) {
+    const tag = allTags[Math.floor(Math.random() * allTags.length)]!
+    if (!selected.some(t => t.name === tag.name)) selected.push(tag)
+  }
+  return selected
 }
 
 // Generate mock members
@@ -732,7 +779,8 @@ const generateMockMembers = () => {
       statusText: statusInfo?.statusText ?? '正常',
       registerDate: generateRandomDate().split(' ')[0] ?? '',
       lastLogin: generateRandomDate(),
-      memo: memos[Math.floor(Math.random() * memos.length)] ?? ''
+      memo: memos[Math.floor(Math.random() * memos.length)] ?? '',
+      tags: generateMemberTags()
     })
   }
   return memberList
@@ -1044,13 +1092,13 @@ const handleSearch = () => {
 }
 
 const handleReset = () => {
-  filters.value = { nickname: '', loginIp: '', agentAccount: '', balanceMinText: '', balanceMaxText: '', balanceChangeDateRange: null, registrationDateRange: null, lastLoginDateRange: null }
+  filters.value = { nickname: '', loginIp: '', agentAccount: '', balanceMinText: '', balanceMaxText: '', balanceChangeDateRange: null, registrationDateRange: null, lastLoginDateRange: null, tags: [] }
   toast.add({ severity: 'info', summary: '已重置', detail: '所有搜尋條件已清空', life: 2000 })
 }
 
 const handleAddMember = () => {
   const newId = members.value.length > 0 ? Math.max(...members.value.map(m => m.id)) + 1 : 10010
-  members.value.unshift({ id: newId, account: newMember.value.account, nickname: newMember.value.nickname, agent: newMember.value.agent, loginIp: '0.0.0.0', vip: newMember.value.vip, wallet: 0, status: 'active', statusText: '正常', registerDate: new Date().toISOString().split('T')[0] ?? '', lastLogin: new Date().toISOString().replace('T', ' ').substring(0, 19), memo: '' })
+  members.value.unshift({ id: newId, account: newMember.value.account, nickname: newMember.value.nickname, agent: newMember.value.agent, loginIp: '0.0.0.0', vip: newMember.value.vip, wallet: 0, status: 'active', statusText: '正常', registerDate: new Date().toISOString().split('T')[0] ?? '', lastLogin: new Date().toISOString().replace('T', ' ').substring(0, 19), memo: '', tags: [] })
   showAddMemberDialog.value = false
   const addedAccount = newMember.value.account
   newMember.value = { account: '', nickname: '', agent: '', vip: 0 }
