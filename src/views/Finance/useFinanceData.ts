@@ -26,6 +26,11 @@ export interface DepositOrder {
     amount: number
     applyTime: string
     status: '待審核' | '已通過' | '已拒絕' | '支付成功' | '支付失敗' | '待支付'
+    // New Fields
+    remark?: string
+    applicant?: string
+    attachmentUrl?: string
+    memberSnapshot?: { currentBalance: number, recentDepositCount: number, recentDepositTotal: number }
 }
 
 // Singleton state
@@ -103,15 +108,29 @@ export function useFinanceData() {
         const mList: DepositOrder[] = []
         const mStatuses = ['待審核', '已通過', '已拒絕']
         const mTypes = ['人工入款', '活動贈送', '系統補分']
-        for (let i = 0; i < 20; i++) {
+        const applicants = ['Admin', 'Agent_007', 'Fin_Manager']
+
+        for (let i = 0; i < 15; i++) {
+            const hasAttachment = Math.random() > 0.6
+            const isLarge = i === 5 // Force one large amount
+            const amount = isLarge ? 150000 : Math.floor(Math.random() * 20000) * 10
+
             mList.push({
                 id: i,
                 orderId: `MD${20240107000 + i}`,
                 memberId: `user${1000 + i}`,
                 type: mTypes[Math.floor(Math.random() * mTypes.length)]!,
-                amount: Math.floor(Math.random() * 20000) * 10,
+                amount: amount,
                 applyTime: new Date(Date.now() - Math.floor(Math.random() * 86400000)).toISOString().replace('T', ' ').substring(0, 19),
-                status: mStatuses[Math.floor(Math.random() * mStatuses.length)] as any
+                status: mStatuses[Math.floor(Math.random() * mStatuses.length)] as any,
+                remark: isLarge ? 'VIP 大額充值請加速' : (Math.random() > 0.5 ? '客戶線下匯款' : '活動獎勵補發'),
+                applicant: applicants[Math.floor(Math.random() * applicants.length)],
+                attachmentUrl: hasAttachment ? 'https://placehold.co/600x400/png' : undefined,
+                memberSnapshot: {
+                    currentBalance: Math.floor(Math.random() * 100000),
+                    recentDepositCount: Math.floor(Math.random() * 5),
+                    recentDepositTotal: Math.floor(Math.random() * 200000)
+                }
             })
         }
         manualDepositOrders.value = mList
