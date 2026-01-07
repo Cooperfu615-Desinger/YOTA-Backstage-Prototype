@@ -90,6 +90,12 @@ const routes: RouteRecordRaw[] = [
         meta: { title: '系統設定', icon: 'pi-cog' }
     },
     {
+        path: '/system-settings/overview',
+        name: 'SystemSettingsOverview',
+        component: () => import('@/views/SystemSettings/Overview.vue'),
+        meta: { title: '系統總覽', icon: 'pi-chart-pie', parent: 'SystemSettings' }
+    },
+    {
         path: '/system-settings/announcements',
         name: 'Announcements',
         component: () => import('@/views/SystemSettings/Announcements.vue'),
