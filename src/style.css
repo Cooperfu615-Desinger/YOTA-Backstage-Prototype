@@ -71,22 +71,77 @@ body {
 /* Card styling for light mode */
 .light .p-card {
   background-color: #ffffff;
-  border-color: #e5e7eb;
+  border-color: #d1d5db;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
 }
 
 /* DataTable styling for light mode */
 .light .p-datatable .p-datatable-thead>tr>th {
-  background-color: #f9fafb;
-  color: #374151;
-  border-color: #e5e7eb;
+  background-color: #f3f4f6;
+  color: #1f2937;
+  border-color: #d1d5db;
+  font-weight: 600;
+}
+
+.light .p-datatable .p-datatable-tbody>tr {
+  background-color: #ffffff;
 }
 
 .light .p-datatable .p-datatable-tbody>tr>td {
   border-color: #e5e7eb;
+  color: #374151;
 }
 
 .light .p-datatable .p-datatable-tbody>tr:nth-child(even) {
   background-color: #f9fafb;
+}
+
+.light .p-datatable .p-datatable-tbody>tr:hover {
+  background-color: #f3f4f6;
+}
+
+/* Text contrast improvements for light mode */
+.light .text-surface-400 {
+  color: #6b7280 !important;
+}
+
+.light .text-surface-300 {
+  color: #4b5563 !important;
+}
+
+.light .text-white {
+  color: #111827 !important;
+}
+
+/* Breadcrumb visibility in light mode */
+.light .text-surface-400>span,
+.light .text-sm.text-surface-400 {
+  color: #6b7280 !important;
+}
+
+/* Tag improvements for light mode */
+.light .p-tag {
+  font-weight: 500;
+}
+
+/* Badge improvements for light mode */
+.light .p-badge {
+  font-weight: 600;
+}
+
+/* Input and Switch styling for light mode */
+.light .p-inputswitch.p-inputswitch-checked .p-inputswitch-slider {
+  background-color: #3b82f6;
+}
+
+/* Progress bar styling for light mode */
+.light .p-progressbar {
+  background-color: #e5e7eb;
+}
+
+/* Chart container for light mode - ensure visibility */
+.light canvas {
+  background-color: transparent;
 }
 
 /* Smooth transitions for theme switching */
@@ -94,4 +149,24 @@ body,
 .dark,
 .light {
   transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Ensure main content area has proper contrast in light mode */
+.light .bg-surface-800\/50 {
+  background-color: rgba(255, 255, 255, 0.9) !important;
+  border-color: #d1d5db !important;
+}
+
+.light .bg-surface-700\/30 {
+  background-color: rgba(243, 244, 246, 0.8) !important;
+}
+
+/* Gradient cards in light mode */
+.light .bg-gradient-to-br {
+  opacity: 0.95;
+}
+
+/* Icon containers in light mode */
+.light [class*="bg-"][class*="/20"] {
+  opacity: 0.9;
 }

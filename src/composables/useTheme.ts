@@ -41,22 +41,22 @@ watch(isDark, () => {
 
 // Chart colors computed based on theme
 const chartColors = computed(() => ({
-    // Grid colors
-    gridColor: isDark.value ? 'rgba(148, 163, 184, 0.1)' : 'rgba(100, 116, 139, 0.2)',
+    // Grid colors - more visible in light mode
+    gridColor: isDark.value ? 'rgba(148, 163, 184, 0.1)' : 'rgba(71, 85, 105, 0.15)',
 
-    // Text/tick colors
-    textColor: isDark.value ? '#94a3b8' : '#475569',
-    textColorLight: isDark.value ? '#64748b' : '#64748b',
-    textColorWhite: isDark.value ? '#f8fafc' : '#1e293b',
+    // Text/tick colors - darker in light mode for better contrast
+    textColor: isDark.value ? '#94a3b8' : '#374151',
+    textColorLight: isDark.value ? '#64748b' : '#4b5563',
+    textColorWhite: isDark.value ? '#f8fafc' : '#111827',
 
-    // Tooltip colors
-    tooltipBg: isDark.value ? '#1e293b' : '#ffffff',
-    tooltipTitle: isDark.value ? '#f8fafc' : '#1e293b',
-    tooltipBody: isDark.value ? '#cbd5e1' : '#475569',
-    tooltipBorder: isDark.value ? '#334155' : '#e2e8f0',
+    // Tooltip colors - inverted for light mode (dark bg, light text)
+    tooltipBg: isDark.value ? '#1e293b' : '#1f2937',
+    tooltipTitle: isDark.value ? '#f8fafc' : '#f9fafb',
+    tooltipBody: isDark.value ? '#cbd5e1' : '#e5e7eb',
+    tooltipBorder: isDark.value ? '#334155' : '#374151',
 
-    // Legend colors
-    legendColor: isDark.value ? '#94a3b8' : '#475569'
+    // Legend colors - darker in light mode
+    legendColor: isDark.value ? '#94a3b8' : '#374151'
 }))
 
 // Composable export
