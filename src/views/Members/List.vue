@@ -225,7 +225,8 @@
           <TabView>
             <!-- Tab 1: 個人資料 -->
             <TabPanel value="0" header="個人資料">
-              <div class="grid grid-cols-2 gap-4">
+              <!-- Basic Info Grid -->
+              <div class="grid grid-cols-2 gap-4 mb-4">
                 <div class="bg-surface-800/50 rounded-lg p-3 border border-surface-700">
                   <p class="text-surface-400 text-xs mb-1">真實姓名</p>
                   <p class="text-white font-medium">{{ memberDetail.profile.realName }}</p>
@@ -258,16 +259,60 @@
                   <p class="text-surface-400 text-xs mb-1">最後登入</p>
                   <p class="text-white font-medium">{{ memberDetail.lastLogin }}</p>
                 </div>
-                <div class="col-span-2 bg-surface-800/50 rounded-lg p-3 border border-surface-700">
-                  <p class="text-surface-400 text-xs mb-1">備註</p>
-                  <p class="text-white">{{ memberDetail.memo || '無備註' }}</p>
+              </div>
+
+              <!-- Security Risk Section -->
+              <h4 class="text-white font-medium mb-2 flex items-center gap-2">
+                <i class="pi pi-shield text-orange-400"></i>安全風險
+              </h4>
+              <div class="grid grid-cols-2 gap-4 mb-4">
+                <div class="bg-gradient-to-br from-orange-900/20 to-surface-800 rounded-lg p-3 border border-orange-600/30">
+                  <p class="text-surface-400 text-xs mb-1">同 IP 關聯帳號數</p>
+                  <p class="text-xl font-bold" :class="memberDetail.security.sameIpAccounts > 3 ? 'text-red-400' : 'text-white'">{{ memberDetail.security.sameIpAccounts }} 個</p>
+                  <p v-if="memberDetail.security.sameIpAccounts > 3" class="text-red-400 text-xs mt-1">• 高風險！需人工審核</p>
                 </div>
+                <div class="bg-surface-800/50 rounded-lg p-3 border border-surface-700">
+                  <p class="text-surface-400 text-xs mb-1">登入設備指紋</p>
+                  <p class="text-white font-mono text-sm">{{ memberDetail.security.deviceFingerprint }}</p>
+                </div>
+              </div>
+
+              <!-- Bank Cards Section -->
+              <h4 class="text-white font-medium mb-2 flex items-center gap-2">
+                <i class="pi pi-credit-card text-blue-400"></i>取款銀行卡
+              </h4>
+              <DataTable :value="memberDetail.bankCards" stripedRows class="p-datatable-sm mb-4">
+                <Column field="bank" header="銀行" style="min-width: 100px">
+                  <template #body="slotProps"><span class="text-white">{{ slotProps.data.bank }}</span></template>
+                </Column>
+                <Column field="branch" header="分行" style="min-width: 120px">
+                  <template #body="slotProps"><span class="text-surface-300">{{ slotProps.data.branch }}</span></template>
+                </Column>
+                <Column field="accountNo" header="帳號" style="min-width: 150px">
+                  <template #body="slotProps"><span class="text-white font-mono text-sm">{{ slotProps.data.accountNo }}</span></template>
+                </Column>
+                <Column field="holderName" header="姓名" style="min-width: 80px">
+                  <template #body="slotProps"><span class="text-white">{{ slotProps.data.holderName }}</span></template>
+                </Column>
+                <Column field="status" header="狀態" style="min-width: 80px">
+                  <template #body="slotProps"><Tag :value="slotProps.data.status" :severity="slotProps.data.status === '已驗證' ? 'success' : 'warn'" /></template>
+                </Column>
+              </DataTable>
+
+              <!-- Memo -->
+              <div class="bg-surface-800/50 rounded-lg p-3 border border-surface-700">
+                <p class="text-surface-400 text-xs mb-1">備註</p>
+                <p class="text-white">{{ memberDetail.memo || '無備註' }}</p>
               </div>
             </TabPanel>
 
             <!-- Tab 2: 會員日誌 -->
             <TabPanel value="1" header="會員日誌">
-              <DataTable :value="memberDetail.logs" stripedRows class="p-datatable-sm">
+              <!-- Activity Logs -->
+              <h4 class="text-white font-medium mb-2 flex items-center gap-2">
+                <i class="pi pi-history text-blue-400"></i>活動日誌
+              </h4>
+              <DataTable :value="memberDetail.logs" stripedRows class="p-datatable-sm mb-4">
                 <Column field="action" header="行為" style="min-width: 120px">
                   <template #body="slotProps">
                     <Tag :value="slotProps.data.action" :severity="getLogSeverity(slotProps.data.type)" />
@@ -283,26 +328,65 @@
                   <template #body="slotProps"><span class="text-white">{{ slotProps.data.description }}</span></template>
                 </Column>
               </DataTable>
+
+              <!-- Operator Notes Section -->
+              <h4 class="text-white font-medium mb-2 flex items-center gap-2">
+                <i class="pi pi-comments text-purple-400"></i>營運備註
+              </h4>
+              <div class="space-y-2">
+                <div v-for="(note, idx) in memberDetail.operatorNotes" :key="idx" class="bg-surface-800/50 rounded-lg p-3 border border-surface-700">
+                  <div class="flex items-center justify-between mb-1">
+                    <span class="text-blue-400 font-medium text-sm">{{ note.operator }}</span>
+                    <span class="text-surface-500 text-xs">{{ note.time }}</span>
+                  </div>
+                  <p class="text-white text-sm">{{ note.content }}</p>
+                </div>
+                <div v-if="!memberDetail.operatorNotes?.length" class="text-surface-500 text-sm text-center py-4">
+                  暫無營運備註
+                </div>
+              </div>
             </TabPanel>
 
             <!-- Tab 3: 金流紀錄 -->
             <TabPanel value="2" header="金流紀錄">
-              <!-- Summary Stats -->
-              <div class="grid grid-cols-3 gap-4 mb-4">
-                <div class="bg-gradient-to-br from-green-900/30 to-surface-800 rounded-lg p-4 border border-green-600/30 text-center">
-                  <p class="text-surface-400 text-xs mb-1">總充值</p>
-                  <p class="text-2xl font-bold text-green-400">${{ formatCurrency(memberDetail.finance.totalDeposit) }}</p>
+              <!-- Rollover Progress Bar -->
+              <div class="bg-gradient-to-r from-purple-900/30 to-surface-800 rounded-lg p-4 border border-purple-600/30 mb-4">
+                <div class="flex items-center justify-between mb-2">
+                  <span class="text-white font-medium flex items-center gap-2">
+                    <i class="pi pi-sync text-purple-400"></i>打碼量進度
+                  </span>
+                  <span class="text-purple-400 font-bold">{{ memberDetail.finance.rolloverProgress }}%</span>
                 </div>
-                <div class="bg-gradient-to-br from-orange-900/30 to-surface-800 rounded-lg p-4 border border-orange-600/30 text-center">
-                  <p class="text-surface-400 text-xs mb-1">總提現</p>
-                  <p class="text-2xl font-bold text-orange-400">${{ formatCurrency(memberDetail.finance.totalWithdraw) }}</p>
+                <ProgressBar :value="memberDetail.finance.rolloverProgress" :showValue="false" class="h-3" />
+                <p class="text-surface-400 text-xs mt-2">已打碼 ${{ formatCurrency(memberDetail.finance.currentRollover) }} / 目標 ${{ formatCurrency(memberDetail.finance.requiredRollover) }}</p>
+              </div>
+
+              <!-- Financial Summary Cards -->
+              <div class="grid grid-cols-4 gap-4 mb-4">
+                <div class="bg-gradient-to-br from-green-900/30 to-surface-800 rounded-lg p-3 border border-green-600/30 text-center">
+                  <p class="text-surface-400 text-xs mb-1">總存</p>
+                  <p class="text-xl font-bold text-green-400">${{ formatCurrency(memberDetail.finance.totalDeposit) }}</p>
                 </div>
-                <div class="bg-gradient-to-br from-blue-900/30 to-surface-800 rounded-lg p-4 border border-blue-600/30 text-center">
-                  <p class="text-surface-400 text-xs mb-1">總損益</p>
-                  <p class="text-2xl font-bold" :class="memberDetail.finance.totalProfit >= 0 ? 'text-emerald-400' : 'text-red-400'">
-                    {{ memberDetail.finance.totalProfit >= 0 ? '+' : '' }}${{ formatCurrency(memberDetail.finance.totalProfit) }}
-                  </p>
+                <div class="bg-gradient-to-br from-orange-900/30 to-surface-800 rounded-lg p-3 border border-orange-600/30 text-center">
+                  <p class="text-surface-400 text-xs mb-1">總提</p>
+                  <p class="text-xl font-bold text-orange-400">${{ formatCurrency(memberDetail.finance.totalWithdraw) }}</p>
                 </div>
+                <div class="bg-gradient-to-br from-blue-900/30 to-surface-800 rounded-lg p-3 border border-blue-600/30 text-center">
+                  <p class="text-surface-400 text-xs mb-1">手動加款</p>
+                  <p class="text-xl font-bold text-blue-400">${{ formatCurrency(memberDetail.finance.manualAdd) }}</p>
+                </div>
+                <div class="bg-gradient-to-br from-red-900/30 to-surface-800 rounded-lg p-3 border border-red-600/30 text-center">
+                  <p class="text-surface-400 text-xs mb-1">手動扣款</p>
+                  <p class="text-xl font-bold text-red-400">${{ formatCurrency(memberDetail.finance.manualDeduct) }}</p>
+                </div>
+              </div>
+
+              <!-- Profit Summary -->
+              <div class="bg-gradient-to-br from-emerald-900/30 to-surface-800 rounded-lg p-4 border border-emerald-600/30 text-center mb-4">
+                <p class="text-surface-400 text-xs mb-1">總損益</p>
+                <p class="text-2xl font-bold" :class="memberDetail.finance.totalProfit >= 0 ? 'text-emerald-400' : 'text-red-400'">
+                  {{ memberDetail.finance.totalProfit >= 0 ? '+' : '' }}${{ formatCurrency(memberDetail.finance.totalProfit) }}
+                </p>
               </div>
               
               <!-- Recent Transactions -->
@@ -378,6 +462,7 @@ import Dialog from 'primevue/dialog'
 import TabView from 'primevue/tabview'
 import TabPanel from 'primevue/tabpanel'
 import Chart from 'primevue/chart'
+import ProgressBar from 'primevue/progressbar'
 import { useToast } from 'primevue/usetoast'
 import { useTheme } from '@/composables/useTheme'
 
@@ -447,11 +532,22 @@ const memberDetail = ref<{
     agentPath: string
     registerIp: string
   }
+  security: {
+    sameIpAccounts: number
+    deviceFingerprint: string
+  }
+  bankCards: Array<{ bank: string; branch: string; accountNo: string; holderName: string; status: string }>
+  operatorNotes: Array<{ operator: string; time: string; content: string }>
   logs: Array<{ action: string; type: string; ip: string; time: string; description: string }>
   finance: {
     totalDeposit: number
     totalWithdraw: number
     totalProfit: number
+    manualAdd: number
+    manualDeduct: number
+    rolloverProgress: number
+    currentRollover: number
+    requiredRollover: number
     recentTransactions: Array<{ type: string; amount: number; channel: string; time: string; status: string }>
   }
   gaming: {
@@ -574,6 +670,39 @@ const generateMemberDetail = (member: typeof members.value[0]) => {
     profitTrend.push(Math.floor((Math.random() - 0.4) * 10000))
   }
 
+  // Generate bank cards
+  const banks = ['中國銀行', '工商銀行', '建設銀行', '農業銀行', '招商銀行', '交通銀行']
+  const branches = ['民生支行', '朝陽支行', '南京路支行', '中山支行', '上海支行']
+  const bankCards = []
+  const cardCount = 1 + Math.floor(Math.random() * 3)
+  for (let i = 0; i < cardCount; i++) {
+    bankCards.push({
+      bank: banks[Math.floor(Math.random() * banks.length)] ?? '中國銀行',
+      branch: branches[Math.floor(Math.random() * branches.length)] ?? '民生支行',
+      accountNo: `****-****-****-${String(1000 + Math.floor(Math.random() * 9000))}`,
+      holderName: names[Math.floor(Math.random() * names.length)] ?? '張三',
+      status: Math.random() > 0.2 ? '已驗證' : '待驗證'
+    })
+  }
+
+  // Generate operator notes
+  const operators = ['admin_super', 'cs_jerry', 'op_linda', 'risk_mike']
+  const noteContents = ['客訴投注問題已處理', '高風險帳戶，需關注', 'VIP會員，優先處理', '充值異常已核實', '帳戶正常使用', '已通知財務部門', '凍結原因：多帳號關聯', '解凍完成']
+  const operatorNotes = []
+  const noteCount = Math.floor(Math.random() * 5)
+  for (let i = 0; i < noteCount; i++) {
+    operatorNotes.push({
+      operator: operators[Math.floor(Math.random() * operators.length)] ?? 'admin',
+      time: generateRandomDate(),
+      content: noteContents[Math.floor(Math.random() * noteContents.length)] ?? '備註內容'
+    })
+  }
+
+  // Generate rollover data
+  const requiredRollover = Math.floor(Math.random() * 100000) + 10000
+  const currentRollover = Math.floor(Math.random() * requiredRollover)
+  const rolloverProgress = Math.min(100, Math.floor((currentRollover / requiredRollover) * 100))
+
   return {
     account: member.account,
     nickname: member.nickname,
@@ -592,11 +721,22 @@ const generateMemberDetail = (member: typeof members.value[0]) => {
       agentPath: `root > ${member.agent || 'direct'}`,
       registerIp: generateIp()
     },
+    security: {
+      sameIpAccounts: Math.floor(Math.random() * 8),
+      deviceFingerprint: `${Math.random().toString(36).substring(2, 10).toUpperCase()}-${Math.random().toString(36).substring(2, 6).toUpperCase()}`
+    },
+    bankCards,
+    operatorNotes,
     logs,
     finance: {
       totalDeposit: Math.floor(Math.random() * 500000) + 1000,
       totalWithdraw: Math.floor(Math.random() * 300000),
       totalProfit: Math.floor((Math.random() - 0.5) * 200000),
+      manualAdd: Math.floor(Math.random() * 10000),
+      manualDeduct: Math.floor(Math.random() * 5000),
+      rolloverProgress,
+      currentRollover,
+      requiredRollover,
       recentTransactions: transactions
     },
     gaming: {
