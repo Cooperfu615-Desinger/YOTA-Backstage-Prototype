@@ -387,29 +387,7 @@ const routes: RouteRecordRaw[] = [
     },
 
     // ========================================
-    // 12. 金流平台 (Cash Flow)
-    // ========================================
-    {
-        path: '/cash-flow',
-        name: 'CashFlow',
-        component: () => import('@/views/CashFlow/index.vue'),
-        meta: { title: '金流平台', icon: 'pi-credit-card' }
-    },
-    {
-        path: '/cash-flow/merchants',
-        name: 'Merchants',
-        component: () => import('@/views/CashFlow/Merchants.vue'),
-        meta: { title: '商號管理', icon: 'pi-building', parent: 'CashFlow' }
-    },
-    {
-        path: '/cash-flow/banks',
-        name: 'Banks',
-        component: () => import('@/views/CashFlow/Banks.vue'),
-        meta: { title: '銀行管理', icon: 'pi-building-columns', parent: 'CashFlow' }
-    },
-
-    // ========================================
-    // 13. 金流平台 (Payments)
+    // 12. 金流平台 (Payments)
     // ========================================
     {
         path: '/payments',
@@ -422,6 +400,18 @@ const routes: RouteRecordRaw[] = [
         name: 'PaymentsOverview',
         component: () => import('@/views/Payments/Overview.vue'),
         meta: { title: '金流平台總覽', icon: 'pi-chart-pie', parent: 'Payments' }
+    },
+    {
+        path: '/payments/merchants',
+        name: 'Merchants',
+        component: () => import('@/views/CashFlow/Merchants.vue'),
+        meta: { title: '商號管理', icon: 'pi-building', parent: 'Payments' }
+    },
+    {
+        path: '/payments/banks',
+        name: 'Banks',
+        component: () => import('@/views/CashFlow/Banks.vue'),
+        meta: { title: '銀行管理', icon: 'pi-building-columns', parent: 'Payments' }
     }
 ]
 

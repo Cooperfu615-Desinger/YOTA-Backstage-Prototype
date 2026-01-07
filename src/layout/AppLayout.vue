@@ -295,13 +295,13 @@ const menuItems: MenuItem[] = [
     ]
   },
   { 
-    path: '/cash-flow', 
+    path: '/payments', 
     title: '金流平台', 
     icon: 'pi-credit-card',
     children: [
-      { path: '/cash-flow', title: '總覽', icon: 'pi-home' },
-      { path: '/cash-flow/merchants', title: '商號管理', icon: 'pi-building' },
-      { path: '/cash-flow/banks', title: '銀行管理', icon: 'pi-building-columns' },
+      { path: '/payments/overview', title: '總覽', icon: 'pi-chart-pie' },
+      { path: '/payments/merchants', title: '商號管理', icon: 'pi-building' },
+      { path: '/payments/banks', title: '銀行管理', icon: 'pi-building-columns' },
     ]
   },
 ]
