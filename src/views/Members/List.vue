@@ -17,171 +17,109 @@
         </div>
       </template>
       <template #content>
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          <!-- Row 1: Name -->
-          <div class="flex items-center gap-3">
-            <Checkbox v-model="filters.nameEnabled" :binary="true" />
-            <label class="w-24 text-surface-300 text-sm shrink-0">名稱</label>
+        <!-- Row 1: Nickname, Login IP, Agent Account -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+          <div class="flex flex-col gap-2">
+            <label class="text-surface-300 text-sm font-medium">暱稱</label>
             <InputText 
-              v-model="filters.name" 
-              placeholder="會員帳號 / 暱稱" 
-              class="flex-1"
-              :disabled="!filters.nameEnabled"
+              v-model="filters.nickname" 
+              placeholder="輸入會員暱稱" 
+              class="w-full"
             />
           </div>
-          <div></div>
-
-          <!-- Row 2: Agent -->
-          <div class="flex items-center gap-3">
-            <Checkbox v-model="filters.agentEnabled" :binary="true" />
-            <label class="w-24 text-surface-300 text-sm shrink-0">代理</label>
+          <div class="flex flex-col gap-2">
+            <label class="text-surface-300 text-sm font-medium">登入 IP</label>
             <InputText 
-              v-model="filters.agent" 
-              placeholder="代理帳號 / 代理暱稱" 
-              class="flex-1"
-              :disabled="!filters.agentEnabled"
+              v-model="filters.loginIp" 
+              placeholder="輸入 IP 地址" 
+              class="w-full"
             />
           </div>
-          <div></div>
-
-          <!-- Row 3: IP -->
-          <div class="flex items-center gap-3">
-            <Checkbox v-model="filters.ipEnabled" :binary="true" />
-            <label class="w-24 text-surface-300 text-sm shrink-0">玩家登入IP</label>
+          <div class="flex flex-col gap-2">
+            <label class="text-surface-300 text-sm font-medium">代理帳號</label>
             <InputText 
-              v-model="filters.ip" 
-              placeholder="請輸入IP" 
-              class="flex-1"
-              :disabled="!filters.ipEnabled"
-            />
-          </div>
-          <div></div>
-
-          <!-- Row 4: Player Status -->
-          <div class="flex items-center gap-3">
-            <Checkbox v-model="filters.statusEnabled" :binary="true" />
-            <label class="w-24 text-surface-300 text-sm shrink-0">玩家狀態</label>
-            <MultiSelect 
-              v-model="filters.status" 
-              :options="statusOptions" 
-              optionLabel="label"
-              optionValue="value"
-              placeholder="請選擇狀態(可複選)" 
-              class="flex-1"
-              :disabled="!filters.statusEnabled"
-            />
-          </div>
-          <div></div>
-
-          <!-- Row 5: VIP Level -->
-          <div class="flex items-center gap-3">
-            <Checkbox v-model="filters.vipEnabled" :binary="true" />
-            <label class="w-24 text-surface-300 text-sm shrink-0">VIP等級</label>
-            <MultiSelect 
-              v-model="filters.vipLevel" 
-              :options="vipOptions" 
-              optionLabel="label"
-              optionValue="value"
-              placeholder="請選擇VIP等級(可複選)" 
-              class="flex-1"
-              :disabled="!filters.vipEnabled"
-            />
-          </div>
-          <div></div>
-
-          <!-- Row 6: Wallet Balance Range -->
-          <div class="flex items-center gap-3 lg:col-span-2">
-            <Checkbox v-model="filters.walletEnabled" :binary="true" />
-            <label class="w-24 text-surface-300 text-sm shrink-0">錢包餘額</label>
-            <InputNumber 
-              v-model="filters.walletMin" 
-              placeholder="請選擇錢包起始金額" 
-              class="flex-1"
-              :disabled="!filters.walletEnabled"
-              mode="currency"
-              currency="USD"
-              locale="en-US"
-            />
-            <InputNumber 
-              v-model="filters.walletMax" 
-              placeholder="請選擇錢包上限金額" 
-              class="flex-1"
-              :disabled="!filters.walletEnabled"
-              mode="currency"
-              currency="USD"
-              locale="en-US"
-            />
-          </div>
-
-          <!-- Row 7: Registration Date Range -->
-          <div class="flex items-center gap-3 lg:col-span-2">
-            <Checkbox v-model="filters.regDateEnabled" :binary="true" />
-            <label class="w-24 text-surface-300 text-sm shrink-0">玩家註冊日期</label>
-            <Calendar 
-              v-model="filters.regDateStart" 
-              placeholder="開始查詢日期" 
-              class="flex-1"
-              :disabled="!filters.regDateEnabled"
-              dateFormat="yy-mm-dd"
-              showIcon
-            />
-            <Calendar 
-              v-model="filters.regDateEnd" 
-              placeholder="結束查詢日期" 
-              class="flex-1"
-              :disabled="!filters.regDateEnabled"
-              dateFormat="yy-mm-dd"
-              showIcon
-            />
-          </div>
-
-          <!-- Row 8: Last Login Date Range -->
-          <div class="flex items-center gap-3 lg:col-span-2">
-            <Checkbox v-model="filters.lastLoginEnabled" :binary="true" />
-            <label class="w-24 text-surface-300 text-sm shrink-0">上次登入</label>
-            <Calendar 
-              v-model="filters.lastLoginStart" 
-              placeholder="開始查詢日期" 
-              class="flex-1"
-              :disabled="!filters.lastLoginEnabled"
-              dateFormat="yy-mm-dd"
-              showIcon
-            />
-            <Calendar 
-              v-model="filters.lastLoginEnd" 
-              placeholder="結束查詢日期" 
-              class="flex-1"
-              :disabled="!filters.lastLoginEnabled"
-              dateFormat="yy-mm-dd"
-              showIcon
-            />
-          </div>
-
-          <!-- Row 9: Wallet Change Date Range -->
-          <div class="flex items-center gap-3 lg:col-span-2">
-            <Checkbox v-model="filters.walletDateEnabled" :binary="true" />
-            <label class="w-24 text-surface-300 text-sm shrink-0">錢包異動日期</label>
-            <Calendar 
-              v-model="filters.walletDateStart" 
-              placeholder="開始查詢日期" 
-              class="flex-1"
-              :disabled="!filters.walletDateEnabled"
-              dateFormat="yy-mm-dd"
-              showIcon
-            />
-            <Calendar 
-              v-model="filters.walletDateEnd" 
-              placeholder="結束查詢日期" 
-              class="flex-1"
-              :disabled="!filters.walletDateEnabled"
-              dateFormat="yy-mm-dd"
-              showIcon
+              v-model="filters.agentAccount" 
+              placeholder="輸入代理帳號" 
+              class="w-full"
             />
           </div>
         </div>
 
-        <!-- Search Button -->
-        <div class="flex justify-end mt-6">
+        <!-- Row 2: Balance Range, Balance Change Date -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          <div class="flex flex-col gap-2">
+            <label class="text-surface-300 text-sm font-medium">錢包餘額範圍</label>
+            <div class="flex items-center gap-2">
+              <InputNumber 
+                v-model="filters.balanceMin" 
+                placeholder="最小金額" 
+                class="flex-1"
+                mode="currency"
+                currency="USD"
+                locale="en-US"
+              />
+              <span class="text-surface-400">-</span>
+              <InputNumber 
+                v-model="filters.balanceMax" 
+                placeholder="最大金額" 
+                class="flex-1"
+                mode="currency"
+                currency="USD"
+                locale="en-US"
+              />
+            </div>
+          </div>
+          <div class="flex flex-col gap-2">
+            <label class="text-surface-300 text-sm font-medium">錢包異動日期</label>
+            <Calendar 
+              v-model="filters.balanceChangeDateRange" 
+              selectionMode="range"
+              placeholder="選擇日期區間" 
+              class="w-full"
+              dateFormat="yy-mm-dd"
+              showIcon
+              :manualInput="false"
+            />
+          </div>
+        </div>
+
+        <!-- Row 3: Registration Time, Last Login Time -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+          <div class="flex flex-col gap-2">
+            <label class="text-surface-300 text-sm font-medium">註冊時間</label>
+            <Calendar 
+              v-model="filters.registrationDateRange" 
+              selectionMode="range"
+              placeholder="選擇日期區間" 
+              class="w-full"
+              dateFormat="yy-mm-dd"
+              showIcon
+              :manualInput="false"
+            />
+          </div>
+          <div class="flex flex-col gap-2">
+            <label class="text-surface-300 text-sm font-medium">上次登入時間</label>
+            <Calendar 
+              v-model="filters.lastLoginDateRange" 
+              selectionMode="range"
+              placeholder="選擇日期區間" 
+              class="w-full"
+              dateFormat="yy-mm-dd"
+              showIcon
+              :manualInput="false"
+            />
+          </div>
+        </div>
+
+        <!-- Search & Reset Buttons -->
+        <div class="flex justify-end gap-3">
+          <Button 
+            label="重置" 
+            icon="pi pi-refresh" 
+            severity="secondary"
+            outlined
+            @click="handleReset"
+          />
           <Button 
             label="搜尋" 
             icon="pi pi-search" 
@@ -200,6 +138,9 @@
           <div class="flex items-center gap-2 text-white text-lg">
             <i class="pi pi-users text-green-400"></i>
             會員列表
+            <span v-if="hasSearched" class="text-sm text-surface-400 font-normal ml-2">
+              (共 {{ members.length }} 筆)
+            </span>
           </div>
           <Button 
             label="新增會員" 
@@ -210,117 +151,127 @@
         </div>
       </template>
       <template #content>
-        <!-- Pagination Top -->
-        <div class="flex items-center justify-center gap-2 mb-4">
-          <Button icon="pi pi-angle-double-left" text @click="goToPage(1)" :disabled="currentPage === 1" />
-          <Button icon="pi pi-angle-left" text @click="goToPage(currentPage - 1)" :disabled="currentPage === 1" />
-          <template v-for="page in visiblePages" :key="page">
-            <Button 
-              :label="String(page)" 
-              :class="page === currentPage ? 'bg-surface-600' : ''"
-              :text="page !== currentPage"
-              @click="goToPage(page)"
-            />
-          </template>
-          <Button icon="pi pi-angle-right" text @click="goToPage(currentPage + 1)" :disabled="currentPage === totalPages" />
-          <Button icon="pi pi-angle-double-right" text @click="goToPage(totalPages)" :disabled="currentPage === totalPages" />
-          <Dropdown 
-            v-model="rowsPerPage" 
-            :options="[10, 20, 50, 100]" 
-            class="w-20"
-          />
-          <div class="flex items-center gap-2 ml-2">
-            <InputNumber 
-              v-model="jumpToPageValue" 
-              :min="1" 
-              :max="totalPages" 
-              class="w-16"
-              inputClass="text-center"
-            />
-          </div>
+        <!-- Empty State (Before Search) -->
+        <div v-if="!hasSearched" class="flex flex-col items-center justify-center py-16 text-center">
+          <i class="pi pi-search text-6xl text-surface-600 mb-4"></i>
+          <h3 class="text-xl font-medium text-surface-300 mb-2">請先設定搜尋條件</h3>
+          <p class="text-surface-400">輸入篩選條件後點擊「搜尋」按鈕查看會員資料</p>
         </div>
 
-        <!-- DataTable -->
-        <DataTable 
-          :value="paginatedMembers" 
-          :loading="isSearching"
-          stripedRows
-          class="p-datatable-sm"
-          :pt="{
-            table: { class: 'min-w-full' },
-            tbody: { class: 'text-surface-300' }
-          }"
-        >
-          <Column selectionMode="multiple" headerStyle="width: 3rem" />
-          <Column field="id" header="編號" sortable style="min-width: 80px">
-            <template #body="slotProps">
-              <span class="text-surface-400">{{ slotProps.data.id }}</span>
-            </template>
-          </Column>
-          <Column field="account" header="帳號" sortable style="min-width: 100px">
-            <template #body="slotProps">
-              <span class="text-blue-400 font-medium">{{ slotProps.data.account }}</span>
-            </template>
-          </Column>
-          <Column field="nickname" header="暱稱" sortable style="min-width: 120px">
-            <template #body="slotProps">
-              <span class="text-white">{{ slotProps.data.nickname }}</span>
-            </template>
-          </Column>
-          <Column field="agent" header="代理" sortable style="min-width: 100px">
-            <template #body="slotProps">
-              <span class="text-surface-300">{{ slotProps.data.agent }}</span>
-            </template>
-          </Column>
-          <Column field="vip" header="VIP" sortable style="min-width: 60px">
-            <template #body="slotProps">
-              <span class="text-amber-400 font-bold">{{ slotProps.data.vip }}</span>
-            </template>
-          </Column>
-          <Column field="wallet" header="錢包" sortable style="min-width: 120px">
-            <template #body="slotProps">
-              <span class="text-white font-medium">{{ formatCurrency(slotProps.data.wallet) }}</span>
-            </template>
-          </Column>
-          <Column field="status" header="狀態" style="min-width: 80px">
-            <template #body="slotProps">
-              <Tag 
-                :severity="getStatusSeverity(slotProps.data.status)" 
-                :value="slotProps.data.statusText"
+        <!-- Pagination & DataTable (After Search) -->
+        <template v-else>
+          <!-- Pagination Top -->
+          <div class="flex items-center justify-center gap-2 mb-4">
+            <Button icon="pi pi-angle-double-left" text @click="goToPage(1)" :disabled="currentPage === 1" />
+            <Button icon="pi pi-angle-left" text @click="goToPage(currentPage - 1)" :disabled="currentPage === 1" />
+            <template v-for="page in visiblePages" :key="page">
+              <Button 
+                :label="String(page)" 
+                :class="page === currentPage ? 'bg-surface-600' : ''"
+                :text="page !== currentPage"
+                @click="goToPage(page)"
               />
             </template>
-          </Column>
-          <Column field="registerDate" header="註冊日期" sortable style="min-width: 110px">
-            <template #body="slotProps">
-              <span class="text-surface-400">{{ slotProps.data.registerDate }}</span>
-            </template>
-          </Column>
-          <Column field="walletChange" header="最近錢包變動" sortable style="min-width: 130px">
-            <template #body="slotProps">
-              <span 
-                class="font-bold"
-                :class="getWalletChangeColor(slotProps.data.walletChange)"
-              >
-                {{ formatWalletChange(slotProps.data.walletChange) }}
-              </span>
-            </template>
-          </Column>
-          <Column field="createdAt" header="建立時間" sortable style="min-width: 160px">
-            <template #body="slotProps">
-              <span class="text-surface-400 text-sm">{{ slotProps.data.createdAt }}</span>
-            </template>
-          </Column>
-          <Column field="memo" header="備註" style="min-width: 100px">
-            <template #body="slotProps">
-              <Tag 
-                v-if="slotProps.data.memo" 
-                :value="slotProps.data.memo" 
-                severity="contrast"
-                class="text-xs"
+            <Button icon="pi pi-angle-right" text @click="goToPage(currentPage + 1)" :disabled="currentPage === totalPages" />
+            <Button icon="pi pi-angle-double-right" text @click="goToPage(totalPages)" :disabled="currentPage === totalPages" />
+            <Dropdown 
+              v-model="rowsPerPage" 
+              :options="[10, 20, 50, 100]" 
+              class="w-20"
+            />
+            <div class="flex items-center gap-2 ml-2">
+              <InputNumber 
+                v-model="jumpToPageValue" 
+                :min="1" 
+                :max="totalPages" 
+                class="w-16"
+                inputClass="text-center"
               />
-            </template>
-          </Column>
-        </DataTable>
+            </div>
+          </div>
+
+          <!-- DataTable -->
+          <DataTable 
+            :value="paginatedMembers" 
+            :loading="isSearching"
+            stripedRows
+            class="p-datatable-sm"
+            :pt="{
+              table: { class: 'min-w-full' },
+              tbody: { class: 'text-surface-300' }
+            }"
+          >
+            <Column selectionMode="multiple" headerStyle="width: 3rem" />
+            <Column field="id" header="編號" sortable style="min-width: 80px">
+              <template #body="slotProps">
+                <span class="text-surface-400">{{ slotProps.data.id }}</span>
+              </template>
+            </Column>
+            <Column field="account" header="帳號" sortable style="min-width: 100px">
+              <template #body="slotProps">
+                <span class="text-blue-400 font-medium">{{ slotProps.data.account }}</span>
+              </template>
+            </Column>
+            <Column field="nickname" header="暱稱" sortable style="min-width: 120px">
+              <template #body="slotProps">
+                <span class="text-white">{{ slotProps.data.nickname }}</span>
+              </template>
+            </Column>
+            <Column field="agent" header="代理" sortable style="min-width: 100px">
+              <template #body="slotProps">
+                <span class="text-surface-300">{{ slotProps.data.agent }}</span>
+              </template>
+            </Column>
+            <Column field="vip" header="VIP" sortable style="min-width: 60px">
+              <template #body="slotProps">
+                <span class="text-amber-400 font-bold">{{ slotProps.data.vip }}</span>
+              </template>
+            </Column>
+            <Column field="wallet" header="錢包" sortable style="min-width: 120px">
+              <template #body="slotProps">
+                <span class="text-white font-medium">{{ formatCurrency(slotProps.data.wallet) }}</span>
+              </template>
+            </Column>
+            <Column field="status" header="狀態" style="min-width: 80px">
+              <template #body="slotProps">
+                <Tag 
+                  :severity="getStatusSeverity(slotProps.data.status)" 
+                  :value="slotProps.data.statusText"
+                />
+              </template>
+            </Column>
+            <Column field="registerDate" header="註冊日期" sortable style="min-width: 110px">
+              <template #body="slotProps">
+                <span class="text-surface-400">{{ slotProps.data.registerDate }}</span>
+              </template>
+            </Column>
+            <Column field="walletChange" header="最近錢包變動" sortable style="min-width: 130px">
+              <template #body="slotProps">
+                <span 
+                  class="font-bold"
+                  :class="getWalletChangeColor(slotProps.data.walletChange)"
+                >
+                  {{ formatWalletChange(slotProps.data.walletChange) }}
+                </span>
+              </template>
+            </Column>
+            <Column field="createdAt" header="建立時間" sortable style="min-width: 160px">
+              <template #body="slotProps">
+                <span class="text-surface-400 text-sm">{{ slotProps.data.createdAt }}</span>
+              </template>
+            </Column>
+            <Column field="memo" header="備註" style="min-width: 100px">
+              <template #body="slotProps">
+                <Tag 
+                  v-if="slotProps.data.memo" 
+                  :value="slotProps.data.memo" 
+                  severity="contrast"
+                  class="text-xs"
+                />
+              </template>
+            </Column>
+          </DataTable>
+        </template>
       </template>
     </Card>
 
@@ -374,10 +325,8 @@ import { ref, computed } from 'vue'
 import Card from 'primevue/card'
 import InputText from 'primevue/inputtext'
 import InputNumber from 'primevue/inputnumber'
-import MultiSelect from 'primevue/multiselect'
 import Dropdown from 'primevue/dropdown'
 import Calendar from 'primevue/calendar'
-import Checkbox from 'primevue/checkbox'
 import Button from 'primevue/button'
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
@@ -388,13 +337,6 @@ import { useToast } from 'primevue/usetoast'
 const toast = useToast()
 
 // Filter options
-const statusOptions = ref([
-  { label: '正常', value: 'active' },
-  { label: '凍結', value: 'frozen' },
-  { label: '停用', value: 'disabled' },
-  { label: '待審核', value: 'pending' }
-])
-
 const vipOptions = ref([
   { label: 'VIP 0', value: 0 },
   { label: 'VIP 1', value: 1 },
@@ -412,34 +354,21 @@ const agentOptions = ref([
   { label: 'repzen14', value: 'repzen14' }
 ])
 
-// Filter state
+// Filter state - simplified without checkboxes
 const filters = ref({
-  nameEnabled: false,
-  name: '',
-  agentEnabled: false,
-  agent: '',
-  ipEnabled: false,
-  ip: '',
-  statusEnabled: false,
-  status: [],
-  vipEnabled: false,
-  vipLevel: [],
-  walletEnabled: false,
-  walletMin: null,
-  walletMax: null,
-  regDateEnabled: false,
-  regDateStart: null,
-  regDateEnd: null,
-  lastLoginEnabled: false,
-  lastLoginStart: null,
-  lastLoginEnd: null,
-  walletDateEnabled: false,
-  walletDateStart: null,
-  walletDateEnd: null
+  nickname: '',
+  loginIp: '',
+  agentAccount: '',
+  balanceMin: null as number | null,
+  balanceMax: null as number | null,
+  balanceChangeDateRange: null as Date[] | null,
+  registrationDateRange: null as Date[] | null,
+  lastLoginDateRange: null as Date[] | null
 })
 
 // Search state
 const isSearching = ref(false)
+const hasSearched = ref(false)
 
 // Pagination
 const currentPage = ref(1)
@@ -455,6 +384,22 @@ const newMember = ref({
   vip: 0
 })
 
+// Member data - starts empty
+const members = ref<Array<{
+  id: number
+  account: string
+  nickname: string
+  agent: string
+  vip: number
+  wallet: number
+  status: string
+  statusText: string
+  registerDate: string
+  walletChange: number
+  createdAt: string
+  memo: string
+}>>([])
+
 // Mock data generator
 const generateMockMembers = () => {
   const accounts = ['nexora7', 'veyric12', 'calden88', 'orynt3', 'drivon21', 'zephyx5', 'krypton9', 'voltar11', 'pyxel22', 'nexum8']
@@ -469,7 +414,7 @@ const generateMockMembers = () => {
   ]
   const memos = ['', '', '', '黑名單', '', '高風險', '', '', 'VIP', '']
   
-  const members = []
+  const memberList = []
   for (let i = 0; i < 50; i++) {
     const idx = i % 10
     const statusInfo = statuses[i % 5] || { status: 'active', statusText: '正常' }
@@ -477,7 +422,7 @@ const generateMockMembers = () => {
     const wallet = [1000, 100, 11000, 123000, 1000000, 5000, 2500, 88000, 15000, 250000][idx] || 0
     const memo = memos[idx] || ''
     
-    members.push({
+    memberList.push({
       id: 10010 + i,
       account: accounts[idx] + (i >= 10 ? `_${Math.floor(i / 10)}` : ''),
       nickname: nicknames[idx] || '',
@@ -492,13 +437,11 @@ const generateMockMembers = () => {
       memo: memo
     })
   }
-  return members
+  return memberList
 }
 
-const members = ref(generateMockMembers())
-
 // Computed
-const totalPages = computed(() => Math.ceil(members.value.length / rowsPerPage.value))
+const totalPages = computed(() => Math.max(1, Math.ceil(members.value.length / rowsPerPage.value)))
 
 const visiblePages = computed(() => {
   const pages = []
@@ -557,9 +500,9 @@ const handleSearch = () => {
   isSearching.value = true
   // Simulate search delay
   setTimeout(() => {
-    // Regenerate mock data to simulate search results
     members.value = generateMockMembers()
     currentPage.value = 1
+    hasSearched.value = true
     isSearching.value = false
     toast.add({
       severity: 'success',
@@ -570,9 +513,28 @@ const handleSearch = () => {
   }, 1000)
 }
 
+const handleReset = () => {
+  filters.value = {
+    nickname: '',
+    loginIp: '',
+    agentAccount: '',
+    balanceMin: null,
+    balanceMax: null,
+    balanceChangeDateRange: null,
+    registrationDateRange: null,
+    lastLoginDateRange: null
+  }
+  toast.add({
+    severity: 'info',
+    summary: '已重置',
+    detail: '所有搜尋條件已清空',
+    life: 2000
+  })
+}
+
 const handleAddMember = () => {
   // Add new member to list
-  const newId = Math.max(...members.value.map(m => m.id)) + 1
+  const newId = members.value.length > 0 ? Math.max(...members.value.map(m => m.id)) + 1 : 10010
   members.value.unshift({
     id: newId,
     account: newMember.value.account,
@@ -589,12 +551,14 @@ const handleAddMember = () => {
   })
   
   showAddMemberDialog.value = false
+  const addedAccount = newMember.value.account
   newMember.value = { account: '', nickname: '', agent: '', vip: 0 }
+  hasSearched.value = true
   
   toast.add({
     severity: 'success',
     summary: '新增成功',
-    detail: `會員 ${newMember.value.account} 已成功建立`,
+    detail: `會員 ${addedAccount} 已成功建立`,
     life: 3000
   })
 }
@@ -639,19 +603,6 @@ const handleAddMember = () => {
 :deep(.p-multiselect),
 :deep(.p-calendar),
 :deep(.p-inputnumber) {
-  background-color: rgba(30, 41, 59, 0.5);
-  border-color: rgba(71, 85, 105, 0.5);
-}
-
-:deep(.p-inputtext:disabled),
-:deep(.p-dropdown.p-disabled),
-:deep(.p-multiselect.p-disabled),
-:deep(.p-calendar.p-disabled),
-:deep(.p-inputnumber.p-disabled) {
-  opacity: 0.5;
-}
-
-:deep(.p-checkbox .p-checkbox-box) {
   background-color: rgba(30, 41, 59, 0.5);
   border-color: rgba(71, 85, 105, 0.5);
 }
