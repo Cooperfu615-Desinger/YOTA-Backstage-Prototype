@@ -38,10 +38,10 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
           <div class="flex flex-col gap-1">
             <label class="text-surface-300 text-sm font-medium">錢包餘額範圍</label>
-            <div class="flex flex-nowrap items-center gap-2">
-              <InputNumber v-model="filters.balanceMin" placeholder="最小" class="w-full max-w-[100px]" mode="currency" currency="USD" locale="en-US" />
-              <span class="text-surface-400 font-medium shrink-0">-</span>
-              <InputNumber v-model="filters.balanceMax" placeholder="最大" class="w-full max-w-[100px]" mode="currency" currency="USD" locale="en-US" />
+            <div class="p-inputgroup w-full max-w-[220px]">
+              <InputText v-model="filters.balanceMinText" placeholder="最小" class="w-full" />
+              <span class="p-inputgroup-addon">-</span>
+              <InputText v-model="filters.balanceMaxText" placeholder="最大" class="w-full" />
             </div>
           </div>
           <div class="flex flex-col gap-1">
@@ -451,7 +451,6 @@
 import { ref, computed } from 'vue'
 import Card from 'primevue/card'
 import InputText from 'primevue/inputtext'
-import InputNumber from 'primevue/inputnumber'
 import Dropdown from 'primevue/dropdown'
 import Calendar from 'primevue/calendar'
 import Button from 'primevue/button'
@@ -492,8 +491,8 @@ const filters = ref({
   nickname: '',
   loginIp: '',
   agentAccount: '',
-  balanceMin: null as number | null,
-  balanceMax: null as number | null,
+  balanceMinText: '',
+  balanceMaxText: '',
   balanceChangeDateRange: null as Date[] | null,
   registrationDateRange: null as Date[] | null,
   lastLoginDateRange: null as Date[] | null
@@ -820,7 +819,7 @@ const handleSearch = () => {
 }
 
 const handleReset = () => {
-  filters.value = { nickname: '', loginIp: '', agentAccount: '', balanceMin: null, balanceMax: null, balanceChangeDateRange: null, registrationDateRange: null, lastLoginDateRange: null }
+  filters.value = { nickname: '', loginIp: '', agentAccount: '', balanceMinText: '', balanceMaxText: '', balanceChangeDateRange: null, registrationDateRange: null, lastLoginDateRange: null }
   toast.add({ severity: 'info', summary: '已重置', detail: '所有搜尋條件已清空', life: 2000 })
 }
 
