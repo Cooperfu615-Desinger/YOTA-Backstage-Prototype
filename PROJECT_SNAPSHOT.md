@@ -231,6 +231,31 @@ autoApprove = rolloverPercentage >= 100 && amount <= maxAmount && vipLevel >= mi
 - Tooltip explaining the discrepancy
 - Highlighted in detail dialog
 
+### 8. Agent Level System
+
+**Location**: `AgentLevels.vue`
+
+**Purpose**: Define tier-based promotion system with automatic qualification checking
+
+**Tier Structure**:
+
+- 5 levels: 實習代理 → 銅牌 → 銀牌 → 金牌 → 鑽石總代
+- Progressive thresholds for active members and team P/L
+- Commission bonuses increase by tier (0% → 25%)
+
+**Promotion Criteria**:
+
+- Active members threshold (5, 20, 50, 100, 200)
+- Team monthly P/L threshold ($10K → $1M)
+- Both conditions must be met for automatic promotion
+
+**Features**:
+
+- CRUD operations for level management
+- Enable/disable level status
+- Real-time agent count per level
+- Icon and color customization
+
 ---
 
 ## Mock Data Strategy
