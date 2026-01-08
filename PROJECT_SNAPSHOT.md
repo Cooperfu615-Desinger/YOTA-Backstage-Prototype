@@ -88,7 +88,8 @@
 
 - `/agents/overview` - Agent Overview (代理總覽)
 - `/agent/list` - Agent List (代理列表)
-- `/agent/levels` - Agent Levels (代理等級)
+- `/agent/maintenance` - Agent Maintenance (代理商維護)
+- `/agent/levels` - Agent Level System (代理等級)
 - `/agent/commission` - Commission Settings (佣金設定)
 - `/agent/settlement` - Settlement Report (佣金結算報表)
 

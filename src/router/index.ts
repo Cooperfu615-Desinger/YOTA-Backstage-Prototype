@@ -306,6 +306,14 @@ const routes: RouteRecordRaw[] = [
         meta: { title: '佣金設定', icon: 'pi-percentage', parent: 'Agents' }
     },
     {
+        path: '/agent/maintenance',
+        name: 'AgentMaintenance',
+        component: () => import('@/views/Agents/AgentMaintenance.vue'),
+        meta: {
+            title: '代理商維護'
+        }
+    },
+    {
         path: '/agent/settlement',
         name: 'SettlementReport',
         component: () => import('@/views/Agents/SettlementReport.vue'),
