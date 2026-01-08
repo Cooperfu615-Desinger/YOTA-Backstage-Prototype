@@ -50,6 +50,11 @@
 - **Text Alignment**: Use `inputClass="text-center"` for centered display
 - **Manual Entry**: Operators type values directly - more efficient than button clicking
 
+**Operation Buttons**:
+
+- **Isolation**: Buttons (e.g., Delete/Remove) in list items must be visually distinct and separated from input fields
+- **Spacing**: Use `ml-auto` or distinct gaps to preventing overlapping with input components
+
 **Currency Inputs**: Use `w-[220px]` for amount fields with proper locale formatting
 
 ---

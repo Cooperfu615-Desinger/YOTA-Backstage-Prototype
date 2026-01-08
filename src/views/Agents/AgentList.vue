@@ -189,8 +189,8 @@
             
             <TabPanel header="佔成設定" value="佔成設定">
                 <div class="space-y-4 p-4">
-                    <div class="flex items-center justify-between p-3 bg-surface-900 rounded">
-                        <div class="flex items-center gap-2">
+                    <div class="flex items-center gap-4 p-3 bg-surface-900 rounded">
+                        <div class="flex items-center gap-2 w-32">
                             <i class="pi pi-star text-yellow-400"></i>
                             <span class="text-white font-medium">真人遊戲佔成</span>
                         </div>
@@ -199,8 +199,8 @@
                         </div>
                     </div>
                     
-                    <div class="flex items-center justify-between p-3 bg-surface-900 rounded">
-                        <div class="flex items-center gap-2">
+                    <div class="flex items-center gap-4 p-3 bg-surface-900 rounded">
+                        <div class="flex items-center gap-2 w-32">
                             <i class="pi pi-bolt text-purple-400"></i>
                             <span class="text-white font-medium">電子遊戲佔成</span>
                         </div>
@@ -209,8 +209,8 @@
                         </div>
                     </div>
                     
-                    <div class="flex items-center justify-between p-3 bg-surface-900 rounded">
-                        <div class="flex items-center gap-2">
+                    <div class="flex items-center gap-4 p-3 bg-surface-900 rounded">
+                        <div class="flex items-center gap-2 w-32">
                             <i class="pi pi-trophy text-green-400"></i>
                             <span class="text-white font-medium">體育投注佔成</span>
                         </div>

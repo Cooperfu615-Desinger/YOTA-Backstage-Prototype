@@ -92,7 +92,9 @@
                         <div style="width: 100px">
                             <InputNumber v-model="tier.percentage" :min="0" :max="100" suffix="%" class="w-full" inputClass="text-center" />
                         </div>
-                        <Button icon="pi pi-trash" severity="danger" text @click="removeTier(Number(index))" v-tooltip.top="'刪除'" />
+                        <div class="ml-auto">
+                            <Button icon="pi pi-trash" severity="danger" text @click="removeTier(Number(index))" v-tooltip.top="'刪除'" />
+                        </div>
                     </div>
                 </div>
             </div>
