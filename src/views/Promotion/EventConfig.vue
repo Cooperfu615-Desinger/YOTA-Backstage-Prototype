@@ -45,6 +45,11 @@
                         <Tag :value="slotProps.data.version === 'platform' ? '包網版' : '上架版'" :severity="slotProps.data.version === 'platform' ? 'info' : 'warning'" />
                     </template>
                 </Column>
+                <Column header="出資模式" style="min-width: 120px">
+                     <template #body="slotProps">
+                        <Tag :value="getCostModeLabel(slotProps.data)" :severity="getCostModeSeverity(slotProps.data)" />
+                    </template>
+                </Column>
                 <Column header="出資佔比 (平台/代理)" style="min-width: 180px">
                      <template #body="slotProps">
                         <div class="flex items-center gap-2 text-sm font-mono">
@@ -87,22 +92,33 @@
                 </div>
             </div>
 
-            <!-- Cost Sharing -->
+            <!-- Cost Sharing - Optimized -->
             <div class="bg-surface-900 p-4 rounded border border-surface-700 space-y-4">
-                <div class="text-sm font-bold text-white mb-2 border-b border-surface-700 pb-2">出資佔比設定</div>
-                <div class="flex items-center gap-4">
+                <div class="flex items-center justify-between border-b border-surface-700 pb-2">
+                    <div class="text-sm font-bold text-white">出資模式設定</div>
+                    <SelectButton v-model="currentConfig.costMode" :options="costModeOptions" optionLabel="label" optionValue="value" :allowEmpty="false" @change="handleCostModeChange" class="p-button-sm" />
+                </div>
+                
+                <!-- Mixed Mode Input Area -->
+                <div v-if="currentConfig.costMode === 'mixed'" class="flex items-center gap-4 animate-fade-in">
                     <div class="flex-1">
                         <label class="text-surface-400 text-xs block mb-1">平台出資 %</label>
                         <div style="width: 100px">
-                            <InputNumber v-model="currentConfig.platformShare" :min="0" :max="100" suffix="%" class="w-full" inputClass="text-center" :showButtons="false" @input="updateAgentShare" />
+                            <InputNumber v-model="currentConfig.platformShare" :min="1" :max="99" suffix="%" class="w-full" inputClass="text-center" :showButtons="false" @input="updateAgentShare" />
                         </div>
                     </div>
-                        <div class="flex-1">
+                    <div class="flex-1">
                         <label class="text-surface-400 text-xs block mb-1">代理出資 %</label>
                         <div style="width: 100px">
-                            <InputNumber v-model="currentConfig.agentShare" :min="0" :max="100" suffix="%" class="w-full" inputClass="text-center" disabled :showButtons="false" />
+                            <InputNumber v-model="currentConfig.agentShare" :min="1" :max="99" suffix="%" class="w-full" inputClass="text-center" disabled :showButtons="false" />
                         </div>
                     </div>
+                </div>
+
+                <!-- Info for Single Mode -->
+                <div v-else class="flex items-center gap-2 text-sm text-surface-300 bg-surface-800/50 p-2 rounded">
+                    <i class="pi pi-info-circle text-blue-400"></i>
+                    <span>{{ currentConfig.costMode === 'platform' ? '所有成本由平台全額承擔 (Platform 100%)' : '所有成本由代理全額承擔 (Agent 100%)' }}</span>
                 </div>
             </div>
 
@@ -190,6 +206,7 @@ import Column from 'primevue/column'
 import Tag from 'primevue/tag'
 import InputSwitch from 'primevue/inputswitch'
 import MultiSelect from 'primevue/multiselect'
+import SelectButton from 'primevue/selectbutton'
 import { useToast } from 'primevue/usetoast'
 import { useConfirm } from 'primevue/useconfirm'
 
@@ -200,14 +217,20 @@ const templates = [
     { id: 'first_deposit', name: '首存優惠', icon: 'pi-star-fill' },
     { id: 're_deposit', name: '續存優惠', icon: 'pi-refresh' },
     { id: 'rescue', name: '虧損救濟', icon: 'pi-heart-fill' },
-    { id: 'rebate', name: '流水返利', icon: 'pi-money-bill' }, // Locked to Platform
+    { id: 'rebate', name: '流水返利', icon: 'pi-money-bill' },
     { id: 'game_promo', name: '遊戲推廣', icon: 'pi-play' },
-    { id: 'ranking', name: '排行榜', icon: 'pi-list' }       // Locked to Platform
+    { id: 'ranking', name: '排行榜', icon: 'pi-list' }
 ]
 
 const versionOptions = [
     { label: '包網版 (Platform)', value: 'platform' },
     { label: '上架版 (SaaS)', value: 'saas' }
+]
+
+const costModeOptions = [
+    { label: '平台全額', value: 'platform' },
+    { label: '共同分攤', value: 'mixed' },
+    { label: '代理全額', value: 'agent' }
 ]
 
 const rankingOptions = [
@@ -231,15 +254,15 @@ const gameList = ref([
 ])
 
 const eventList = ref<any[]>([
-    { id: 1, name: '春節首存大紅包', type: 'first_deposit', version: 'platform', platformShare: 70, agentShare: 30, bonusPercent: 100, turnoverMulti: 15, status: true },
-    { id: 2, name: '百家樂連贏榜', type: 'ranking', version: 'platform', platformShare: 0, agentShare: 100, rankingType: 'win_rate', status: true }
+    { id: 1, name: '春節首存大紅包', type: 'first_deposit', version: 'platform', platformShare: 70, agentShare: 30, costMode: 'mixed', bonusPercent: 100, turnoverMulti: 15, status: true },
+    { id: 2, name: '百家樂連贏榜', type: 'ranking', version: 'platform', platformShare: 0, agentShare: 100, costMode: 'agent', rankingType: 'win_rate', status: true }
 ])
 
 const dialogVisible = ref(false)
 const currentConfig = ref<any>({})
 
 const isVersionLocked = computed(() => {
-    return ['rebate', 'ranking'].includes(currentConfig.value.type)
+    return ['rebate', 'ranking'].includes(currentConfig.value.type || '')
 })
 
 const openTemplateDialog = (tpl: any) => {
@@ -248,7 +271,9 @@ const openTemplateDialog = (tpl: any) => {
         id: null,
         type: tpl.id,
         name: '',
-        version: isLocked ? 'platform' : 'platform', // Default to platform
+        version: isLocked ? 'platform' : 'platform',
+        // Cost Sharing Defaults
+        costMode: 'mixed',
         platformShare: 70,
         agentShare: 30,
         // Platform fields
@@ -269,8 +294,22 @@ const openTemplateDialog = (tpl: any) => {
 }
 
 const editEvent = (event: any) => {
-    currentConfig.value = { ...event } // Clone
+    currentConfig.value = { ...event }
     dialogVisible.value = true
+}
+
+const handleCostModeChange = () => {
+    if (currentConfig.value.costMode === 'platform') {
+        currentConfig.value.platformShare = 100
+        currentConfig.value.agentShare = 0
+    } else if (currentConfig.value.costMode === 'agent') {
+        currentConfig.value.platformShare = 0
+        currentConfig.value.agentShare = 100
+    } else {
+        // Reset to default Mixed
+        currentConfig.value.platformShare = 50
+        currentConfig.value.agentShare = 50
+    }
 }
 
 const updateAgentShare = () => {
@@ -305,6 +344,15 @@ const deleteEvent = (event: any) => {
 
 const getTemplateName = (type: string) => templates.find(t => t.id === type)?.name || type
 const getCurrentTemplateName = (type: string) => getTemplateName(type)
+const getCostModeLabel = (event: any) => {
+    const opt = costModeOptions.find(o => o.value === event.costMode)
+    return opt ? opt.label : '未知'
+}
+const getCostModeSeverity = (event: any) => {
+    if (event.costMode === 'platform') return 'info'
+    if (event.costMode === 'agent') return 'success'
+    return 'warning'
+}
 </script>
 
 <style scoped>
@@ -314,4 +362,9 @@ const getCurrentTemplateName = (type: string) => getTemplateName(type)
 :deep(.p-datatable .p-datatable-tbody > tr:nth-child(even)) { background-color: rgba(30, 41, 59, 0.3); }
 :deep(.p-datatable .p-datatable-tbody > tr > td) { border-color: rgba(71, 85, 105, 0.3); padding: 0.75rem 1rem; }
 :deep(.p-inputnumber-input) { text-align: center; } /* Reinforce center align */
+
+/* Custom SelectButton Styles */
+:deep(.p-selectbutton .p-button.p-highlight) { background: #3b82f6; border-color: #3b82f6; color: white; }
+:deep(.p-selectbutton .p-button) { background: #1e293b; border-color: #334155; color: #94a3b8; }
+:deep(.p-selectbutton .p-button:hover) { background: #0f172a; }
 </style>
