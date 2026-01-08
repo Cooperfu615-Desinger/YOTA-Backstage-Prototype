@@ -92,9 +92,10 @@
 - `/agent/levels` - Agent Level System (代理等級)
 - `/agent/commission` - Commission Settings (佣金設定)
 - `/agent/settlement` - Settlement Report (佣金結算報表)
-- `/agent/promotion` - Promotion Maintenance (推廣維護)
+- `/agent/promotions` - Promotion Activity (推廣活動)
+- `/promotion/web` - Promotion Manage Web (優惠管理-包網版)
 
-### Finance Core (財務核心)
+### System Settings (系統設置)
 
 - `/finance` - Finance Dashboard (財務儀表板)
 - `/finance/overview` - Finance Overview (財務總覽)

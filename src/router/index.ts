@@ -324,6 +324,12 @@ const routes: RouteRecordRaw[] = [
         meta: { title: '推廣維護', icon: 'pi-link', parent: 'Agents' }
     },
 
+    {
+        path: '/promotion/web',
+        name: 'PromotionManageWeb',
+        component: () => import('@/views/Promotion/PromotionManageWeb.vue'),
+        meta: { title: '優惠管理 (包網版)', icon: 'pi-gift' }
+    },
     // ========================================
     // 9. 財務管理 (Financials)
     // ========================================
