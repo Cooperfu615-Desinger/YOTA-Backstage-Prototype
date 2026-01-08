@@ -164,7 +164,9 @@
                             <i class="pi pi-star text-yellow-400"></i>
                             <span class="text-white font-medium">真人遊戲佔成</span>
                         </div>
-                        <InputNumber v-model="currentAgent.commissions.live" suffix="%" :min="0" :max="100" showButtons buttonLayout="horizontal" style="width: 150px" />
+                        <div style="width: 140px">
+                            <InputNumber v-model="currentAgent.commissions.live" suffix="%" :min="0" :max="100" showButtons buttonLayout="horizontal" class="w-full" inputClass="w-full text-center" />
+                        </div>
                     </div>
                     
                     <div class="flex items-center justify-between p-3 bg-surface-900 rounded">
@@ -172,7 +174,9 @@
                             <i class="pi pi-bolt text-purple-400"></i>
                             <span class="text-white font-medium">電子遊戲佔成</span>
                         </div>
-                        <InputNumber v-model="currentAgent.commissions.slot" suffix="%" :min="0" :max="100" showButtons buttonLayout="horizontal" style="width: 150px" />
+                        <div style="width: 140px">
+                            <InputNumber v-model="currentAgent.commissions.slot" suffix="%" :min="0" :max="100" showButtons buttonLayout="horizontal" class="w-full" inputClass="w-full text-center" />
+                        </div>
                     </div>
                     
                     <div class="flex items-center justify-between p-3 bg-surface-900 rounded">
@@ -180,7 +184,9 @@
                             <i class="pi pi-trophy text-green-400"></i>
                             <span class="text-white font-medium">體育投注佔成</span>
                         </div>
-                        <InputNumber v-model="currentAgent.commissions.sports" suffix="%" :min="0" :max="100" showButtons buttonLayout="horizontal" style="width: 150px" />
+                        <div style="width: 140px">
+                            <InputNumber v-model="currentAgent.commissions.sports" suffix="%" :min="0" :max="100" showButtons buttonLayout="horizontal" class="w-full" inputClass="w-full text-center" />
+                        </div>
                     </div>
 
                     <div class="pt-4 border-t border-surface-700">
@@ -477,4 +483,15 @@ const formatCurrency = (val: number) => new Intl.NumberFormat('zh-TW', { style: 
 :deep(.p-inputtext), :deep(.p-dropdown), :deep(.p-calendar), :deep(.p-inputnumber) { background-color: rgba(30, 41, 59, 0.5); border-color: rgba(71, 85, 105, 0.5); }
 :deep(.p-tabview .p-tabview-nav) { background: rgba(30, 41, 59, 0.5); }
 :deep(.p-tabview .p-tabview-panels) { background: transparent; }
+
+/* 強制水平模式下的 InputNumber 寬度符合預期 */
+:deep(.p-inputnumber.p-inputnumber-buttons-horizontal) {
+    width: 100%;
+}
+/* 讓中間的輸入框縮小，留空間給兩側按鈕 */
+:deep(.p-inputnumber-buttons-horizontal .p-inputnumber-input) {
+    width: 40px !important;
+    flex: 1 1 auto;
+    min-width: 0;
+}
 </style>
