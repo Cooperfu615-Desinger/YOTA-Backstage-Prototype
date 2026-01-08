@@ -318,9 +318,19 @@ const menuItems: MenuItem[] = [
       { path: '/agent/list', title: '代理列表', icon: 'pi-users' },
       { path: '/agent/levels', title: '代理等級', icon: 'pi-star' },
       { path: '/agent/commission', title: '佣金設定', icon: 'pi-percentage' },
-      { path: '/agent/settlement', title: '佣金結算報表', icon: 'pi-calculator' },
       { path: '/agent/maintenance', title: '代理商維護', icon: 'pi-sitemap' },
-      { path: '/agent/promotion', title: '推廣維護', icon: 'pi-link' },
+      // { path: '/agent/promotion', title: '推廣維護', icon: 'pi-link' }, // Moved to Promotion Module
+    ]
+  },
+  { 
+    path: '/promotion', 
+    title: '推廣活動', 
+    icon: 'pi-gift',
+    children: [
+      { path: '/promotion/overview', title: '推廣總覽', icon: 'pi-chart-line' },
+      { path: '/promotion/management', title: '優惠管理', icon: 'pi-list' },
+      { path: '/promotion/event-config', title: '活動設置', icon: 'pi-cog' },
+      { path: '/promotion/achievement-config', title: '成就設置', icon: 'pi-star' },
     ]
   },
   { 

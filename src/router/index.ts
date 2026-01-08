@@ -317,18 +317,34 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/Agents/SettlementReport.vue'),
         meta: { title: '佣金結算報表', icon: 'pi-calculator', parent: 'Agents' }
     },
-    {
-        path: '/agent/promotion',
-        name: 'PromotionMaintenance',
-        component: () => import('@/views/Agents/PromotionMaintenance.vue'),
-        meta: { title: '推廣維護', icon: 'pi-link', parent: 'Agents' }
-    },
 
+
+    // ========================================
+    // 8. Promotion Module (推廣活動) - 重構後
+    // ========================================
     {
-        path: '/promotion/web',
-        name: 'PromotionManageWeb',
-        component: () => import('@/views/Promotion/PromotionManageWeb.vue'),
-        meta: { title: '優惠管理 (包網版)', icon: 'pi-gift' }
+        path: '/promotion/overview',
+        name: 'PromotionOverview',
+        component: () => import('@/views/Promotion/Overview.vue'),
+        meta: { title: '推廣總覽', icon: 'pi-chart-line' }
+    },
+    {
+        path: '/promotion/management',
+        name: 'PromotionManagement',
+        component: () => import('@/views/Promotion/Management.vue'),
+        meta: { title: '優惠管理', icon: 'pi-list' }
+    },
+    {
+        path: '/promotion/event-config',
+        name: 'PromotionEventConfig',
+        component: () => import('@/views/Promotion/EventConfig.vue'),
+        meta: { title: '活動設置', icon: 'pi-cog' }
+    },
+    {
+        path: '/promotion/achievement-config',
+        name: 'PromotionAchievementConfig',
+        component: () => import('@/views/Promotion/AchievementConfig.vue'),
+        meta: { title: '成就設置', icon: 'pi-star' }
     },
     // ========================================
     // 9. 財務管理 (Financials)

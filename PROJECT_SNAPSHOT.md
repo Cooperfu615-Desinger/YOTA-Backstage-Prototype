@@ -92,8 +92,13 @@
 - `/agent/levels` - Agent Level System (代理等級)
 - `/agent/commission` - Commission Settings (佣金設定)
 - `/agent/settlement` - Settlement Report (佣金結算報表)
-- `/agent/promotions` - Promotion Activity (推廣活動)
-- `/promotion/web` - Promotion Manage Web (優惠管理-包網版)
+
+### Promotion Module (推廣活動)
+
+- `/promotion/overview` - Promotion Overview (推廣總覽)
+- `/promotion/management` - Promotion Management (優惠管理)
+- `/promotion/event-config` - Event Configuration (活動設置)
+- `/promotion/achievement-config` - Achievement Configuration (成就設置)
 
 ### System Settings (系統設置)
 
