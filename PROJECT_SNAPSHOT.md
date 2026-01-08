@@ -43,11 +43,12 @@
 
 **Percentage/Ratio Inputs**: All percentage or ratio inputs (commission rates, bonuses, adjustments) must follow:
 
-- **Layout**: Use `buttonLayout="stacked"` for vertical button arrangement (better stability in narrow containers)
+- **Layout**: Button-less InputNumber for clean, professional interface
+  - *Rationale*: Increment/decrement buttons cause layout fragmentation in 100px containers; manual entry is standard for admin panels
 - **Width Constraint**: Wrap InputNumber in `<div style="width: 100px">` container, apply `class="w-full"` to InputNumber
-  - *Rationale*: 100px provides the most compact visual presentation, ideal for 0-100 range values like commission rates and fees
-  - *Stacked Layout*: Vertical buttons prevent layout collapse in narrow width scenarios, ensuring consistent cross-component behavior
+  - *100px Width*: Provides compact visual presentation ideal for 0-100 range values
 - **Text Alignment**: Use `inputClass="text-center"` for centered display
+- **Manual Entry**: Operators type values directly - more efficient than button clicking
 
 **Currency Inputs**: Use `w-[220px]` for amount fields with proper locale formatting
 

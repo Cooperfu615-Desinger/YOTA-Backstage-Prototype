@@ -195,7 +195,7 @@
                             <span class="text-white font-medium">真人遊戲佔成</span>
                         </div>
                         <div style="width: 100px">
-                            <InputNumber v-model="currentAgent.commissions.live" suffix="%" :min="0" :max="100" showButtons buttonLayout="stacked" class="w-full" inputClass="text-center" />
+                            <InputNumber v-model="currentAgent.commissions.live" suffix="%" :min="0" :max="100" class="w-full" inputClass="text-center" />
                         </div>
                     </div>
                     
@@ -205,7 +205,7 @@
                             <span class="text-white font-medium">電子遊戲佔成</span>
                         </div>
                         <div style="width: 100px">
-                            <InputNumber v-model="currentAgent.commissions.slot" suffix="%" :min="0" :max="100" showButtons buttonLayout="stacked" class="w-full" inputClass="text-center" />
+                            <InputNumber v-model="currentAgent.commissions.slot" suffix="%" :min="0" :max="100" class="w-full" inputClass="text-center" />
                         </div>
                     </div>
                     
@@ -215,7 +215,7 @@
                             <span class="text-white font-medium">體育投注佔成</span>
                         </div>
                         <div style="width: 100px">
-                            <InputNumber v-model="currentAgent.commissions.sports" suffix="%" :min="0" :max="100" showButtons buttonLayout="stacked" class="w-full" inputClass="text-center" />
+                            <InputNumber v-model="currentAgent.commissions.sports" suffix="%" :min="0" :max="100" class="w-full" inputClass="text-center" />
                         </div>
                     </div>
 

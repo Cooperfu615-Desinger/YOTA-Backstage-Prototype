@@ -90,7 +90,7 @@
                         </div>
                         <span class="text-surface-400 text-sm">佔成比例</span>
                         <div style="width: 100px">
-                            <InputNumber v-model="tier.percentage" :min="0" :max="100" suffix="%" showButtons buttonLayout="stacked" class="w-full" inputClass="text-center" />
+                            <InputNumber v-model="tier.percentage" :min="0" :max="100" suffix="%" class="w-full" inputClass="text-center" />
                         </div>
                         <Button icon="pi pi-trash" severity="danger" text @click="removeTier(Number(index))" v-tooltip.top="'刪除'" />
                     </div>
@@ -104,19 +104,19 @@
                     <div>
                         <label class="text-surface-300 text-sm block mb-2">真人遊戲加成 (%)</label>
                         <div style="width: 100px">
-                            <InputNumber v-model="currentScheme.categoryAdjustments.live" :min="-50" :max="50" suffix="%" showButtons buttonLayout="stacked" class="w-full" inputClass="text-center" />
+                            <InputNumber v-model="currentScheme.categoryAdjustments.live" :min="-50" :max="50" suffix="%" class="w-full" inputClass="text-center" />
                         </div>
                     </div>
                     <div>
                         <label class="text-surface-300 text-sm block mb-2">電子遊戲加成 (%)</label>
                         <div style="width: 100px">
-                            <InputNumber v-model="currentScheme.categoryAdjustments.slot" :min="-50" :max="50" suffix="%" showButtons buttonLayout="stacked" class="w-full" inputClass="text-center" />
+                            <InputNumber v-model="currentScheme.categoryAdjustments.slot" :min="-50" :max="50" suffix="%" class="w-full" inputClass="text-center" />
                         </div>
                     </div>
                     <div>
                         <label class="text-surface-300 text-sm block mb-2">體育投注加成 (%)</label>
                         <div style="width: 100px">
-                            <InputNumber v-model="currentScheme.categoryAdjustments.sports" :min="-50" :max="50" suffix="%" showButtons buttonLayout="stacked" class="w-full" inputClass="text-center" />
+                            <InputNumber v-model="currentScheme.categoryAdjustments.sports" :min="-50" :max="50" suffix="%" class="w-full" inputClass="text-center" />
                         </div>
                     </div>
                 </div>
@@ -134,7 +134,7 @@
                         <div v-if="currentScheme.costSharing.bonusDeduction.enabled" class="flex items-center gap-2">
                             <span class="text-surface-400 text-sm">扣除比例</span>
                             <div style="width: 100px">
-                                <InputNumber v-model="currentScheme.costSharing.bonusDeduction.percentage" :min="0" :max="100" suffix="%" showButtons buttonLayout="stacked" class="w-full" inputClass="text-center" />
+                                <InputNumber v-model="currentScheme.costSharing.bonusDeduction.percentage" :min="0" :max="100" suffix="%" class="w-full" inputClass="text-center" />
                             </div>
                         </div>
                     </div>
@@ -146,7 +146,7 @@
                         <div v-if="currentScheme.costSharing.platformFee.enabled" class="flex items-center gap-2">
                             <span class="text-surface-400 text-sm">扣除比例</span>
                             <div style="width: 100px">
-                                <InputNumber v-model="currentScheme.costSharing.platformFee.percentage" :min="0" :max="100" suffix="%" showButtons buttonLayout="stacked" class="w-full" inputClass="text-center" />
+                                <InputNumber v-model="currentScheme.costSharing.platformFee.percentage" :min="0" :max="100" suffix="%" class="w-full" inputClass="text-center" />
                             </div>
                         </div>
                     </div>
