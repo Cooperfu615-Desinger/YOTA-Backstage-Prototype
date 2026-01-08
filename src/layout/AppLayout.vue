@@ -318,6 +318,7 @@ const menuItems: MenuItem[] = [
       { path: '/agent/list', title: '代理列表', icon: 'pi-users' },
       { path: '/agent/levels', title: '代理等級', icon: 'pi-star' },
       { path: '/agent/commission', title: '佣金設定', icon: 'pi-percentage' },
+      { path: '/agent/settlement', title: '佣金結算報表', icon: 'pi-calculator' },
       { path: '/agents/maintenance', title: '代理商維護', icon: 'pi-sitemap' },
       { path: '/agents/promotion', title: '推廣維護', icon: 'pi-link' },
     ]

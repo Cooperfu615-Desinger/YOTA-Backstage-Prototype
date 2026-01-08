@@ -85,6 +85,7 @@
 - `/agent/list` - Agent List (代理列表)
 - `/agent/levels` - Agent Levels (代理等級)
 - `/agent/commission` - Commission Settings (佣金設定)
+- `/agent/settlement` - Settlement Report (佣金結算報表)
 
 ### Finance Core (財務核心)
 
