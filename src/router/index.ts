@@ -346,6 +346,18 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/Promotion/AchievementConfig.vue'),
         meta: { title: '成就設置', icon: 'pi-star' }
     },
+    {
+        path: '/promotion/check-in/dashboard',
+        name: 'CheckInDashboard',
+        component: () => import('@/views/Promotion/CheckIn/Dashboard.vue'),
+        meta: { title: '簽到看板', icon: 'pi-calendar' }
+    },
+    {
+        path: '/promotion/check-in/editor',
+        name: 'CheckInEditor',
+        component: () => import('@/views/Promotion/CheckIn/Editor.vue'),
+        meta: { title: '簽到編輯器', icon: 'pi-file-edit' }
+    },
     // ========================================
     // 9. 財務管理 (Financials)
     // ========================================

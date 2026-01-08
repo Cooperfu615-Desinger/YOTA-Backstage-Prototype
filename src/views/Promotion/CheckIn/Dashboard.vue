@@ -1,0 +1,207 @@
+<template>
+  <div class="p-6 space-y-6">
+    <!-- Breadcrumb -->
+    <div class="flex items-center gap-2 text-sm text-surface-400">
+      <i class="pi pi-gift text-blue-400"></i>
+      <span class="text-surface-300">推廣活動</span>
+      <span>></span>
+      <span class="text-white font-medium">簽到看板</span>
+    </div>
+
+    <!-- Active Schedule Section -->
+    <Card class="bg-surface-800/50 border border-surface-700">
+        <template #title>
+             <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2 text-white text-lg">
+                    <i class="pi pi-calendar-clock text-blue-400"></i>
+                    進度排程 (Schedules)
+                </div>
+                <Button label="新增排程" icon="pi pi-plus" severity="primary" @click="openScheduleDialog" />
+             </div>
+        </template>
+        <template #content>
+            <div class="grid grid-cols-1 gap-4">
+                <!-- Current Active -->
+                <div class="bg-surface-900 border border-green-500/30 rounded-lg p-4 flex items-center justify-between relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-green-500 text-black text-xs font-bold px-2 py-1 rounded-bl">當前生效</div>
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-full bg-green-500/20 flex items-center justify-center text-green-400">
+                            <i class="pi pi-check-circle text-2xl"></i>
+                        </div>
+                        <div>
+                            <div class="text-white font-bold text-lg">{{ currentSchedule.templateName }}</div>
+                            <div class="text-sm text-surface-400">
+                                週期: {{ currentSchedule.days }} 天 | 
+                                <span v-if="currentSchedule.isDefault">預設兜底 (無排程時自動生效)</span>
+                                <span v-else>{{ (currentSchedule as any).startDate }} ~ {{ (currentSchedule as any).endDate }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <Button label="查看詳情" text severity="secondary" @click="viewTemplate(currentSchedule.templateId!)" />
+                </div>
+
+                <!-- Upcoming List -->
+                <div v-for="sch in upcomingSchedules" :key="sch.id" class="bg-surface-900 border border-surface-700 rounded-lg p-4 flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-full bg-surface-800 flex items-center justify-center text-surface-400">
+                            <i class="pi pi-clock text-xl"></i>
+                        </div>
+                         <div>
+                            <div class="text-surface-200 font-bold">{{ sch.templateName }}</div>
+                            <div class="text-sm text-surface-500">
+                                {{ sch.startDate }} ~ {{ sch.endDate }}
+                            </div>
+                        </div>
+                    </div>
+                     <Button icon="pi pi-trash" text severity="danger" rounded @click="deleteSchedule(sch.id)" />
+                </div>
+            </div>
+        </template>
+    </Card>
+
+    <!-- Template Library -->
+    <Card class="bg-surface-800/50 border border-surface-700">
+        <template #title>
+             <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2 text-white text-lg">
+                    <i class="pi pi-th-large text-purple-400"></i>
+                    模板庫 (Library)
+                </div>
+                <Button label="建立新模板" icon="pi pi-plus" severity="info" outlined @click="navigateToEditor" />
+             </div>
+        </template>
+        <template #content>
+             <DataTable :value="templates" stripedRows class="p-datatable-sm" :pt="{ tbody: { class: 'text-surface-300' } }">
+                <Column field="name" header="模板名稱" style="min-width: 200px">
+                     <template #body="slotProps">
+                        <div class="flex items-center gap-2">
+                            <span class="text-white font-medium">{{ slotProps.data.name }}</span>
+                            <Tag v-if="slotProps.data.isDefault" value="預設" severity="success" class="text-xs" />
+                        </div>
+                    </template>
+                </Column>
+                 <Column field="days" header="週期天數" style="min-width: 100px">
+                     <template #body="slotProps">
+                        <Tag :value="`${slotProps.data.days} 天`" severity="info" />
+                    </template>
+                </Column>
+                 <Column field="updatedAt" header="最後更新" style="min-width: 150px"></Column>
+                 <Column header="操作" style="min-width: 250px">
+                     <template #body="slotProps">
+                        <div class="flex items-center gap-2">
+                             <Button icon="pi pi-pencil" label="編輯" size="small" outlined severity="info" @click="navigateToEditor(slotProps.data)" />
+                             
+                             <Button v-if="!slotProps.data.isDefault" icon="pi pi-star" label="設為預設" size="small" text severity="warning" @click="setAsDefault(slotProps.data)" />
+                             
+                             <Button :disabled="slotProps.data.isDefault" :icon="slotProps.data.isDefault ? 'pi pi-lock' : 'pi pi-trash'" :severity="slotProps.data.isDefault ? 'secondary' : 'danger'" size="small" text rounded @click="deleteTemplate(slotProps.data)" />
+                        </div>
+                    </template>
+                </Column>
+             </DataTable>
+        </template>
+    </Card>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref, computed } from 'vue'
+import { useRouter } from 'vue-router'
+import Card from 'primevue/card'
+import Button from 'primevue/button'
+import DataTable from 'primevue/datatable'
+import Column from 'primevue/column'
+import Tag from 'primevue/tag'
+import { useToast } from 'primevue/usetoast'
+import { useConfirm } from 'primevue/useconfirm'
+
+const router = useRouter()
+const toast = useToast()
+const confirm = useConfirm()
+
+// Mock Data
+const templates = ref([
+    { id: 1, name: '通用 30 天循環', days: 30, isDefault: true, updatedAt: '2024-01-01' },
+    { id: 2, name: '春節 7 天衝刺', days: 7, isDefault: false, updatedAt: '2024-01-05' },
+    { id: 3, name: '週末 5 天快閃', days: 5, isDefault: false, updatedAt: '2024-01-08' }
+])
+
+const schedules = ref([
+    { id: 101, templateId: 2, templateName: '春節 7 天衝刺', days: 7, startDate: '2024-02-08', endDate: '2024-02-14' }
+])
+
+// Logic to determine current schedule
+// In reality, this would check Date vs Schedule ranges.
+// If active schedule exists, use it. Else, use Default template.
+const currentSchedule = computed(() => {
+    // Simulating no active schedule for now to show Fallback login
+    // Or we can toggle simulation
+    const active = schedules.value[0] // Assume first is upcoming/active for demo
+    if (active) return { ...active, isDefault: false }
+    
+    const defaultTpl = templates.value.find(t => t.isDefault)
+    return { 
+        templateId: defaultTpl?.id, 
+        templateName: defaultTpl?.name, 
+        days: defaultTpl?.days, 
+        isDefault: true 
+    }
+})
+
+const upcomingSchedules = computed(() => {
+    return schedules.value.slice(1) // Just valid ones
+})
+
+const openScheduleDialog = () => {
+    toast.add({ severity: 'info', summary: '功能展示', detail: '開啟排程設定 Dialog', life: 2000 })
+}
+
+const navigateToEditor = (tpl?: any) => {
+    console.log(tpl) // Prevent unused var error
+    // In real app, pass ID via route params or query
+    router.push('/promotion/check-in/editor')
+}
+
+const viewTemplate = (id: number) => {
+    console.log(id) // Prevent unused var error
+    router.push('/promotion/check-in/editor')
+}
+
+const setAsDefault = (tpl: any) => {
+    confirm.require({
+        message: `確定要將 "${tpl.name}" 設為預設簽到模板嗎？`,
+        header: '變更預設',
+        icon: 'pi pi-exclamation-triangle',
+        accept: () => {
+            templates.value.forEach(t => t.isDefault = false)
+            tpl.isDefault = true
+            toast.add({ severity: 'success', summary: '設定成功', detail: '已更新預設模板', life: 2000 })
+        }
+    })
+}
+
+const deleteTemplate = (tpl: any) => {
+    if (tpl.isDefault) return
+    confirm.require({
+        message: `確定要刪除 "${tpl.name}" 嗎？`,
+        header: '刪除確認',
+        icon: 'pi pi-trash',
+        acceptClass: 'p-button-danger',
+        accept: () => {
+            const idx = templates.value.findIndex(t => t.id === tpl.id)
+            if (idx !== -1) templates.value.splice(idx, 1)
+            toast.add({ severity: 'success', summary: '刪除成功', life: 2000 })
+        }
+    })
+}
+
+const deleteSchedule = (id: number) => {
+     // Mock delete
+     const idx = schedules.value.findIndex(s => s.id === id)
+     if (idx !== -1) schedules.value.splice(idx, 1)
+}
+</script>
+
+<style scoped>
+:deep(.p-card .p-card-body) { padding: 1.5rem; }
+:deep(.p-datatable .p-datatable-thead > tr > th) { background-color: rgba(30, 41, 59, 0.5); color: #94a3b8; padding: 0.75rem 1rem; }
+</style>
