@@ -1,21 +1,21 @@
 <template>
   <div class="p-6 space-y-6">
     <!-- Breadcrumb -->
-    <div class="flex items-center gap-2 text-sm text-surface-400">
-      <i class="pi pi-wallet text-blue-400"></i>
-      <span class="text-surface-300">財務管理</span>
+    <div class="flex items-center gap-2 text-sm text-surface-600 dark:text-surface-400">
+      <i class="pi pi-wallet text-blue-500 dark:text-blue-400"></i>
+      <span class="text-surface-500 dark:text-surface-300">財務管理</span>
       <span>></span>
-      <span class="text-surface-300">審核管理</span>
+      <span class="text-surface-500 dark:text-surface-300">審核管理</span>
       <span>></span>
-      <span class="text-white font-medium">手工存款審核</span>
+      <span class="text-surface-900 dark:text-surface-0 font-medium">手工存款審核</span>
     </div>
 
     <!-- Search Section -->
-    <Card class="bg-surface-800/50 border border-surface-700">
+    <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
       <template #title>
         <div class="flex items-center justify-between">
-          <div class="flex items-center gap-2 text-white text-lg">
-            <i class="pi pi-search text-blue-400"></i>
+          <div class="flex items-center gap-2 text-surface-900 dark:text-white text-lg">
+            <i class="pi pi-search text-blue-500 dark:text-blue-400"></i>
             手工存款搜尋
           </div>
         </div>
@@ -23,19 +23,19 @@
       <template #content>
         <div class="flex flex-wrap gap-4 mb-4">
           <div class="flex flex-col gap-1">
-            <label class="text-surface-300 text-sm font-medium">訂單號</label>
+            <label class="text-surface-500 dark:text-surface-300 text-sm font-medium">訂單號</label>
             <InputText v-model="filters.orderId" placeholder="輸入訂單號" class="w-[220px]" />
           </div>
            <div class="flex flex-col gap-1">
-            <label class="text-surface-300 text-sm font-medium">會員 ID</label>
+            <label class="text-surface-500 dark:text-surface-300 text-sm font-medium">會員 ID</label>
             <InputText v-model="filters.memberId" placeholder="輸入會員 ID" class="w-[220px]" />
           </div>
           <div class="flex flex-col gap-1">
-            <label class="text-surface-300 text-sm font-medium">存款類型</label>
+            <label class="text-surface-500 dark:text-surface-300 text-sm font-medium">存款類型</label>
             <Dropdown v-model="filters.type" :options="typeOptions" optionLabel="label" optionValue="value" placeholder="選擇類型" class="w-[220px]" showClear />
           </div>
           <div class="flex flex-col gap-1">
-            <label class="text-surface-300 text-sm font-medium">狀態</label>
+            <label class="text-surface-500 dark:text-surface-300 text-sm font-medium">狀態</label>
             <Dropdown v-model="filters.status" :options="statusOptions" optionLabel="label" optionValue="value" placeholder="選擇狀態" class="w-[220px]" showClear />
           </div>
         </div>
@@ -48,16 +48,16 @@
     </Card>
 
     <!-- Deposit List Section -->
-    <Card class="bg-surface-800/50 border border-surface-700">
+    <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
       <template #title>
-        <div class="flex items-center gap-2 text-white text-lg">
-          <i class="pi pi-list text-purple-400"></i>
+        <div class="flex items-center gap-2 text-surface-900 dark:text-white text-lg">
+          <i class="pi pi-list text-purple-500 dark:text-purple-400"></i>
           存款申請列表
-           <span v-if="hasSearched" class="text-sm text-surface-400 font-normal ml-2">(共 {{ filteredOrders.length }} 筆)</span>
+           <span v-if="hasSearched" class="text-sm text-surface-500 dark:text-surface-400 font-normal ml-2">(共 {{ filteredOrders.length }} 筆)</span>
         </div>
       </template>
       <template #content>
-         <DataTable :value="filteredOrders" :loading="isSearching" stripedRows class="p-datatable-sm" :pt="{ table: { class: 'min-w-full' }, tbody: { class: 'text-surface-300' } }">
+         <DataTable :value="filteredOrders" :loading="isSearching" stripedRows class="p-datatable-sm" :pt="{ table: { class: 'min-w-full' }, tbody: { class: 'text-surface-700 dark:text-surface-300' } }">
             <template #empty>
               <div class="flex flex-col items-center justify-center py-12 text-center">
                 <i :class="['pi text-5xl mb-3', hasSearched ? 'pi-inbox text-surface-500' : 'pi-search text-surface-600']"></i>
@@ -66,7 +66,7 @@
             </template>
             <Column field="applyTime" header="申請時間" style="min-width: 160px">
                  <template #body="slotProps">
-                    <span class="text-sm text-surface-400">{{ slotProps.data.applyTime }}</span>
+                    <span class="text-sm text-surface-500 dark:text-surface-400">{{ slotProps.data.applyTime }}</span>
                 </template>
             </Column>
             <Column field="orderId" header="訂單號" style="min-width: 180px">
@@ -90,8 +90,8 @@
             <Column header="類型 / 備註" style="min-width: 200px">
                  <template #body="slotProps">
                     <div class="flex flex-col">
-                        <span class="text-white font-medium">{{ slotProps.data.type }}</span>
-                        <span class="text-xs text-surface-400 truncate max-w-[180px]" :title="slotProps.data.remark">{{ slotProps.data.remark || '-' }}</span>
+                        <span class="text-surface-900 dark:text-white font-medium">{{ slotProps.data.type }}</span>
+                        <span class="text-xs text-surface-500 dark:text-surface-400 truncate max-w-[180px]" :title="slotProps.data.remark">{{ slotProps.data.remark || '-' }}</span>
                     </div>
                 </template>
             </Column>
@@ -130,20 +130,21 @@
     <Dialog v-model:visible="auditModalVisible" modal :header="`手工存款審核 - ${currentOrder?.orderId}`" :style="{ width: '500px' }">
         <div v-if="currentOrder" class="flex flex-col gap-4">
              <!-- Member Snapshot -->
-             <div class="bg-surface-900/50 p-4 rounded border border-surface-700">
-                 <h4 class="text-surface-400 text-sm mb-3 font-bold">會員風險快照</h4>
+             <!-- Member Snapshot -->
+             <div class="bg-surface-100 dark:bg-surface-900 p-4 rounded border border-surface-200 dark:border-surface-700">
+                 <h4 class="text-surface-500 dark:text-surface-400 text-sm mb-3 font-bold">會員風險快照</h4>
                  <div class="grid grid-cols-2 gap-4">
                      <div>
                          <span class="text-surface-500 text-xs block">當前餘額</span>
-                         <span class="text-emerald-400 font-mono font-bold">{{ formatCurrency(currentOrder.memberSnapshot?.currentBalance || 0) }}</span>
+                         <span class="text-emerald-500 dark:text-emerald-400 font-mono font-bold">{{ formatCurrency(currentOrder.memberSnapshot?.currentBalance || 0) }}</span>
                      </div>
                      <div>
                          <span class="text-surface-500 text-xs block">近7日補單 (筆/額)</span>
-                         <span class="text-white font-mono">{{ currentOrder.memberSnapshot?.recentDepositCount }} 筆 / {{ formatCurrency(currentOrder.memberSnapshot?.recentDepositTotal || 0) }}</span>
+                         <span class="text-surface-900 dark:text-white font-mono">{{ currentOrder.memberSnapshot?.recentDepositCount }} 筆 / {{ formatCurrency(currentOrder.memberSnapshot?.recentDepositTotal || 0) }}</span>
                      </div>
                  </div>
                  <!-- Risk Warning -->
-                 <div v-if="(currentOrder.memberSnapshot?.recentDepositCount || 0) > 3" class="mt-3 flex items-center gap-2 text-yellow-500 text-xs bg-yellow-500/10 p-2 rounded">
+                 <div v-if="(currentOrder.memberSnapshot?.recentDepositCount || 0) > 3" class="mt-3 flex items-center gap-2 text-yellow-500 text-xs bg-yellow-50 dark:bg-yellow-500/10 p-2 rounded">
                      <i class="pi pi-exclamation-triangle"></i>
                      <span>警告：該會員近期頻繁補單，請謹慎審核。</span>
                  </div>
@@ -152,16 +153,16 @@
              <!-- Order Details Recap -->
              <div class="space-y-2">
                  <div class="flex justify-between text-sm">
-                     <span class="text-surface-400">申請金額</span>
-                     <span class="text-green-400 font-bold font-mono text-lg">{{ formatCurrency(currentOrder.amount) }}</span>
+                     <span class="text-surface-500 dark:text-surface-400">申請金額</span>
+                     <span class="text-green-500 dark:text-green-400 font-bold font-mono text-lg">{{ formatCurrency(currentOrder.amount) }}</span>
                  </div>
                  <div class="flex justify-between text-sm">
-                     <span class="text-surface-400">類型</span>
+                     <span class="text-surface-500 dark:text-surface-400">類型</span>
                      <span>{{ currentOrder.type }}</span>
                  </div>
                  <div class="flex justify-between text-sm">
-                     <span class="text-surface-400">備註</span>
-                     <span class="text-right text-surface-200">{{ currentOrder.remark }}</span>
+                     <span class="text-surface-500 dark:text-surface-400">備註</span>
+                     <span class="text-right text-surface-600 dark:text-surface-200">{{ currentOrder.remark }}</span>
                  </div>
              </div>
 
@@ -339,12 +340,7 @@ const getStatusSeverity = (status: string) => {
 <style scoped>
 :deep(.p-card .p-card-body) { padding: 1rem; }
 :deep(.p-card .p-card-content) { padding: 0; }
-:deep(.p-datatable .p-datatable-thead > tr > th) { background-color: rgba(30, 41, 59, 0.5); color: #94a3b8; border-color: rgba(71, 85, 105, 0.5); padding: 0.75rem 1rem; font-weight: 600; }
-:deep(.p-datatable .p-datatable-tbody > tr) { background-color: transparent; }
-:deep(.p-datatable .p-datatable-tbody > tr:nth-child(even)) { background-color: rgba(30, 41, 59, 0.3); }
-:deep(.p-datatable .p-datatable-tbody > tr > td) { border-color: rgba(71, 85, 105, 0.3); padding: 0.75rem 1rem; }
-:deep(.p-datatable .p-datatable-tbody > tr:hover) { background-color: rgba(59, 130, 246, 0.1); }
-:deep(.p-inputtext), :deep(.p-dropdown) { background-color: rgba(30, 41, 59, 0.5); border-color: rgba(71, 85, 105, 0.5); }
+:deep(.p-datatable-tbody > tr > td) { padding: 0.75rem 1rem; }
 .animate-fade-in { animation: fadeIn 0.3s ease-in-out; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
 </style>

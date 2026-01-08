@@ -1,11 +1,11 @@
 <template>
   <div class="p-6 space-y-6">
     <!-- Breadcrumb -->
-    <div class="flex items-center gap-2 text-sm text-surface-400">
-      <i class="pi pi-gift text-blue-400"></i>
-      <span class="text-surface-300">推廣活動</span>
+    <div class="flex items-center gap-2 text-sm text-surface-600 dark:text-surface-400">
+      <i class="pi pi-gift text-blue-500 dark:text-blue-400"></i>
+      <span class="text-surface-500 dark:text-surface-300">推廣活動</span>
       <span>></span>
-      <span class="text-white font-medium">成就設置 (上架版)</span>
+      <span class="text-surface-900 dark:text-surface-0 font-medium">成就設置 (上架版)</span>
     </div>
 
     <TabView class="p-tabview-custom" :activeInput="0">
@@ -19,11 +19,11 @@
             </template>
             <div class="space-y-6">
                  <!-- Active Schedule Section -->
-                <Card class="bg-surface-800/50 border border-surface-700">
+                <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
                     <template #title>
                         <div class="flex items-center justify-between">
-                            <div class="flex items-center gap-2 text-white text-lg">
-                                <i class="pi pi-calendar-clock text-blue-400"></i>
+                            <div class="flex items-center gap-2 text-surface-900 dark:text-white text-lg">
+                                <i class="pi pi-calendar-clock text-blue-500 dark:text-blue-400"></i>
                                 進度排程 (Schedules)
                             </div>
                             <Button label="新增排程" icon="pi pi-plus" severity="primary" @click="openScheduleDialog" />
@@ -32,15 +32,15 @@
                     <template #content>
                         <div class="grid grid-cols-1 gap-4">
                             <!-- Current Active -->
-                            <div class="bg-surface-900 border border-green-500/30 rounded-lg p-4 flex items-center justify-between relative overflow-hidden">
+                            <div class="bg-surface-0 dark:bg-surface-900 border border-green-500/30 rounded-lg p-4 flex items-center justify-between relative overflow-hidden">
                                 <div class="absolute top-0 right-0 bg-green-500 text-black text-xs font-bold px-2 py-1 rounded-bl">當前生效</div>
                                 <div class="flex items-center gap-4">
-                                    <div class="w-12 h-12 rounded-full bg-green-500/20 flex items-center justify-center text-green-400">
+                                    <div class="w-12 h-12 rounded-full bg-green-100 dark:bg-green-500/20 flex items-center justify-center text-green-600 dark:text-green-400">
                                         <i class="pi pi-check-circle text-2xl"></i>
                                     </div>
                                     <div>
-                                        <div class="text-white font-bold text-lg">{{ currentSchedule.templateName }}</div>
-                                        <div class="text-sm text-surface-400">
+                                        <div class="text-surface-900 dark:text-white font-bold text-lg">{{ currentSchedule.templateName }}</div>
+                                        <div class="text-sm text-surface-500 dark:text-surface-400">
                                             週期: {{ currentSchedule.days }} 天 | 
                                             <span v-if="currentSchedule.isDefault">預設兜底 (無排程時自動生效)</span>
                                             <span v-else>{{ (currentSchedule as any).startDate }} ~ {{ (currentSchedule as any).endDate }}</span>
@@ -51,13 +51,13 @@
                             </div>
 
                             <!-- Upcoming List -->
-                            <div v-for="sch in upcomingSchedules" :key="sch.id" class="bg-surface-900 border border-surface-700 rounded-lg p-4 flex items-center justify-between">
+                            <div v-for="sch in upcomingSchedules" :key="sch.id" class="bg-surface-0 dark:bg-surface-900 border border-surface-200 dark:border-surface-700 rounded-lg p-4 flex items-center justify-between">
                                 <div class="flex items-center gap-4">
-                                    <div class="w-12 h-12 rounded-full bg-surface-800 flex items-center justify-center text-surface-400">
+                                    <div class="w-12 h-12 rounded-full bg-surface-100 dark:bg-surface-800 flex items-center justify-center text-surface-400">
                                         <i class="pi pi-clock text-xl"></i>
                                     </div>
                                     <div>
-                                        <div class="text-surface-200 font-bold">{{ sch.templateName }}</div>
+                                        <div class="text-surface-700 dark:text-surface-200 font-bold">{{ sch.templateName }}</div>
                                         <div class="text-sm text-surface-500">
                                             {{ sch.startDate }} ~ {{ sch.endDate }}
                                         </div>
@@ -70,22 +70,22 @@
                 </Card>
 
                 <!-- Template Library -->
-                <Card class="bg-surface-800/50 border border-surface-700">
+                <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
                     <template #title>
                         <div class="flex items-center justify-between">
-                            <div class="flex items-center gap-2 text-white text-lg">
-                                <i class="pi pi-th-large text-purple-400"></i>
+                            <div class="flex items-center gap-2 text-surface-900 dark:text-white text-lg">
+                                <i class="pi pi-th-large text-purple-500 dark:text-purple-400"></i>
                                 模板庫 (Library)
                             </div>
                             <Button label="建立新模板" icon="pi pi-plus" severity="info" outlined @click="navigateToEditor" />
                         </div>
                     </template>
                     <template #content>
-                        <DataTable :value="templates" stripedRows class="p-datatable-sm" :pt="{ tbody: { class: 'text-surface-300' } }">
+                        <DataTable :value="templates" stripedRows class="p-datatable-sm" :pt="{ tbody: { class: 'text-surface-700 dark:text-surface-300' } }">
                             <Column field="name" header="模板名稱" style="min-width: 200px">
                                 <template #body="slotProps">
                                     <div class="flex items-center gap-2">
-                                        <span class="text-white font-medium">{{ slotProps.data.name }}</span>
+                                        <span class="text-surface-900 dark:text-white font-medium">{{ slotProps.data.name }}</span>
                                         <Tag v-if="slotProps.data.isDefault" value="預設" severity="success" class="text-xs" />
                                     </div>
                                 </template>
@@ -126,9 +126,9 @@
                     <Button label="新增任務" icon="pi pi-plus" severity="info" @click="addTask" />
                 </div>
                 
-                <Card class="bg-surface-800/50 border border-surface-700">
+                <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
                     <template #content>
-                        <DataTable :value="tasks" stripedRows class="p-datatable-sm" :pt="{ tbody: { class: 'text-surface-300' } }">
+                        <DataTable :value="tasks" stripedRows class="p-datatable-sm" :pt="{ tbody: { class: 'text-surface-700 dark:text-surface-300' } }">
                             <Column field="name" header="任務名稱" style="min-width: 150px">
                                 <template #body="slotProps">
                                     <InputText v-model="slotProps.data.name" class="w-full text-sm" placeholder="任務名稱" />
@@ -179,17 +179,17 @@
                     <span>積分設置</span>
                 </div>
             </template>
-             <Card class="bg-surface-800/50 border border-surface-700 max-w-2xl mx-auto">
+             <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700 max-w-2xl mx-auto">
                  <template #content>
-                    <div class="flex items-center justify-between bg-surface-900 p-6 rounded border border-surface-700 gap-8">
+                    <div class="flex items-center justify-between bg-surface-100 dark:bg-surface-900 p-6 rounded border border-surface-200 dark:border-surface-700 gap-8">
                         <div class="flex flex-col">
-                            <span class="text-white font-bold mb-2 text-lg">積分匯率 (Point Rate)</span>
+                            <span class="text-surface-900 dark:text-white font-bold mb-2 text-lg">積分匯率 (Point Rate)</span>
                             <span class="text-xs text-surface-500">設定積分與現金的兌換比例 (上架版通用)</span>
                         </div>
                         <div class="flex items-center gap-4">
-                            <span class="text-surface-400 text-sm">每 100 積分 = </span>
+                            <span class="text-surface-600 dark:text-surface-400 text-sm">每 100 積分 = </span>
                             <div style="width: 120px">
-                                <InputNumber v-model="pointRate" mode="currency" currency="TWD" locale="zh-TW" class="w-full" inputClass="text-center font-bold text-green-400" :showButtons="false" />
+                                <InputNumber v-model="pointRate" mode="currency" currency="TWD" locale="zh-TW" class="w-full" inputClass="text-center font-bold text-green-500 dark:text-green-400" :showButtons="false" />
                             </div>
                         </div>
                     </div>
@@ -344,8 +344,8 @@ const saveRate = () => {
 <style scoped>
 :deep(.p-card .p-card-body) { padding: 1.5rem; }
 :deep(.p-inputnumber-input) { text-align: center; } 
-:deep(.p-datatable .p-datatable-thead > tr > th) { background-color: rgba(30, 41, 59, 0.5); color: #94a3b8; padding: 0.75rem 1rem; }
-:deep(.p-tabview-nav) { background: transparent; border-bottom: 1px solid #334155; }
-:deep(.p-tabview-nav-link) { background: transparent !important; color: #94a3b8; border: none; font-weight: 500; }
-:deep(.p-highlight .p-tabview-nav-link) { color: #60a5fa !important; border-bottom: 2px solid #60a5fa; }
+:deep(.p-datatable-tbody > tr > td) { padding: 0.75rem 1rem; }
+:deep(.p-tabview-nav) { background: transparent; border-bottom: 1px solid var(--surface-border); }
+:deep(.p-tabview-nav-link) { background: transparent !important; color: var(--surface-500); border: none; font-weight: 500; }
+:deep(.p-highlight .p-tabview-nav-link) { color: var(--primary-color) !important; border-bottom: 2px solid var(--primary-color); }
 </style>

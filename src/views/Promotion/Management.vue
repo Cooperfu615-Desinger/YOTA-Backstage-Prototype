@@ -1,34 +1,34 @@
 <template>
   <div class="p-6 space-y-6">
     <!-- Breadcrumb -->
-    <div class="flex items-center gap-2 text-sm text-surface-400">
-      <i class="pi pi-gift text-blue-400"></i>
-      <span class="text-surface-300">推廣活動</span>
+    <div class="flex items-center gap-2 text-sm text-surface-600 dark:text-surface-400">
+      <i class="pi pi-gift text-blue-500 dark:text-blue-400"></i>
+      <span class="text-surface-500 dark:text-surface-300">推廣活動</span>
       <span>></span>
-      <span class="text-white font-medium">優惠管理</span>
+      <span class="text-surface-900 dark:text-surface-0 font-medium">優惠管理</span>
     </div>
 
     <!-- Main Content -->
     <div class="flex flex-col lg:flex-row gap-6">
         <!-- Left: List & Config -->
         <div class="flex-1 space-y-6">
-             <Card class="bg-surface-800/50 border border-surface-700">
+             <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
                 <template #title>
                     <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-2 text-white text-lg">
-                            <i class="pi pi-list text-blue-400"></i>
+                        <div class="flex items-center gap-2 text-surface-900 dark:text-white text-lg">
+                            <i class="pi pi-list text-blue-500 dark:text-blue-400"></i>
                             活動列表管理
                         </div>
                         <!-- SaaS/Platform Switch -->
-                        <div class="flex items-center gap-2 bg-surface-900 px-3 py-1 rounded-full border border-surface-700">
-                            <span :class="mode === 'saas' ? 'text-white font-bold' : 'text-surface-500 text-sm'">上架版 (SaaS)</span>
+                        <div class="flex items-center gap-2 bg-surface-100 dark:bg-surface-900 px-3 py-1 rounded-full border border-surface-200 dark:border-surface-700">
+                            <span :class="mode === 'saas' ? 'text-surface-900 dark:text-white font-bold' : 'text-surface-500 text-sm'">上架版 (SaaS)</span>
                             <InputSwitch v-model="isPlatformMode" @change="toggleMode" />
-                            <span :class="mode === 'platform' ? 'text-white font-bold' : 'text-surface-500 text-sm'">包網版 (Platform)</span>
+                            <span :class="mode === 'platform' ? 'text-surface-900 dark:text-white font-bold' : 'text-surface-500 text-sm'">包網版 (Platform)</span>
                         </div>
                     </div>
                 </template>
                 <template #content>
-                     <DataTable :value="activities" selectionMode="single" v-model:selection="selectedActivity" stripedRows class="p-datatable-sm" :pt="{ table: { class: 'min-w-full' }, tbody: { class: 'text-surface-300' } }">
+                     <DataTable :value="activities" selectionMode="single" v-model:selection="selectedActivity" stripedRows class="p-datatable-sm" :pt="{ table: { class: 'min-w-full' }, tbody: { class: 'text-surface-700 dark:text-surface-300' } }">
                         <Column field="name" header="活動名稱"></Column>
                         <Column header="狀態" style="width: 100px">
                              <template #body="slotProps">
@@ -47,17 +47,17 @@
 
         <!-- Right: Preview -->
         <div class="w-full lg:w-[400px]">
-            <Card class="bg-surface-800/50 border border-surface-700 h-full">
+            <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700 h-full">
                 <template #title>
-                     <div class="flex items-center gap-2 text-white text-lg">
-                        <i class="pi pi-mobile text-purple-400"></i>
+                     <div class="flex items-center gap-2 text-surface-900 dark:text-white text-lg">
+                        <i class="pi pi-mobile text-purple-500 dark:text-purple-400"></i>
                         預覽效果
                     </div>
                 </template>
                 <template #content>
-                    <div class="bg-black/40 rounded-xl overflow-hidden border border-surface-700 h-[600px] flex flex-col relative">
+                    <div class="bg-surface-100 dark:bg-black/40 rounded-xl overflow-hidden border border-surface-200 dark:border-surface-700 h-[600px] flex flex-col relative">
                         <!-- Mock Header -->
-                        <div class="bg-surface-900 p-4 flex items-center justify-center text-white font-bold border-b border-surface-700">
+                        <div class="bg-surface-0 dark:bg-surface-900 p-4 flex items-center justify-center text-surface-900 dark:text-white font-bold border-b border-surface-200 dark:border-surface-700">
                             優惠詳情
                         </div>
                         
@@ -123,10 +123,7 @@ const toggleMode = () => {
 
 <style scoped>
 :deep(.p-card .p-card-body) { padding: 1rem; }
-:deep(.p-datatable .p-datatable-thead > tr > th) { background-color: rgba(30, 41, 59, 0.5); color: #94a3b8; border-color: rgba(71, 85, 105, 0.5); padding: 0.75rem 1rem; font-weight: 600; }
-:deep(.p-datatable .p-datatable-tbody > tr) { background-color: transparent; cursor: pointer; }
-:deep(.p-datatable .p-datatable-tbody > tr:nth-child(even)) { background-color: rgba(30, 41, 59, 0.3); }
-:deep(.p-datatable .p-datatable-tbody > tr:hover) { background-color: rgba(59, 130, 246, 0.1); }
+:deep(.p-datatable-tbody > tr > td) { padding: 0.75rem 1rem; }
 :deep(.p-inputswitch.p-inputswitch-checked .p-inputswitch-slider) { background: #3b82f6; } /* Customizing switch color */
 
 .custom-scrollbar::-webkit-scrollbar { width: 4px; }

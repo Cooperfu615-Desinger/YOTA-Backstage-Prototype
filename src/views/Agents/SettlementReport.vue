@@ -1,27 +1,27 @@
 <template>
   <div class="p-6 space-y-6">
     <!-- Breadcrumb -->
-    <div class="flex items-center gap-2 text-sm text-surface-400">
-      <i class="pi pi-sitemap text-blue-400"></i>
-      <span class="text-surface-300">代理管理</span>
+    <div class="flex items-center gap-2 text-sm text-surface-600 dark:text-surface-400">
+      <i class="pi pi-sitemap text-blue-500 dark:text-blue-400"></i>
+      <span class="text-surface-500 dark:text-surface-300">代理管理</span>
       <span>></span>
-      <span class="text-white font-medium">佣金結算報表</span>
+      <span class="text-surface-900 dark:text-surface-0 font-medium">佣金結算報表</span>
     </div>
 
     <!-- Search Panel -->
-    <Card class="bg-surface-800/50 border border-surface-700">
+    <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
       <template #content>
         <div class="flex items-center gap-4 flex-wrap">
           <div>
-            <label class="text-surface-400 text-sm mb-2 block">代理帳號</label>
+            <label class="text-surface-700 dark:text-surface-300 text-sm mb-2 block">代理帳號</label>
             <InputText v-model="filters.account" placeholder="搜尋代理帳號" class="w-[220px]" />
           </div>
           <div>
-            <label class="text-surface-400 text-sm mb-2 block">結算週期</label>
+            <label class="text-surface-700 dark:text-surface-300 text-sm mb-2 block">結算週期</label>
             <Calendar v-model="filters.period" view="month" dateFormat="yy/mm" placeholder="選擇月份" class="w-[220px]" />
           </div>
           <div>
-            <label class="text-surface-400 text-sm mb-2 block">發放狀態</label>
+            <label class="text-surface-700 dark:text-surface-300 text-sm mb-2 block">發放狀態</label>
             <Dropdown v-model="filters.status" :options="statusOptions" placeholder="選擇狀態" class="w-[220px]" />
           </div>
           <div class="flex items-end gap-2">
@@ -38,28 +38,28 @@
     </Card>
 
     <!-- Settlement Report Table -->
-    <Card class="bg-surface-800/50 border border-surface-700">
+    <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
       <template #title>
-        <div class="flex items-center gap-2 text-white text-lg">
-          <i class="pi pi-calculator text-green-400"></i>
+        <div class="flex items-center gap-2 text-surface-900 dark:text-white text-lg">
+          <i class="pi pi-calculator text-green-500 dark:text-green-400"></i>
           佣金結算報表
         </div>
       </template>
       <template #content>
-         <DataTable :value="filteredReports" stripedRows class="p-datatable-sm" :pt="{ table: { class: 'min-w-full' }, tbody: { class: 'text-surface-300' } }">
+         <DataTable :value="filteredReports" stripedRows class="p-datatable-sm" :pt="{ table: { class: 'min-w-full' }, tbody: { class: 'text-surface-700 dark:text-surface-300' } }">
             <Column field="period" header="結算區間" style="min-width: 120px">
                  <template #body="slotProps">
-                     <span class="text-white">{{ slotProps.data.period }}</span>
+                     <span class="text-surface-900 dark:text-white">{{ slotProps.data.period }}</span>
                 </template>
             </Column>
             <Column field="account" header="代理帳號" style="min-width: 130px">
                  <template #body="slotProps">
-                     <span class="text-blue-400 font-medium">{{ slotProps.data.account }}</span>
+                     <span class="text-blue-500 dark:text-blue-400 font-medium">{{ slotProps.data.account }}</span>
                 </template>
             </Column>
             <Column field="teamPL" header="團隊總盈虧" style="min-width: 140px">
                  <template #body="slotProps">
-                     <span :class="slotProps.data.teamPL >= 0 ? 'text-green-400' : 'text-red-400'" class="font-mono font-bold">
+                     <span :class="slotProps.data.teamPL >= 0 ? 'text-green-500 dark:text-green-400' : 'text-red-500 dark:text-red-400'" class="font-mono font-bold">
                          {{ formatCurrency(slotProps.data.teamPL) }}
                      </span>
                 </template>
@@ -67,30 +67,30 @@
             <Column header="各項扣除" style="min-width: 160px">
                  <template #body="slotProps">
                      <div class="space-y-1 text-sm">
-                         <div class="text-orange-400">紅利: {{ formatCurrency(slotProps.data.bonusDeduction) }}</div>
-                         <div class="text-purple-400">場館費: {{ formatCurrency(slotProps.data.platformFee) }}</div>
+                         <div class="text-orange-500 dark:text-orange-400">紅利: {{ formatCurrency(slotProps.data.bonusDeduction) }}</div>
+                         <div class="text-purple-500 dark:text-purple-400">場館費: {{ formatCurrency(slotProps.data.platformFee) }}</div>
                      </div>
                 </template>
             </Column>
             <Column field="netProfit" header="淨利潤" style="min-width: 130px">
                  <template #body="slotProps">
-                     <span :class="slotProps.data.netProfit >= 0 ? 'text-green-400' : 'text-red-400'" class="font-mono font-bold">
+                     <span :class="slotProps.data.netProfit >= 0 ? 'text-green-500 dark:text-green-400' : 'text-red-500 dark:text-red-400'" class="font-mono font-bold">
                          {{ formatCurrency(slotProps.data.netProfit) }}
                      </span>
                 </template>
             </Column>
             <Column field="commissionRate" header="佔成比例" style="min-width: 100px">
                  <template #body="slotProps">
-                     <span class="font-mono text-yellow-400">{{ slotProps.data.commissionRate }}%</span>
+                     <span class="font-mono text-yellow-500 dark:text-yellow-400">{{ slotProps.data.commissionRate }}%</span>
                 </template>
             </Column>
             <Column field="finalCommission" header="預計佣金" style="min-width: 150px">
                  <template #body="slotProps">
-                     <div v-if="slotProps.data.finalCommission >= 0" class="font-mono text-green-400 font-bold text-lg">
+                     <div v-if="slotProps.data.finalCommission >= 0" class="font-mono text-green-500 dark:text-green-400 font-bold text-lg">
                          {{ formatCurrency(slotProps.data.finalCommission) }}
                      </div>
                      <div v-else class="flex flex-col items-start">
-                         <span class="font-mono text-red-400 font-bold text-lg">
+                         <span class="font-mono text-red-500 dark:text-red-400 font-bold text-lg">
                              {{ formatCurrency(slotProps.data.finalCommission) }}
                          </span>
                          <Tag value="結轉下月" severity="danger" class="scale-75 origin-left" />
@@ -115,46 +115,46 @@
     </Card>
 
     <!-- Settlement Detail Dialog -->
-    <Dialog v-model:visible="detailDialogVisible" modal :header="`結算明細 - ${currentReport?.account}`" :style="{ width: '800px' }">
+    <Dialog v-model:visible="detailDialogVisible" modal :header="`結算明細 - ${currentReport?.account}`" :style="{ width: '800px' }" :pt="{ root: { class: 'bg-surface-0 dark:bg-surface-900 border border-surface-200 dark:border-surface-700' }, header: { class: 'bg-surface-50 dark:bg-surface-800' }, content: { class: 'bg-surface-0 dark:bg-surface-900' } }">
         <div v-if="currentReport" class="space-y-4">
-            <div class="grid grid-cols-3 gap-4 p-4 bg-surface-900 rounded">
+            <div class="grid grid-cols-3 gap-4 p-4 bg-surface-100 dark:bg-surface-900 rounded border border-surface-200 dark:border-surface-700">
                 <div>
-                    <div class="text-surface-400 text-sm">結算區間</div>
-                    <div class="text-white font-bold">{{ currentReport.period }}</div>
+                    <div class="text-surface-500 dark:text-surface-400 text-sm">結算區間</div>
+                    <div class="text-surface-900 dark:text-white font-bold">{{ currentReport.period }}</div>
                 </div>
                 <div>
-                    <div class="text-surface-400 text-sm">團隊總盈虧</div>
-                    <div :class="currentReport.teamPL >= 0 ? 'text-green-400' : 'text-red-400'" class="font-mono font-bold">
+                    <div class="text-surface-500 dark:text-surface-400 text-sm">團隊總盈虧</div>
+                    <div :class="currentReport.teamPL >= 0 ? 'text-green-500 dark:text-green-400' : 'text-red-500 dark:text-red-400'" class="font-mono font-bold">
                         {{ formatCurrency(currentReport.teamPL) }}
                     </div>
                 </div>
                 <div>
-                    <div class="text-surface-400 text-sm">預計佣金</div>
-                    <div class="text-green-400 font-mono font-bold text-lg">{{ formatCurrency(currentReport.finalCommission) }}</div>
+                    <div class="text-surface-500 dark:text-surface-400 text-sm">預計佣金</div>
+                    <div class="text-green-500 dark:text-green-400 font-mono font-bold text-lg">{{ formatCurrency(currentReport.finalCommission) }}</div>
                 </div>
             </div>
 
             <DataTable :value="currentReport.memberContributions" stripedRows class="p-datatable-sm">
                 <Column field="memberAccount" header="會員帳號" style="min-width: 130px">
                      <template #body="slotProps">
-                         <span class="text-blue-400">{{ slotProps.data.memberAccount }}</span>
+                         <span class="text-blue-500 dark:text-blue-400">{{ slotProps.data.memberAccount }}</span>
                     </template>
                 </Column>
                 <Column field="totalBets" header="總投注" style="min-width: 120px">
                      <template #body="slotProps">
-                         <span class="font-mono text-white">{{ formatCurrency(slotProps.data.totalBets) }}</span>
+                         <span class="font-mono text-surface-900 dark:text-white">{{ formatCurrency(slotProps.data.totalBets) }}</span>
                     </template>
                 </Column>
                 <Column field="memberPL" header="會員盈虧" style="min-width: 120px">
                      <template #body="slotProps">
-                         <span :class="slotProps.data.memberPL >= 0 ? 'text-green-400' : 'text-red-400'" class="font-mono font-bold">
+                         <span :class="slotProps.data.memberPL >= 0 ? 'text-green-500 dark:text-green-400' : 'text-red-500 dark:text-red-400'" class="font-mono font-bold">
                              {{ formatCurrency(slotProps.data.memberPL) }}
                          </span>
                     </template>
                 </Column>
                 <Column field="bonusAllocation" header="應分攤紅利" style="min-width: 120px">
                      <template #body="slotProps">
-                         <span class="font-mono text-orange-400">{{ formatCurrency(slotProps.data.bonusAllocation) }}</span>
+                         <span class="font-mono text-orange-500 dark:text-orange-400">{{ formatCurrency(slotProps.data.bonusAllocation) }}</span>
                     </template>
                 </Column>
             </DataTable>
@@ -344,12 +344,6 @@ const formatCurrency = (val: number) => new Intl.NumberFormat('zh-TW', { style: 
 </script>
 
 <style scoped>
-:deep(.p-card .p-card-body) { padding: 1rem; }
-:deep(.p-card .p-card-content) { padding: 0; }
-:deep(.p-datatable .p-datatable-thead > tr > th) { background-color: rgba(30, 41, 59, 0.5); color: #94a3b8; border-color: rgba(71, 85, 105, 0.5); padding: 0.75rem 1rem; font-weight: 600; }
-:deep(.p-datatable .p-datatable-tbody > tr) { background-color: transparent; }
-:deep(.p-datatable .p-datatable-tbody > tr:nth-child(even)) { background-color: rgba(30, 41, 59, 0.3); }
-:deep(.p-datatable .p-datatable-tbody > tr > td) { border-color: rgba(71, 85, 105, 0.3); padding: 0.75rem 1rem; }
-:deep(.p-datatable .p-datatable-tbody > tr:hover) { background-color: rgba(59, 130, 246, 0.1); }
-:deep(.p-inputtext), :deep(.p-dropdown), :deep(.p-calendar) { background-color: rgba(30, 41, 59, 0.5); border-color: rgba(71, 85, 105, 0.5); }
+:deep(.p-card .p-card-body) { padding: 1.5rem; }
+:deep(.p-datatable-tbody > tr > td) { padding: 0.75rem 1rem; }
 </style>

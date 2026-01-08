@@ -1,26 +1,26 @@
 <template>
   <div class="p-6 space-y-6">
     <!-- Breadcrumb -->
-    <div class="flex items-center gap-2 text-sm text-surface-400">
-      <i class="pi pi-wallet text-blue-400"></i>
-      <span class="text-surface-300">財務管理</span>
+    <div class="flex items-center gap-2 text-sm text-surface-600 dark:text-surface-400">
+      <i class="pi pi-wallet text-blue-500 dark:text-blue-400"></i>
+      <span class="text-surface-500 dark:text-surface-300">財務管理</span>
       <span>></span>
-      <span class="text-white font-medium">自動金流配置</span>
+      <span class="text-surface-900 dark:text-surface-0 font-medium">自動金流配置</span>
     </div>
 
     <!-- Auto-Approval Mode Toggle -->
-    <Card class="bg-surface-800/50 border border-surface-700">
+    <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
       <template #title>
         <div class="flex items-center justify-between">
-          <div class="flex items-center gap-2 text-white text-lg">
-            <i class="pi pi-cog text-blue-400"></i>
+          <div class="flex items-center gap-2 text-surface-900 dark:text-white text-lg">
+            <i class="pi pi-cog text-blue-500 dark:text-blue-400"></i>
             自動審核模式
           </div>
           <InputSwitch v-model="autoApprovalEnabled" @change="handleModeToggle" />
         </div>
       </template>
       <template #content>
-        <div class="text-sm text-surface-400">
+        <div class="text-sm text-surface-500 dark:text-surface-400">
           啟用後，符合條件的提款申請將自動通過審核，無需人工介入。請謹慎配置自動通過規則。
         </div>
       </template>
@@ -28,17 +28,17 @@
 
     <!-- Auto-Approval Rules -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-      <Card class="bg-surface-800/50 border border-surface-700">
+      <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
         <template #title>
-          <div class="flex items-center gap-2 text-white text-base">
-            <i class="pi pi-dollar text-green-400"></i>
+          <div class="flex items-center gap-2 text-surface-900 dark:text-white text-base">
+            <i class="pi pi-dollar text-green-500 dark:text-green-400"></i>
             金額上限
           </div>
         </template>
         <template #content>
           <div class="space-y-3">
             <div class="flex flex-col gap-1">
-              <label class="text-surface-300 text-sm">自動通過金額上限</label>
+              <label class="text-surface-500 dark:text-surface-300 text-sm">自動通過金額上限</label>
               <InputNumber v-model="rules.maxAmount" mode="currency" currency="TWD" locale="zh-TW" :minFractionDigits="0" :disabled="!autoApprovalEnabled" />
             </div>
             <div class="text-xs text-surface-500">
@@ -48,17 +48,17 @@
         </template>
       </Card>
 
-      <Card class="bg-surface-800/50 border border-surface-700">
+      <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
         <template #title>
-          <div class="flex items-center gap-2 text-white text-base">
-            <i class="pi pi-star text-yellow-400"></i>
+          <div class="flex items-center gap-2 text-surface-900 dark:text-white text-base">
+            <i class="pi pi-star text-yellow-500 dark:text-yellow-400"></i>
             會員等級
           </div>
         </template>
         <template #content>
           <div class="space-y-3">
             <div class="flex flex-col gap-1">
-              <label class="text-surface-300 text-sm">最低會員等級</label>
+              <label class="text-surface-500 dark:text-surface-300 text-sm">最低會員等級</label>
               <Dropdown v-model="rules.minVipLevel" :options="vipLevelOptions" optionLabel="label" optionValue="value" :disabled="!autoApprovalEnabled" />
             </div>
             <div class="text-xs text-surface-500">
@@ -68,17 +68,17 @@
         </template>
       </Card>
 
-      <Card class="bg-surface-800/50 border border-surface-700">
+      <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
         <template #title>
-          <div class="flex items-center gap-2 text-white text-base">
-            <i class="pi pi-chart-line text-purple-400"></i>
+          <div class="flex items-center gap-2 text-surface-900 dark:text-white text-base">
+            <i class="pi pi-chart-line text-purple-500 dark:text-purple-400"></i>
             打碼量要求
           </div>
         </template>
         <template #content>
           <div class="space-y-3">
             <div class="flex flex-col gap-1">
-              <label class="text-surface-300 text-sm">打碼量達成率</label>
+              <label class="text-surface-500 dark:text-surface-300 text-sm">打碼量達成率</label>
               <InputNumber v-model="rules.rolloverPercentage" suffix="%" :min="0" :max="100" :disabled="!autoApprovalEnabled" />
             </div>
             <div class="text-xs text-surface-500">
@@ -90,17 +90,17 @@
     </div>
 
     <!-- Alert Settings -->
-    <Card class="bg-surface-800/50 border border-surface-700">
+    <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
       <template #title>
-        <div class="flex items-center gap-2 text-white text-lg">
-          <i class="pi pi-exclamation-triangle text-orange-400"></i>
+        <div class="flex items-center gap-2 text-surface-900 dark:text-white text-lg">
+          <i class="pi pi-exclamation-triangle text-orange-500 dark:text-orange-400"></i>
           警示設定
         </div>
       </template>
       <template #content>
         <div class="flex items-center gap-4">
           <div class="flex flex-col gap-1 flex-1">
-            <label class="text-surface-300 text-sm font-medium">強制人工審核閾值</label>
+            <label class="text-surface-500 dark:text-surface-300 text-sm font-medium">強制人工審核閾值</label>
             <InputNumber v-model="alertSettings.forceManualThreshold" mode="currency" currency="TWD" locale="zh-TW" :minFractionDigits="0" class="w-[300px]" />
             <small class="text-surface-500">當單筆提款金額超過此數值時，強制轉為人工審核</small>
           </div>
@@ -110,21 +110,21 @@
     </Card>
 
     <!-- Gateway Balancing -->
-    <Card class="bg-surface-800/50 border border-surface-700">
+    <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
       <template #title>
         <div class="flex items-center justify-between">
-          <div class="flex items-center gap-2 text-white text-lg">
-            <i class="pi pi-server text-cyan-400"></i>
+          <div class="flex items-center gap-2 text-surface-900 dark:text-white text-lg">
+            <i class="pi pi-server text-cyan-500 dark:text-cyan-400"></i>
             通道權重與分流
           </div>
           <div class="flex items-center gap-2">
-            <span class="text-sm text-surface-400">自動切換備用通道</span>
+            <span class="text-sm text-surface-500 dark:text-surface-400">自動切換備用通道</span>
             <InputSwitch v-model="gatewaySettings.autoFailover" />
           </div>
         </div>
       </template>
       <template #content>
-         <DataTable :value="gateways" stripedRows class="p-datatable-sm" :pt="{ table: { class: 'min-w-full' }, tbody: { class: 'text-surface-300' } }">
+         <DataTable :value="gateways" stripedRows class="p-datatable-sm" :pt="{ table: { class: 'min-w-full' }, tbody: { class: 'text-surface-700 dark:text-surface-300' } }">
             <Column field="merchantName" header="商號名稱" style="min-width: 200px">
                  <template #body="slotProps">
                     <div class="flex items-center gap-2">
@@ -147,7 +147,7 @@
                                 value: { class: slotProps.data.successRate >= 90 ? 'bg-green-500' : slotProps.data.successRate >= 70 ? 'bg-yellow-500' : 'bg-red-500' } 
                             }" 
                         />
-                        <span :class="slotProps.data.successRate >= 90 ? 'text-green-400' : slotProps.data.successRate >= 70 ? 'text-yellow-400' : 'text-red-400'">
+                        <span :class="slotProps.data.successRate >= 90 ? 'text-green-500 dark:text-green-400' : slotProps.data.successRate >= 70 ? 'text-yellow-500 dark:text-yellow-400' : 'text-red-500 dark:text-red-400'">
                             {{ slotProps.data.successRate }}%
                         </span>
                     </div>
@@ -279,10 +279,5 @@ const formatCurrency = (val: number) => new Intl.NumberFormat('zh-TW', { style: 
 <style scoped>
 :deep(.p-card .p-card-body) { padding: 1rem; }
 :deep(.p-card .p-card-content) { padding: 0; }
-:deep(.p-datatable .p-datatable-thead > tr > th) { background-color: rgba(30, 41, 59, 0.5); color: #94a3b8; border-color: rgba(71, 85, 105, 0.5); padding: 0.75rem 1rem; font-weight: 600; }
-:deep(.p-datatable .p-datatable-tbody > tr) { background-color: transparent; }
-:deep(.p-datatable .p-datatable-tbody > tr:nth-child(even)) { background-color: rgba(30, 41, 59, 0.3); }
-:deep(.p-datatable .p-datatable-tbody > tr > td) { border-color: rgba(71, 85, 105, 0.3); padding: 0.75rem 1rem; }
-:deep(.p-datatable .p-datatable-tbody > tr:hover) { background-color: rgba(59, 130, 246, 0.1); }
-:deep(.p-inputnumber), :deep(.p-dropdown) { background-color: rgba(30, 41, 59, 0.5); border-color: rgba(71, 85, 105, 0.5); }
+:deep(.p-datatable-tbody > tr > td) { padding: 0.75rem 1rem; }
 </style>

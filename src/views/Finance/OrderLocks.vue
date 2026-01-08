@@ -1,21 +1,21 @@
 <template>
   <div class="p-6 space-y-6">
     <!-- Breadcrumb -->
-    <div class="flex items-center gap-2 text-sm text-surface-400">
-      <i class="pi pi-wallet text-blue-400"></i>
-      <span class="text-surface-300">財務管理</span>
+    <div class="flex items-center gap-2 text-sm text-surface-600 dark:text-surface-400">
+      <i class="pi pi-wallet text-blue-500 dark:text-blue-400"></i>
+      <span class="text-surface-500 dark:text-surface-300">財務管理</span>
       <span>></span>
-      <span class="text-surface-300">審核管理</span>
+      <span class="text-surface-500 dark:text-surface-300">審核管理</span>
       <span>></span>
-      <span class="text-white font-medium">鎖單管理</span>
+      <span class="text-surface-900 dark:text-surface-0 font-medium">鎖單管理</span>
     </div>
 
     <!-- Search Section -->
-    <Card class="bg-surface-800/50 border border-surface-700">
+    <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
       <template #title>
         <div class="flex items-center justify-between">
-          <div class="flex items-center gap-2 text-white text-lg">
-            <i class="pi pi-search text-blue-400"></i>
+          <div class="flex items-center gap-2 text-surface-900 dark:text-white text-lg">
+            <i class="pi pi-search text-blue-500 dark:text-blue-400"></i>
             鎖單查詢
           </div>
         </div>
@@ -23,19 +23,19 @@
       <template #content>
         <div class="flex flex-wrap gap-4 mb-4">
           <div class="flex flex-col gap-1">
-            <label class="text-surface-300 text-sm font-medium">訂單號</label>
+            <label class="text-surface-500 dark:text-surface-300 text-sm font-medium">訂單號</label>
             <InputText v-model="filters.orderId" placeholder="輸入訂單號" class="w-[220px]" />
           </div>
            <div class="flex flex-col gap-1">
-            <label class="text-surface-300 text-sm font-medium">處理人</label>
+            <label class="text-surface-500 dark:text-surface-300 text-sm font-medium">處理人</label>
             <InputText v-model="filters.processor" placeholder="輸入處理人" class="w-[220px]" />
           </div>
           <div class="flex flex-col gap-1">
-            <label class="text-surface-300 text-sm font-medium">業務類型</label>
+            <label class="text-surface-500 dark:text-surface-300 text-sm font-medium">業務類型</label>
             <Dropdown v-model="filters.businessType" :options="businessTypeOptions" optionLabel="label" optionValue="value" placeholder="選擇業務類型" class="w-[220px]" showClear />
           </div>
           <div class="flex flex-col gap-1">
-            <label class="text-surface-300 text-sm font-medium">鎖定時長超過</label>
+            <label class="text-surface-500 dark:text-surface-300 text-sm font-medium">鎖定時長超過</label>
             <Dropdown v-model="filters.minDuration" :options="durationOptions" optionLabel="label" optionValue="value" placeholder="選擇時長" class="w-[220px]" showClear />
           </div>
         </div>
@@ -48,25 +48,25 @@
     </Card>
 
     <!-- Lock Orders List Section -->
-    <Card class="bg-surface-800/50 border border-surface-700">
+    <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
       <template #title>
-        <div class="flex items-center gap-2 text-white text-lg">
-          <i class="pi pi-lock text-orange-400"></i>
+        <div class="flex items-center gap-2 text-surface-900 dark:text-white text-lg">
+          <i class="pi pi-lock text-orange-500 dark:text-orange-400"></i>
           鎖定訂單列表
-           <span v-if="hasSearched" class="text-sm text-surface-400 font-normal ml-2">(共 {{ filteredOrders.length }} 筆)</span>
+           <span v-if="hasSearched" class="text-sm text-surface-500 dark:text-surface-400 font-normal ml-2">(共 {{ filteredOrders.length }} 筆)</span>
         </div>
       </template>
       <template #content>
-         <DataTable :value="filteredOrders" :loading="isSearching" stripedRows class="p-datatable-sm" :rowClass="rowClass" :pt="{ table: { class: 'min-w-full' }, tbody: { class: 'text-surface-300' } }">
+         <DataTable :value="filteredOrders" :loading="isSearching" stripedRows class="p-datatable-sm" :rowClass="rowClass" :pt="{ table: { class: 'min-w-full' }, tbody: { class: 'text-surface-700 dark:text-surface-300' } }">
             <template #empty>
               <div class="flex flex-col items-center justify-center py-12 text-center">
-                <i :class="['pi text-5xl mb-3', hasSearched ? 'pi-inbox text-surface-500' : 'pi-search text-surface-600']"></i>
-                <p class="text-surface-400">{{ hasSearched ? '暫無鎖定訂單' : '請先設定搜尋條件並點擊「搜尋」按鈕' }}</p>
+                <i :class="['pi text-5xl mb-3', hasSearched ? 'pi-inbox text-surface-500' : 'pi-search text-surface-500']"></i>
+                <p class="text-surface-500 dark:text-surface-400">{{ hasSearched ? '暫無鎖定訂單' : '請先設定搜尋條件並點擊「搜尋」按鈕' }}</p>
               </div>
             </template>
             <Column field="orderId" header="訂單號" style="min-width: 180px">
                 <template #body="slotProps">
-                    <span class="font-mono text-sm text-blue-400 cursor-pointer hover:underline" 
+                    <span class="font-mono text-sm text-blue-500 dark:text-blue-400 cursor-pointer hover:underline" 
                           @click="handleOrderClick(slotProps.data)"
                           v-tooltip.top="'點擊查看訂單詳細資訊與審核進度'">
                         {{ slotProps.data.orderId }}
@@ -88,13 +88,13 @@
             </Column>
             <Column field="lockTime" header="鎖定時間" style="min-width: 160px">
                  <template #body="slotProps">
-                    <span class="text-sm text-surface-400">{{ slotProps.data.lockTime }}</span>
+                    <span class="text-sm text-surface-500 dark:text-surface-400">{{ slotProps.data.lockTime }}</span>
                 </template>
             </Column>
             <Column header="已鎖定時長" style="min-width: 140px">
                  <template #body="slotProps">
                     <div class="flex items-center gap-2">
-                        <span :class="getDuration(slotProps.data.lockTime) > 15 * 60 ? 'text-red-400 font-bold' : 'text-surface-300'">
+                        <span :class="getDuration(slotProps.data.lockTime) > 15 * 60 ? 'text-red-500 dark:text-red-400 font-bold' : 'text-surface-500 dark:text-surface-300'">
                             {{ formatDuration(slotProps.data.lockTime) }}
                         </span>
                         <i v-if="getDuration(slotProps.data.lockTime) > 15 * 60" 
@@ -122,11 +122,11 @@
     <!-- Withdrawal Audit Modal -->
     <Dialog v-model:visible="withdrawalModalVisible" modal :header="`提款審核決策看板 - ${currentWithdrawalOrder?.orderId}`" :style="{ width: '1000px' }" class="p-0">
         <div v-if="currentWithdrawalOrder" class="flex flex-col h-full">
-            <div class="grid grid-cols-12 gap-6 p-6 bg-surface-900/50">
-                <div class="col-span-4 border-r border-surface-700 pr-6">
-                    <h3 class="text-surface-400 text-sm mb-3 font-medium">會員資訊與風險</h3>
+            <div class="grid grid-cols-12 gap-6 p-6 bg-surface-50 dark:bg-surface-900/50">
+                <div class="col-span-4 border-r border-surface-200 dark:border-surface-700 pr-6">
+                    <h3 class="text-surface-500 dark:text-surface-400 text-sm mb-3 font-medium">會員資訊與風險</h3>
                     <div class="flex items-center gap-2 mb-2">
-                        <span class="text-2xl font-bold text-white">{{ currentWithdrawalOrder.memberId }}</span>
+                        <span class="text-2xl font-bold text-surface-900 dark:text-white">{{ currentWithdrawalOrder.memberId }}</span>
                     </div>
                     <div class="flex flex-wrap gap-2 mb-4">
                         <Tag v-for="tag in currentWithdrawalOrder.tags" :key="tag" :value="tag" 
@@ -134,49 +134,49 @@
                              :class="{'animate-pulse': tag === '高風險'}" />
                     </div>
                 </div>
-                <div class="col-span-4 border-r border-surface-700 pr-6 pl-2">
-                     <h3 class="text-surface-400 text-sm mb-3 font-medium">財務統計概覽</h3>
+                <div class="col-span-4 border-r border-surface-200 dark:border-surface-700 pr-6 pl-2">
+                     <h3 class="text-surface-500 dark:text-surface-400 text-sm mb-3 font-medium">財務統計概覽</h3>
                      <div class="space-y-3">
                          <div class="flex justify-between items-center">
-                             <span class="text-surface-400">總存款</span>
-                             <span class="text-emerald-400 font-mono">{{ formatCurrency(currentWithdrawalOrder.financialStats.totalDeposit) }}</span>
+                             <span class="text-surface-500 dark:text-surface-400">總存款</span>
+                             <span class="text-green-500 dark:text-emerald-400 font-mono">{{ formatCurrency(currentWithdrawalOrder.financialStats.totalDeposit) }}</span>
                          </div>
                          <div class="flex justify-between items-center">
-                             <span class="text-surface-400">總提款</span>
-                             <span class="text-orange-400 font-mono">{{ formatCurrency(currentWithdrawalOrder.financialStats.totalWithdrawal) }}</span>
+                             <span class="text-surface-500 dark:text-surface-400">總提款</span>
+                             <span class="text-orange-500 dark:text-orange-400 font-mono">{{ formatCurrency(currentWithdrawalOrder.financialStats.totalWithdrawal) }}</span>
                          </div>
-                         <div class="flex justify-between items-center pt-2 border-t border-surface-700">
-                             <span class="text-white font-medium">當前餘額</span>
-                             <span class="text-blue-400 font-mono font-bold">{{ formatCurrency(currentWithdrawalOrder.financialStats.balance) }}</span>
+                         <div class="flex justify-between items-center pt-2 border-t border-surface-200 dark:border-surface-700">
+                             <span class="text-surface-900 dark:text-white font-medium">當前餘額</span>
+                             <span class="text-blue-500 dark:text-blue-400 font-mono font-bold">{{ formatCurrency(currentWithdrawalOrder.financialStats.balance) }}</span>
                          </div>
                      </div>
                 </div>
                 <div class="col-span-4 pl-2">
-                    <h3 class="text-surface-400 text-sm mb-3 font-medium">流水稽核 (Rollover)</h3>
+                    <h3 class="text-surface-500 dark:text-surface-400 text-sm mb-3 font-medium">流水稽核 (Rollover)</h3>
                     <div class="mb-2 flex justify-between text-sm">
                         <span>達成率</span>
-                        <span :class="getRolloverPercentage(currentWithdrawalOrder) >= 100 ? 'text-green-400' : 'text-red-400'">
+                        <span :class="getRolloverPercentage(currentWithdrawalOrder) >= 100 ? 'text-green-500 dark:text-green-400' : 'text-red-500 dark:text-red-400'">
                             {{ getRolloverPercentage(currentWithdrawalOrder) }}%
                         </span>
                     </div>
                     <ProgressBar :value="Math.min(getRolloverPercentage(currentWithdrawalOrder), 100)" :showValue="false" 
                         :pt="{ 
-                            root: { class: 'h-3 bg-surface-700 rounded-full' }, 
+                            root: { class: 'h-3 bg-surface-200 dark:bg-surface-700 rounded-full' }, 
                             value: { class: getRolloverPercentage(currentWithdrawalOrder) >= 100 ? 'bg-green-500' : 'bg-red-500' } 
                         }" 
                     />
-                    <div class="flex justify-between text-xs mt-2 text-surface-400">
+                    <div class="flex justify-between text-xs mt-2 text-surface-500 dark:text-surface-400">
                         <span>目前: {{ formatCurrency(currentWithdrawalOrder.rollover.current) }}</span>
                         <span>所需: {{ formatCurrency(currentWithdrawalOrder.rollover.required) }}</span>
                     </div>
                 </div>
             </div>
 
-            <div class="p-6 bg-surface-800">
-                <div class="flex items-center justify-between border-t border-surface-700 pt-4">
-                    <div class="text-sm text-surface-400">
-                        <i class="pi pi-lock text-orange-400 mr-2"></i>
-                        此訂單已被 <span class="text-white font-bold">{{ currentWithdrawalOrder.processor }}</span> 鎖定
+            <div class="p-6 bg-surface-100 dark:bg-surface-800">
+                <div class="flex items-center justify-between border-t border-surface-200 dark:border-surface-700 pt-4">
+                    <div class="text-sm text-surface-500 dark:text-surface-400">
+                        <i class="pi pi-lock text-orange-500 dark:text-orange-400 mr-2"></i>
+                        此訂單已被 <span class="text-surface-900 dark:text-white font-bold">{{ currentWithdrawalOrder.processor }}</span> 鎖定
                     </div>
                     <Button label="強制解鎖並退出" icon="pi pi-lock-open" severity="danger" outlined @click="handleForceUnlockFromModal" />
                 </div>
@@ -187,35 +187,35 @@
     <!-- Manual Deposit Audit Modal -->
     <Dialog v-model:visible="depositModalVisible" modal :header="`手工存款審核 - ${currentDepositOrder?.orderId}`" :style="{ width: '500px' }">
         <div v-if="currentDepositOrder" class="flex flex-col gap-4">
-             <div class="bg-surface-900/50 p-4 rounded border border-surface-700">
-                 <h4 class="text-surface-400 text-sm mb-3 font-bold">會員風險快照</h4>
+             <div class="bg-surface-50 dark:bg-surface-900/50 p-4 rounded border border-surface-200 dark:border-surface-700">
+                 <h4 class="text-surface-500 dark:text-surface-400 text-sm mb-3 font-bold">會員風險快照</h4>
                  <div class="grid grid-cols-2 gap-4">
                      <div>
-                         <span class="text-surface-500 text-xs block">當前餘額</span>
-                         <span class="text-emerald-400 font-mono font-bold">{{ formatCurrency(currentDepositOrder.memberSnapshot?.currentBalance || 0) }}</span>
+                         <span class="text-surface-500 dark:text-surface-500 text-xs block">當前餘額</span>
+                         <span class="text-green-500 dark:text-emerald-400 font-mono font-bold">{{ formatCurrency(currentDepositOrder.memberSnapshot?.currentBalance || 0) }}</span>
                      </div>
                      <div>
-                         <span class="text-surface-500 text-xs block">近7日補單 (筆/額)</span>
-                         <span class="text-white font-mono">{{ currentDepositOrder.memberSnapshot?.recentDepositCount }} 筆</span>
+                         <span class="text-surface-500 dark:text-surface-500 text-xs block">近7日補單 (筆/額)</span>
+                         <span class="text-surface-900 dark:text-white font-mono">{{ currentDepositOrder.memberSnapshot?.recentDepositCount }} 筆</span>
                      </div>
                  </div>
              </div>
              
              <div class="space-y-2">
                  <div class="flex justify-between text-sm">
-                     <span class="text-surface-400">申請金額</span>
-                     <span class="text-green-400 font-bold font-mono text-lg">{{ formatCurrency(currentDepositOrder.amount) }}</span>
+                     <span class="text-surface-500 dark:text-surface-400">申請金額</span>
+                     <span class="text-green-500 dark:text-green-400 font-bold font-mono text-lg">{{ formatCurrency(currentDepositOrder.amount) }}</span>
                  </div>
                  <div class="flex justify-between text-sm">
-                     <span class="text-surface-400">類型</span>
-                     <span>{{ currentDepositOrder.type }}</span>
+                     <span class="text-surface-500 dark:text-surface-400">類型</span>
+                     <span class="text-surface-900 dark:text-surface-0">{{ currentDepositOrder.type }}</span>
                  </div>
              </div>
 
-             <div class="flex justify-end gap-2 pt-4 border-t border-surface-700">
-                <div class="text-sm text-surface-400 flex-1">
-                    <i class="pi pi-lock text-orange-400 mr-2"></i>
-                    此訂單已被 <span class="text-white font-bold">{{ currentDepositOrder.applicant }}</span> 鎖定
+             <div class="flex justify-end gap-2 pt-4 border-t border-surface-200 dark:border-surface-700">
+                <div class="text-sm text-surface-500 dark:text-surface-400 flex-1">
+                    <i class="pi pi-lock text-orange-500 dark:text-orange-400 mr-2"></i>
+                    此訂單已被 <span class="text-surface-900 dark:text-white font-bold">{{ currentDepositOrder.applicant }}</span> 鎖定
                 </div>
                 <Button label="強制解鎖" severity="danger" outlined @click="handleForceUnlockFromModal" />
              </div>
@@ -418,11 +418,6 @@ const handleForceUnlock = (order: any) => {
 <style scoped>
 :deep(.p-card .p-card-body) { padding: 1rem; }
 :deep(.p-card .p-card-content) { padding: 0; }
-:deep(.p-datatable .p-datatable-thead > tr > th) { background-color: rgba(30, 41, 59, 0.5); color: #94a3b8; border-color: rgba(71, 85, 105, 0.5); padding: 0.75rem 1rem; font-weight: 600; }
-:deep(.p-datatable .p-datatable-tbody > tr) { background-color: transparent; }
-:deep(.p-datatable .p-datatable-tbody > tr:nth-child(even)) { background-color: rgba(30, 41, 59, 0.3); }
-:deep(.p-datatable .p-datatable-tbody > tr > td) { border-color: rgba(71, 85, 105, 0.3); padding: 0.75rem 1rem; }
-:deep(.p-datatable .p-datatable-tbody > tr:hover) { background-color: rgba(59, 130, 246, 0.1); }
-:deep(.p-inputtext), :deep(.p-dropdown) { background-color: rgba(30, 41, 59, 0.5); border-color: rgba(71, 85, 105, 0.5); }
+:deep(.p-datatable-tbody > tr > td) { padding: 0.75rem 1rem; }
 :deep(.bg-red-500\/5) { background-color: rgba(239, 68, 68, 0.05) !important; }
 </style>

@@ -1,24 +1,24 @@
 <template>
   <div class="p-6 space-y-6">
     <!-- Breadcrumb -->
-    <div class="flex items-center gap-2 text-sm text-surface-400">
-      <i class="pi pi-gift text-blue-400"></i>
-      <span class="text-surface-300">推廣活動</span>
+    <div class="flex items-center gap-2 text-sm text-surface-600 dark:text-surface-400">
+      <i class="pi pi-gift text-blue-500 dark:text-blue-400"></i>
+      <span class="text-surface-500 dark:text-surface-300">推廣活動</span>
       <span>></span>
-      <span class="text-surface-300">簽到看板</span>
+      <span class="text-surface-500 dark:text-surface-300">簽到看板</span>
       <span>></span>
-      <span class="text-white font-medium">模板編輯器</span>
+      <span class="text-surface-900 dark:text-surface-0 font-medium">模板編輯器</span>
     </div>
 
     <!-- Toolbar -->
-    <div class="bg-surface-800/50 border border-surface-700 rounded-lg p-4 flex items-center justify-between">
+    <div class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700 rounded-lg p-4 flex items-center justify-between">
         <div class="flex items-center gap-4">
              <div class="flex flex-col gap-1">
-                <label class="text-xs text-surface-400">模板名稱</label>
+                <label class="text-xs text-surface-500 dark:text-surface-400">模板名稱</label>
                 <InputText v-model="templateName" class="p-inputtext-sm w-48" placeholder="輸入模板名稱" />
             </div>
              <div class="flex flex-col gap-1">
-                <label class="text-xs text-surface-400">週期天數</label>
+                <label class="text-xs text-surface-500 dark:text-surface-400">週期天數</label>
                 <Dropdown v-model="selectedDays" :options="daysOptions" class="p-dropdown-sm w-32" @change="regenerateGrid" />
             </div>
         </div>
@@ -29,7 +29,7 @@
     </div>
 
     <!-- Dynamic Grid -->
-    <Card class="bg-surface-800/50 border border-surface-700">
+    <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
         <template #content>
             <!-- 
                 Using flex wrap with fixed width items for best responsiveness across 5-30 items
@@ -40,26 +40,26 @@
             <div class="grid grid-cols-2 md:grid-cols-5 xl:grid-cols-7 gap-4">
                 <div v-for="(cell, index) in gridCells" :key="index" 
                      @click="openCellEditor(index)"
-                     class="bg-surface-900 border border-surface-700 rounded-lg p-3 flex flex-col items-center gap-3 relative group hover:border-blue-500 cursor-pointer transition-all hover:-translate-y-1">
+                     class="bg-surface-0 dark:bg-surface-900 border border-surface-200 dark:border-surface-700 rounded-lg p-3 flex flex-col items-center gap-3 relative group hover:border-blue-500 cursor-pointer transition-all hover:-translate-y-1">
                     
-                    <span class="text-xs text-surface-500 absolute top-2 left-2">Day {{ index + 1 }}</span>
+                    <span class="text-xs text-surface-500 dark:text-surface-400 absolute top-2 left-2">Day {{ index + 1 }}</span>
                     
                     <!-- Top-Right Status Icon (Grey Dot or Star/Gift) -->
                     <div class="absolute top-2 right-2">
-                         <div v-if="!cell.isBigPrize" class="w-2 h-2 rounded-full bg-surface-600"></div>
+                         <div v-if="!cell.isBigPrize" class="w-2 h-2 rounded-full bg-surface-400 dark:bg-surface-600"></div>
                          <i v-else class="pi pi-star-fill text-yellow-500 text-xs"></i>
                     </div>
 
                     <!-- Reward Icon -->
-                    <div class="w-10 h-10 rounded-full bg-surface-800 flex items-center justify-center mt-4 group-hover:bg-blue-500/20 transition-colors">
-                        <i v-if="cell.isBigPrize" class="pi pi-gift text-xl text-yellow-400"></i>
+                    <div class="w-10 h-10 rounded-full bg-surface-100 dark:bg-surface-800 flex items-center justify-center mt-4 group-hover:bg-blue-100 dark:group-hover:bg-blue-500/20 transition-colors">
+                        <i v-if="cell.isBigPrize" class="pi pi-gift text-xl text-yellow-500 dark:text-yellow-400"></i>
                         <i v-else :class="['pi', cell.icon, 'text-xl text-surface-400']"></i>
                     </div>
                     
                     <!-- Reward Value Display (Minimalist) -->
                     <div class="text-center w-full">
                          <!-- 100px Button-less Alignment -->
-                         <div class="text-sm font-bold text-white">{{ cell.value }}</div>
+                         <div class="text-sm font-bold text-surface-900 dark:text-white">{{ cell.value }}</div>
                     </div>
 
                     <!-- Edit Hint -->

@@ -1,23 +1,23 @@
 <template>
   <div class="p-6 space-y-6">
     <!-- Breadcrumb -->
-    <div class="flex items-center gap-2 text-sm text-surface-400">
-      <i class="pi pi-sitemap text-teal-400"></i>
-      <span class="text-surface-300">代理管理</span>
+    <div class="flex items-center gap-2 text-sm text-surface-600 dark:text-surface-400">
+      <i class="pi pi-sitemap text-teal-500 dark:text-teal-400"></i>
+      <span class="text-surface-500 dark:text-surface-300">代理管理</span>
       <span>></span>
-      <span class="text-white font-medium">總覽</span>
+      <span class="text-surface-900 dark:text-surface-0 font-medium">總覽</span>
     </div>
 
     <!-- Page Header -->
     <div class="flex items-center justify-between">
       <div>
-        <h1 class="text-2xl font-bold text-white flex items-center gap-3">
-          <i class="pi pi-sitemap text-teal-400"></i>
+        <h1 class="text-2xl font-bold text-surface-900 dark:text-white flex items-center gap-3">
+          <i class="pi pi-sitemap text-teal-500 dark:text-teal-400"></i>
           代理管理總覽
         </h1>
-        <p class="text-surface-400 mt-1">Affiliate Overview - 渠道拓展與佣金結算監控</p>
+        <p class="text-surface-500 dark:text-surface-400 mt-1">Affiliate Overview - 渠道拓展與佣金結算監控</p>
       </div>
-      <div class="flex items-center gap-2 text-surface-400 text-sm">
+      <div class="flex items-center gap-2 text-surface-500 dark:text-surface-400 text-sm">
         <i class="pi pi-clock"></i>
         <span>最後更新: {{ lastUpdate }}</span>
       </div>
@@ -26,78 +26,78 @@
     <!-- Affiliate Stats Cards -->
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
       <!-- New Affiliates Today -->
-      <Card class="bg-surface-800/50 border border-surface-700">
+      <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
         <template #content>
           <div class="flex items-start justify-between">
             <div>
-              <p class="text-surface-400 text-sm mb-1">今日新增代理</p>
-              <p class="text-2xl font-bold text-white">{{ stats.newAffiliates }}</p>
-              <div class="flex items-center gap-1 mt-2 text-emerald-400 text-sm">
+              <p class="text-surface-500 dark:text-surface-400 text-sm mb-1">今日新增代理</p>
+              <p class="text-2xl font-bold text-surface-900 dark:text-white">{{ stats.newAffiliates }}</p>
+              <div class="flex items-center gap-1 mt-2 text-emerald-500 dark:text-emerald-400 text-sm">
                 <i class="pi pi-arrow-up"></i>
                 <span>+{{ stats.newGrowth }}% vs 昨日</span>
               </div>
             </div>
-            <div class="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center">
-              <i class="pi pi-user-plus text-blue-400 text-xl"></i>
+            <div class="w-12 h-12 rounded-xl bg-blue-100 dark:bg-blue-500/20 flex items-center justify-center">
+              <i class="pi pi-user-plus text-blue-500 dark:text-blue-400 text-xl"></i>
             </div>
           </div>
         </template>
       </Card>
 
       <!-- Active Affiliates -->
-      <Card class="bg-surface-800/50 border border-surface-700">
+      <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
         <template #content>
           <div class="flex items-start justify-between">
             <div>
-              <p class="text-surface-400 text-sm mb-1">活躍代理</p>
+              <p class="text-surface-500 dark:text-surface-400 text-sm mb-1">活躍代理</p>
               <div class="flex items-center gap-2">
-                <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                <p class="text-2xl font-bold text-white">{{ stats.activeAffiliates }}</p>
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 dark:bg-emerald-400 animate-pulse"></span>
+                <p class="text-2xl font-bold text-surface-900 dark:text-white">{{ stats.activeAffiliates }}</p>
               </div>
               <div class="flex items-center gap-2 mt-2 text-sm">
                 <Tag severity="success" value="線上活躍" />
               </div>
             </div>
-            <div class="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center">
-              <i class="pi pi-users text-emerald-400 text-xl"></i>
+            <div class="w-12 h-12 rounded-xl bg-emerald-100 dark:bg-emerald-500/20 flex items-center justify-center">
+              <i class="pi pi-users text-emerald-500 dark:text-emerald-400 text-xl"></i>
             </div>
           </div>
         </template>
       </Card>
 
       <!-- Pending Commission -->
-      <Card class="bg-gradient-to-br from-amber-900/30 to-surface-800/50 border border-amber-600/30">
+      <Card class="bg-gradient-to-br from-amber-50 to-amber-100 dark:from-amber-900/30 dark:to-surface-800/50 border border-amber-200 dark:border-amber-600/30">
         <template #content>
           <div class="flex items-start justify-between">
             <div>
-              <p class="text-amber-300 text-sm mb-1 font-medium">預計發放佣金</p>
-              <p class="text-2xl font-bold text-amber-400">{{ formatCurrency(stats.pendingCommission) }}</p>
-              <div class="flex items-center gap-1 mt-2 text-surface-400 text-sm">
+              <p class="text-amber-700 dark:text-amber-300 text-sm mb-1 font-medium">預計發放佣金</p>
+              <p class="text-2xl font-bold text-amber-600 dark:text-amber-400">{{ formatCurrency(stats.pendingCommission) }}</p>
+              <div class="flex items-center gap-1 mt-2 text-surface-600 dark:text-surface-400 text-sm">
                 <i class="pi pi-calendar"></i>
                 <span>本期應付</span>
               </div>
             </div>
-            <div class="w-12 h-12 rounded-xl bg-amber-500/20 flex items-center justify-center">
-              <i class="pi pi-wallet text-amber-400 text-xl"></i>
+            <div class="w-12 h-12 rounded-xl bg-amber-200 dark:bg-amber-500/20 flex items-center justify-center">
+              <i class="pi pi-wallet text-amber-600 dark:text-amber-400 text-xl"></i>
             </div>
           </div>
         </template>
       </Card>
 
       <!-- First Deposit from Affiliates -->
-      <Card class="bg-surface-800/50 border border-surface-700">
+      <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
         <template #content>
           <div class="flex items-start justify-between">
             <div>
-              <p class="text-surface-400 text-sm mb-1">代理帶動首存</p>
-              <p class="text-2xl font-bold text-white">{{ stats.firstDeposits }}</p>
-              <div class="flex items-center gap-1 mt-2 text-purple-400 text-sm">
+              <p class="text-surface-500 dark:text-surface-400 text-sm mb-1">代理帶動首存</p>
+              <p class="text-2xl font-bold text-surface-900 dark:text-white">{{ stats.firstDeposits }}</p>
+              <div class="flex items-center gap-1 mt-2 text-purple-500 dark:text-purple-400 text-sm">
                 <i class="pi pi-download"></i>
                 <span>新增首存會員</span>
               </div>
             </div>
-            <div class="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center">
-              <i class="pi pi-money-bill text-purple-400 text-xl"></i>
+            <div class="w-12 h-12 rounded-xl bg-purple-100 dark:bg-purple-500/20 flex items-center justify-center">
+              <i class="pi pi-money-bill text-purple-500 dark:text-purple-400 text-xl"></i>
             </div>
           </div>
         </template>
@@ -107,15 +107,15 @@
     <!-- Charts Section -->
     <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
       <!-- Commission Trend (Line Chart) -->
-      <Card class="bg-surface-800/50 border border-surface-700">
+      <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
         <template #title>
-          <div class="flex items-center gap-2 text-white">
-            <i class="pi pi-chart-line text-cyan-400"></i>
+          <div class="flex items-center gap-2 text-surface-900 dark:text-white">
+            <i class="pi pi-chart-line text-cyan-500 dark:text-cyan-400"></i>
             佣金支出走勢
           </div>
         </template>
         <template #subtitle>
-          <span class="text-surface-400">過去 7 天代理佣金波動</span>
+          <span class="text-surface-500 dark:text-surface-400">過去 7 天代理佣金波動</span>
         </template>
         <template #content>
           <Chart type="line" :data="lineChartData" :options="lineChartOptions" class="h-72" />
@@ -123,15 +123,15 @@
       </Card>
 
       <!-- Affiliate Level Distribution (Pie Chart) -->
-      <Card class="bg-surface-800/50 border border-surface-700">
+      <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
         <template #title>
-          <div class="flex items-center gap-2 text-white">
-            <i class="pi pi-chart-pie text-pink-400"></i>
+          <div class="flex items-center gap-2 text-surface-900 dark:text-white">
+            <i class="pi pi-chart-pie text-pink-500 dark:text-pink-400"></i>
             代理層級分佈
           </div>
         </template>
         <template #subtitle>
-          <span class="text-surface-400">各層級代理人數比例</span>
+          <span class="text-surface-500 dark:text-surface-400">各層級代理人數比例</span>
         </template>
         <template #content>
           <div class="flex items-center justify-center">
@@ -142,15 +142,15 @@
     </div>
 
     <!-- Affiliate Ranking DataTable -->
-    <Card class="bg-surface-800/50 border border-surface-700">
+    <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
       <template #title>
-        <div class="flex items-center gap-2 text-white">
-          <i class="pi pi-star text-yellow-400"></i>
+        <div class="flex items-center gap-2 text-surface-900 dark:text-white">
+          <i class="pi pi-star text-yellow-500 dark:text-yellow-400"></i>
           代理貢獻排行榜
         </div>
       </template>
       <template #subtitle>
-        <span class="text-surface-400">Affiliate Leaderboard - 本月代理績效監控</span>
+        <span class="text-surface-500 dark:text-surface-400">Affiliate Leaderboard - 本月代理績效監控</span>
       </template>
       <template #content>
         <DataTable 
@@ -159,7 +159,7 @@
           class="p-datatable-sm"
           :pt="{
             table: { class: 'min-w-full' },
-            tbody: { class: 'text-surface-300' }
+            tbody: { class: 'text-surface-700 dark:text-surface-300' }
           }"
         >
           <!-- Rank -->
@@ -178,12 +178,12 @@
           <Column field="affiliateId" header="代理帳號/ID">
             <template #body="slotProps">
               <div class="flex items-center gap-2">
-                <div class="w-8 h-8 rounded-full bg-surface-600 flex items-center justify-center">
-                  <i class="pi pi-user text-surface-300"></i>
+                <div class="w-8 h-8 rounded-full bg-surface-200 dark:bg-surface-600 flex items-center justify-center">
+                  <i class="pi pi-user text-surface-600 dark:text-surface-300"></i>
                 </div>
                 <div>
-                  <p class="font-medium text-white">{{ slotProps.data.affiliateId }}</p>
-                  <p class="text-xs text-surface-400">{{ slotProps.data.level }}</p>
+                  <p class="font-medium text-surface-900 dark:text-white">{{ slotProps.data.affiliateId }}</p>
+                  <p class="text-xs text-surface-500 dark:text-surface-400">{{ slotProps.data.level }}</p>
                 </div>
               </div>
             </template>
@@ -193,8 +193,8 @@
           <Column field="newReferrals" header="本月新增下線">
             <template #body="slotProps">
               <div class="flex items-center gap-2">
-                <i class="pi pi-users text-blue-400"></i>
-                <span class="text-white font-medium">{{ slotProps.data.newReferrals }}</span>
+                <i class="pi pi-users text-blue-500 dark:text-blue-400"></i>
+                <span class="text-surface-900 dark:text-white font-medium">{{ slotProps.data.newReferrals }}</span>
               </div>
             </template>
           </Column>
@@ -202,14 +202,14 @@
           <!-- Total Bet Volume -->
           <Column field="totalBetVolume" header="下線總投注">
             <template #body="slotProps">
-              <span class="text-white font-medium">{{ formatCurrency(slotProps.data.totalBetVolume) }}</span>
+              <span class="text-surface-900 dark:text-white font-medium">{{ formatCurrency(slotProps.data.totalBetVolume) }}</span>
             </template>
           </Column>
 
           <!-- Pending Commission -->
           <Column field="commission" header="應付佣金">
             <template #body="slotProps">
-              <span class="text-emerald-400 font-bold">{{ formatCurrency(slotProps.data.commission) }}</span>
+              <span class="text-emerald-500 dark:text-emerald-400 font-bold">{{ formatCurrency(slotProps.data.commission) }}</span>
             </template>
           </Column>
 
@@ -432,17 +432,17 @@ const affiliateRanking = ref([
 
 // Helper function for rank styling
 const getRankClass = (rank: number) => {
-  if (rank === 1) return 'bg-yellow-500/30 text-yellow-400'
-  if (rank === 2) return 'bg-slate-400/30 text-slate-300'
-  if (rank === 3) return 'bg-amber-600/30 text-amber-500'
-  return 'bg-surface-600 text-surface-300'
+  if (rank === 1) return 'bg-yellow-500/30 text-yellow-600 dark:text-yellow-400'
+  if (rank === 2) return 'bg-slate-400/30 text-slate-600 dark:text-slate-300'
+  if (rank === 3) return 'bg-amber-600/30 text-amber-600 dark:text-amber-500'
+  return 'bg-surface-200 dark:bg-surface-600 text-surface-600 dark:text-surface-300'
 }
 </script>
 
 <style scoped>
 /* Card styling */
 :deep(.p-card .p-card-body) {
-  padding: 1rem;
+  padding: 1.5rem;
 }
 
 :deep(.p-card .p-card-content) {
@@ -450,23 +450,7 @@ const getRankClass = (rank: number) => {
 }
 
 /* DataTable dark mode styling */
-:deep(.p-datatable .p-datatable-thead > tr > th) {
-  background-color: rgba(30, 41, 59, 0.5);
-  color: #94a3b8;
-  border-color: rgba(71, 85, 105, 0.5);
-  padding: 0.75rem 1rem;
-}
-
-:deep(.p-datatable .p-datatable-tbody > tr) {
-  background-color: transparent;
-}
-
-:deep(.p-datatable .p-datatable-tbody > tr:nth-child(even)) {
-  background-color: rgba(30, 41, 59, 0.3);
-}
-
-:deep(.p-datatable .p-datatable-tbody > tr > td) {
-  border-color: rgba(71, 85, 105, 0.3);
+:deep(.p-datatable-tbody > tr > td) {
   padding: 0.75rem 1rem;
 }
 </style>

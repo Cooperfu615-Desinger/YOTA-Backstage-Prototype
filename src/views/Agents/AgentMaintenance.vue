@@ -1,35 +1,35 @@
 <template>
   <div class="p-6 space-y-6">
     <!-- Breadcrumb -->
-    <div class="flex items-center gap-2 text-sm text-surface-400">
-      <i class="pi pi-sitemap text-blue-400"></i>
-      <span class="text-surface-300">代理管理</span>
+    <div class="flex items-center gap-2 text-sm text-surface-600 dark:text-surface-400">
+      <i class="pi pi-sitemap text-blue-500 dark:text-blue-400"></i>
+      <span class="text-surface-500 dark:text-surface-300">代理管理</span>
       <span>></span>
-      <span class="text-white font-medium">代理商維護</span>
+      <span class="text-surface-900 dark:text-surface-0 font-medium">代理商維護</span>
     </div>
 
     <!-- Search Panel -->
-    <Card class="bg-surface-800/50 border border-surface-700">
+    <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
       <template #content>
         <div class="flex items-center gap-4 flex-wrap">
           <div>
-            <label class="text-surface-400 text-sm mb-2 block">代理帳號</label>
+            <label class="text-surface-700 dark:text-surface-300 text-sm mb-2 block">代理帳號</label>
             <InputText v-model="filters.account" placeholder="請輸入帳號" class="w-[220px]" />
           </div>
           <div>
-            <label class="text-surface-400 text-sm mb-2 block">所屬上級</label>
+            <label class="text-surface-700 dark:text-surface-300 text-sm mb-2 block">所屬上級</label>
             <InputText v-model="filters.upline" placeholder="請輸入上級帳號" class="w-[220px]" />
           </div>
           <div>
-            <label class="text-surface-400 text-sm mb-2 block">註冊日期</label>
+            <label class="text-surface-700 dark:text-surface-300 text-sm mb-2 block">註冊日期</label>
             <Calendar v-model="filters.regDate" dateFormat="yy/mm/dd" placeholder="選擇日期" class="w-[220px]" />
           </div>
           <div>
-            <label class="text-surface-400 text-sm mb-2 block">登入狀態</label>
+            <label class="text-surface-700 dark:text-surface-300 text-sm mb-2 block">登入狀態</label>
             <Dropdown v-model="filters.loginStatus" :options="loginStatusOptions" placeholder="全部" class="w-[220px]" />
           </div>
            <div>
-            <label class="text-surface-400 text-sm mb-2 block">IP 位址</label>
+            <label class="text-surface-700 dark:text-surface-300 text-sm mb-2 block">IP 位址</label>
             <InputText v-model="filters.ip" placeholder="請輸入 IP" class="w-[220px]" />
           </div>
           <div class="flex items-end ml-auto">
@@ -40,20 +40,20 @@
     </Card>
 
     <!-- Agent Data Table -->
-    <Card class="bg-surface-800/50 border border-surface-700">
+    <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
       <template #title>
-        <div class="flex items-center gap-2 text-white text-lg">
-          <i class="pi pi-shield text-blue-400"></i>
+        <div class="flex items-center gap-2 text-surface-900 dark:text-surface-0 text-lg">
+          <i class="pi pi-shield text-blue-500 dark:text-blue-400"></i>
           代理商維護列表
         </div>
       </template>
       <template #content>
-         <DataTable :value="filteredAgents" stripedRows class="p-datatable-sm" :pt="{ table: { class: 'min-w-full' }, tbody: { class: 'text-surface-300' } }">
+         <DataTable :value="filteredAgents" stripedRows class="p-datatable-sm" :pt="{ table: { class: 'min-w-full' }, tbody: { class: 'text-surface-700 dark:text-surface-300' } }">
             <Column field="info" header="代理資訊" style="min-width: 180px">
                  <template #body="slotProps">
                      <div class="flex flex-col">
-                        <span class="text-white font-medium">{{ slotProps.data.account }}</span>
-                        <span class="text-surface-400 text-xs">{{ slotProps.data.name }}</span>
+                        <span class="text-surface-900 dark:text-surface-0 font-medium">{{ slotProps.data.account }}</span>
+                        <span class="text-surface-500 dark:text-surface-400 text-xs">{{ slotProps.data.name }}</span>
                      </div>
                 </template>
             </Column>
@@ -113,16 +113,16 @@
             <!-- Security Settings Tab -->
             <TabPanel header="安全設定" value="security">
                 <div class="p-4 space-y-4">
-                     <div class="flex items-center gap-4 p-3 bg-surface-900 rounded">
-                        <label class="text-surface-300 w-24">登入密碼</label>
+                     <div class="flex items-center gap-4 p-4 bg-surface-50 dark:bg-surface-900 border border-surface-200 dark:border-surface-700 rounded-lg">
+                        <label class="text-surface-700 dark:text-surface-300 w-24">登入密碼</label>
                         <InputText type="password" placeholder="若不修改請留空" class="flex-1" />
                     </div>
-                    <div class="flex items-center gap-4 p-3 bg-surface-900 rounded">
-                        <label class="text-surface-300 w-24">二級密碼</label>
+                    <div class="flex items-center gap-4 p-4 bg-surface-50 dark:bg-surface-900 border border-surface-200 dark:border-surface-700 rounded-lg">
+                        <label class="text-surface-700 dark:text-surface-300 w-24">二級密碼</label>
                         <InputText type="password" placeholder="若不修改請留空" class="flex-1" />
                     </div>
-                     <div class="flex items-start gap-4 p-3 bg-surface-900 rounded">
-                        <label class="text-surface-300 w-24 mt-2">IP 白名單</label>
+                     <div class="flex items-start gap-4 p-4 bg-surface-50 dark:bg-surface-900 border border-surface-200 dark:border-surface-700 rounded-lg">
+                        <label class="text-surface-700 dark:text-surface-300 w-24 mt-2">IP 白名單</label>
                         <Textarea rows="3" placeholder="每行一個 IP，留空代表不限制" class="flex-1" />
                     </div>
                 </div>
@@ -131,28 +131,28 @@
             <!-- Permission Settings Tab -->
             <TabPanel header="權限設定" value="permission">
                 <div class="p-4 grid grid-cols-2 gap-4">
-                     <div class="flex items-center justify-between p-3 bg-surface-900 rounded">
-                        <span class="text-white">登入權限</span>
+                     <div class="flex items-center justify-between p-4 bg-surface-50 dark:bg-surface-900 border border-surface-200 dark:border-surface-700 rounded-lg">
+                        <span class="text-surface-900 dark:text-surface-0">登入權限</span>
                         <InputSwitch v-model="tempPermissions.login" />
                     </div>
-                    <div class="flex items-center justify-between p-3 bg-surface-900 rounded">
-                        <span class="text-white">提款權限</span>
+                    <div class="flex items-center justify-between p-4 bg-surface-50 dark:bg-surface-900 border border-surface-200 dark:border-surface-700 rounded-lg">
+                        <span class="text-surface-900 dark:text-surface-0">提款權限</span>
                         <InputSwitch v-model="tempPermissions.withdrawal" />
                     </div>
-                    <div class="flex items-center justify-between p-3 bg-surface-900 rounded">
-                        <span class="text-white">推廣權限</span>
+                    <div class="flex items-center justify-between p-4 bg-surface-50 dark:bg-surface-900 border border-surface-200 dark:border-surface-700 rounded-lg">
+                        <span class="text-surface-900 dark:text-surface-0">推廣權限</span>
                         <InputSwitch v-model="tempPermissions.promotion" />
                     </div>
-                     <div class="flex items-center justify-between p-3 bg-surface-900 rounded">
-                        <span class="text-white">新增下級</span>
+                     <div class="flex items-center justify-between p-4 bg-surface-50 dark:bg-surface-900 border border-surface-200 dark:border-surface-700 rounded-lg">
+                        <span class="text-surface-900 dark:text-surface-0">新增下級</span>
                         <InputSwitch v-model="tempPermissions.addSub" />
                     </div>
-                    <div class="flex items-center justify-between p-3 bg-surface-900 rounded">
-                        <span class="text-white">轉帳權限</span>
+                    <div class="flex items-center justify-between p-4 bg-surface-50 dark:bg-surface-900 border border-surface-200 dark:border-surface-700 rounded-lg">
+                        <span class="text-surface-900 dark:text-surface-0">轉帳權限</span>
                         <InputSwitch v-model="tempPermissions.transfer" />
                     </div>
-                     <div class="flex items-center justify-between p-3 bg-surface-900 rounded">
-                        <span class="text-white">查看報表</span>
+                     <div class="flex items-center justify-between p-4 bg-surface-50 dark:bg-surface-900 border border-surface-200 dark:border-surface-700 rounded-lg">
+                        <span class="text-surface-900 dark:text-surface-0">查看報表</span>
                         <InputSwitch v-model="tempPermissions.viewReports" />
                     </div>
                 </div>
@@ -311,14 +311,6 @@ const generateMockData = () => {
 </script>
 
 <style scoped>
-:deep(.p-card .p-card-body) { padding: 1rem; }
-:deep(.p-card .p-card-content) { padding: 0; }
-:deep(.p-datatable .p-datatable-thead > tr > th) { background-color: rgba(30, 41, 59, 0.5); color: #94a3b8; border-color: rgba(71, 85, 105, 0.5); padding: 0.75rem 1rem; font-weight: 600; }
-:deep(.p-datatable .p-datatable-tbody > tr) { background-color: transparent; }
-:deep(.p-datatable .p-datatable-tbody > tr:nth-child(even)) { background-color: rgba(30, 41, 59, 0.3); }
-:deep(.p-datatable .p-datatable-tbody > tr > td) { border-color: rgba(71, 85, 105, 0.3); padding: 0.75rem 1rem; }
-:deep(.p-datatable .p-datatable-tbody > tr:hover) { background-color: rgba(59, 130, 246, 0.1); }
-:deep(.p-inputtext), :deep(.p-dropdown), :deep(.p-calendar), :deep(.p-textarea) { background-color: rgba(30, 41, 59, 0.5); border-color: rgba(71, 85, 105, 0.5); }
-:deep(.p-tabview .p-tabview-nav) { background: rgba(30, 41, 59, 0.5); }
-:deep(.p-tabview .p-tabview-panels) { background: transparent; }
+:deep(.p-card .p-card-body) { padding: 1.5rem; }
+:deep(.p-datatable-tbody > tr > td) { padding: 0.75rem 1rem; }
 </style>

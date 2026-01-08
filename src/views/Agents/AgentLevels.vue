@@ -1,19 +1,19 @@
 <template>
   <div class="p-6 space-y-6">
     <!-- Breadcrumb -->
-    <div class="flex items-center gap-2 text-sm text-surface-400">
-      <i class="pi pi-sitemap text-blue-400"></i>
-      <span class="text-surface-300">代理管理</span>
+    <div class="flex items-center gap-2 text-sm text-surface-600 dark:text-surface-400">
+      <i class="pi pi-sitemap text-blue-500 dark:text-blue-400"></i>
+      <span class="text-surface-500 dark:text-surface-300">代理管理</span>
       <span>></span>
-      <span class="text-white font-medium">代理等級</span>
+      <span class="text-surface-900 dark:text-surface-0 font-medium">代理等級</span>
     </div>
 
     <!-- Agent Levels List -->
-    <Card class="bg-surface-800/50 border border-surface-700">
+    <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
       <template #title>
         <div class="flex items-center justify-between">
-          <div class="flex items-center gap-2 text-white text-lg">
-            <i class="pi pi-star text-yellow-400"></i>
+          <div class="flex items-center gap-2 text-surface-900 dark:text-surface-0 text-lg">
+            <i class="pi pi-star text-yellow-500 dark:text-yellow-400"></i>
             代理等級設定
           </div>
           <Button label="新增等級" icon="pi pi-plus" @click="openCreateDialog" />
@@ -25,7 +25,7 @@
                  <template #body="slotProps">
                      <div class="flex items-center gap-2">
                          <i :class="['pi', slotProps.data.icon, slotProps.data.color, 'text-xl']"></i>
-                         <span class="text-white font-bold">{{ slotProps.data.name }}</span>
+                         <span class="text-surface-900 dark:text-surface-0 font-bold">{{ slotProps.data.name }}</span>
                      </div>
                 </template>
             </Column>
@@ -53,7 +53,7 @@
             </Column>
             <Column field="agentCount" header="代理人數" style="min-width: 100px">
                  <template #body="slotProps">
-                     <span class="font-mono text-white font-bold">{{ slotProps.data.agentCount }}</span>
+                     <span class="font-mono text-surface-900 dark:text-surface-0 font-bold">{{ slotProps.data.agentCount }}</span>
                 </template>
             </Column>
             <Column field="status" header="狀態" style="min-width: 100px">
@@ -78,12 +78,12 @@
         <div v-if="currentLevel" class="space-y-4 p-4">
             <div class="grid grid-cols-2 gap-4">
                 <div class="col-span-2">
-                    <label class="text-surface-300 text-sm font-medium mb-2 block">等級名稱</label>
+                    <label class="text-surface-700 dark:text-surface-300 text-sm font-medium mb-2 block">等級名稱</label>
                     <InputText v-model="currentLevel.name" placeholder="輸入等級名稱" class="w-full" />
                 </div>
                 
                 <div>
-                    <label class="text-surface-300 text-sm font-medium mb-2 block">圖標</label>
+                    <label class="text-surface-700 dark:text-surface-300 text-sm font-medium mb-2 block">圖標</label>
                     <Dropdown v-model="currentLevel.icon" :options="iconOptions" optionLabel="label" optionValue="value" placeholder="選擇圖標" class="w-full">
                         <template #option="slotProps">
                             <div class="flex items-center gap-2">
@@ -95,7 +95,7 @@
                 </div>
                 
                 <div>
-                    <label class="text-surface-300 text-sm font-medium mb-2 block">顏色</label>
+                    <label class="text-surface-700 dark:text-surface-300 text-sm font-medium mb-2 block">顏色</label>
                     <Dropdown v-model="currentLevel.color" :options="colorOptions" optionLabel="label" optionValue="value" placeholder="選擇顏色" class="w-full">
                         <template #option="slotProps">
                             <div class="flex items-center gap-2">
@@ -107,24 +107,24 @@
                 </div>
             </div>
 
-            <div class="border-t border-surface-700 pt-4">
-                <h4 class="text-white font-semibold mb-3">晉升條件</h4>
+            <div class="border-t border-surface-200 dark:border-surface-700 pt-4">
+                <h4 class="text-surface-900 dark:text-surface-0 font-semibold mb-3">晉升條件</h4>
                 <div class="space-y-3">
                     <div>
-                        <label class="text-surface-300 text-sm font-medium mb-2 block">月活躍會員數 (人)</label>
+                        <label class="text-surface-700 dark:text-surface-300 text-sm font-medium mb-2 block">月活躍會員數 (人)</label>
                         <InputNumber v-model="currentLevel.activeMembers" :min="0" class="w-[220px]" showButtons />
                     </div>
                     <div>
-                        <label class="text-surface-300 text-sm font-medium mb-2 block">月團隊淨盈虧 (元)</label>
+                        <label class="text-surface-700 dark:text-surface-300 text-sm font-medium mb-2 block">月團隊淨盈虧 (元)</label>
                         <InputNumber v-model="currentLevel.teamPL" :min="0" :step="1000" class="w-[220px]" showButtons mode="currency" currency="TWD" locale="zh-TW" />
                     </div>
                 </div>
             </div>
 
-            <div class="border-t border-surface-700 pt-4">
-                <h4 class="text-white font-semibold mb-3">獎勵設定</h4>
+            <div class="border-t border-surface-200 dark:border-surface-700 pt-4">
+                <h4 class="text-surface-900 dark:text-surface-0 font-semibold mb-3">獎勵設定</h4>
                 <div>
-                    <label class="text-surface-300 text-sm font-medium mb-2 block">額外佣金比率 (%)</label>
+                    <label class="text-surface-700 dark:text-surface-300 text-sm font-medium mb-2 block">額外佣金比率 (%)</label>
                     <InputNumber v-model="currentLevel.commissionBonus" :min="0" :max="50" suffix="%" class="w-[220px]" showButtons />
                 </div>
             </div>
@@ -306,12 +306,7 @@ const formatCurrency = (val: number) => new Intl.NumberFormat('zh-TW', { style: 
 </script>
 
 <style scoped>
-:deep(.p-card .p-card-body) { padding: 1rem; }
-:deep(.p-card .p-card-content) { padding: 0; }
-:deep(.p-datatable .p-datatable-thead > tr > th) { background-color: rgba(30, 41, 59, 0.5); color: #94a3b8; border-color: rgba(71, 85, 105, 0.5); padding: 0.75rem 1rem; font-weight: 600; }
-:deep(.p-datatable .p-datatable-tbody > tr) { background-color: transparent; }
-:deep(.p-datatable .p-datatable-tbody > tr:nth-child(even)) { background-color: rgba(30, 41, 59, 0.3); }
-:deep(.p-datatable .p-datatable-tbody > tr > td) { border-color: rgba(71, 85, 105, 0.3); padding: 0.75rem 1rem; }
-:deep(.p-datatable .p-datatable-tbody > tr:hover) { background-color: rgba(59, 130, 246, 0.1); }
-:deep(.p-inputtext), :deep(.p-dropdown), :deep(.p-inputnumber) { background-color: rgba(30, 41, 59, 0.5); border-color: rgba(71, 85, 105, 0.5); }
+:deep(.p-card .p-card-body) { padding: 1.5rem; }
+:deep(.p-datatable-tbody > tr > td) { padding: 0.75rem 1rem; }
+:deep(.p-inputnumber-input) { text-align: center; }
 </style>

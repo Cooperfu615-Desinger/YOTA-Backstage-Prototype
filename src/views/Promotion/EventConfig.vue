@@ -1,41 +1,41 @@
 <template>
   <div class="p-6 space-y-6">
     <!-- Breadcrumb -->
-    <div class="flex items-center gap-2 text-sm text-surface-400">
-      <i class="pi pi-gift text-blue-400"></i>
-      <span class="text-surface-300">推廣活動</span>
+    <div class="flex items-center gap-2 text-sm text-surface-600 dark:text-surface-400">
+      <i class="pi pi-gift text-blue-500 dark:text-blue-400"></i>
+      <span class="text-surface-500 dark:text-surface-300">推廣活動</span>
       <span>></span>
-      <span class="text-white font-medium">活動設置</span>
+      <span class="text-surface-900 dark:text-surface-0 font-medium">活動設置</span>
     </div>
 
     <!-- Template Selector -->
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
         <div v-for="tpl in templates" :key="tpl.id" 
              @click="openTemplateDialog(tpl)"
-             class="bg-surface-800/50 border border-surface-700 hover:border-blue-500 hover:bg-surface-800 p-4 rounded-xl cursor-pointer transition-all flex flex-col items-center gap-2 group">
-            <div class="w-12 h-12 rounded-full bg-surface-900 flex items-center justify-center group-hover:scale-110 transition-transform">
-                <i :class="['pi text-xl', tpl.icon, 'text-blue-400']"></i>
+             class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700 hover:border-blue-500 hover:bg-surface-100 dark:hover:bg-surface-700 p-4 rounded-xl cursor-pointer transition-all flex flex-col items-center gap-2 group">
+            <div class="w-12 h-12 rounded-full bg-surface-200 dark:bg-surface-900 flex items-center justify-center group-hover:scale-110 transition-transform">
+                <i :class="['pi text-xl', tpl.icon, 'text-blue-500 dark:text-blue-400']"></i>
             </div>
-            <span class="text-surface-300 group-hover:text-white font-medium text-sm">{{ tpl.name }}</span>
+            <span class="text-surface-600 dark:text-surface-300 group-hover:text-surface-900 dark:group-hover:text-white font-medium text-sm">{{ tpl.name }}</span>
         </div>
     </div>
 
     <!-- Event List DataTable -->
-    <Card class="bg-surface-800/50 border border-surface-700">
+    <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
         <template #title>
              <div class="flex items-center justify-between">
-                <div class="flex items-center gap-2 text-white text-lg">
-                    <i class="pi pi-list text-blue-400"></i>
+                <div class="flex items-center gap-2 text-surface-900 dark:text-white text-lg">
+                    <i class="pi pi-list text-blue-500 dark:text-blue-400"></i>
                     已設置活動清單
                 </div>
              </div>
         </template>
         <template #content>
-             <DataTable :value="eventList" stripedRows class="p-datatable-sm" :pt="{ table: { class: 'min-w-full' }, tbody: { class: 'text-surface-300' } }">
+             <DataTable :value="eventList" stripedRows class="p-datatable-sm" :pt="{ table: { class: 'min-w-full' }, tbody: { class: 'text-surface-700 dark:text-surface-300' } }">
                 <Column field="name" header="活動名稱" style="min-width: 150px">
                      <template #body="slotProps">
                         <div class="flex flex-col">
-                            <span class="text-white font-medium">{{ slotProps.data.name }}</span>
+                            <span class="text-surface-900 dark:text-white font-medium">{{ slotProps.data.name }}</span>
                             <span class="text-xs text-surface-500">{{ getTemplateName(slotProps.data.type) }}</span>
                         </div>
                     </template>
@@ -93,22 +93,22 @@
             </div>
 
             <!-- Cost Sharing - Optimized -->
-            <div class="bg-surface-900 p-4 rounded border border-surface-700 space-y-4">
-                <div class="flex items-center justify-between border-b border-surface-700 pb-2">
-                    <div class="text-sm font-bold text-white">出資模式設定</div>
+            <div class="bg-surface-100 dark:bg-surface-900 p-4 rounded border border-surface-200 dark:border-surface-700 space-y-4">
+                <div class="flex items-center justify-between border-b border-surface-200 dark:border-surface-700 pb-2">
+                    <div class="text-sm font-bold text-surface-900 dark:text-white">出資模式設定</div>
                     <SelectButton v-model="currentConfig.costMode" :options="costModeOptions" optionLabel="label" optionValue="value" :allowEmpty="false" @change="handleCostModeChange" class="p-button-sm" />
                 </div>
                 
                 <!-- Mixed Mode Input Area -->
                 <div v-if="currentConfig.costMode === 'mixed'" class="flex items-center gap-4 animate-fade-in">
                     <div class="flex-1">
-                        <label class="text-surface-400 text-xs block mb-1">平台出資 %</label>
+                        <label class="text-surface-500 dark:text-surface-400 text-xs block mb-1">平台出資 %</label>
                         <div style="width: 100px">
                             <InputNumber v-model="currentConfig.platformShare" :min="1" :max="99" suffix="%" class="w-full" inputClass="text-center" :showButtons="false" @input="updateAgentShare" />
                         </div>
                     </div>
                     <div class="flex-1">
-                        <label class="text-surface-400 text-xs block mb-1">代理出資 %</label>
+                        <label class="text-surface-500 dark:text-surface-400 text-xs block mb-1">代理出資 %</label>
                         <div style="width: 100px">
                             <InputNumber v-model="currentConfig.agentShare" :min="1" :max="99" suffix="%" class="w-full" inputClass="text-center" disabled :showButtons="false" />
                         </div>
@@ -116,8 +116,8 @@
                 </div>
 
                 <!-- Info for Single Mode -->
-                <div v-else class="flex items-center gap-2 text-sm text-surface-300 bg-surface-800/50 p-2 rounded">
-                    <i class="pi pi-info-circle text-blue-400"></i>
+                <div v-else class="flex items-center gap-2 text-sm text-surface-500 dark:text-surface-300 bg-surface-50 dark:bg-surface-800/50 p-2 rounded">
+                    <i class="pi pi-info-circle text-blue-500 dark:text-blue-400"></i>
                     <span>{{ currentConfig.costMode === 'platform' ? '所有成本由平台全額承擔 (Platform 100%)' : '所有成本由代理全額承擔 (Agent 100%)' }}</span>
                 </div>
             </div>
@@ -357,14 +357,11 @@ const getCostModeSeverity = (event: any) => {
 
 <style scoped>
 :deep(.p-card .p-card-body) { padding: 1rem; }
-:deep(.p-datatable .p-datatable-thead > tr > th) { background-color: rgba(30, 41, 59, 0.5); color: #94a3b8; border-color: rgba(71, 85, 105, 0.5); padding: 0.75rem 1rem; font-weight: 600; }
-:deep(.p-datatable .p-datatable-tbody > tr) { background-color: transparent; }
-:deep(.p-datatable .p-datatable-tbody > tr:nth-child(even)) { background-color: rgba(30, 41, 59, 0.3); }
-:deep(.p-datatable .p-datatable-tbody > tr > td) { border-color: rgba(71, 85, 105, 0.3); padding: 0.75rem 1rem; }
+:deep(.p-datatable-tbody > tr > td) { padding: 0.75rem 1rem; }
 :deep(.p-inputnumber-input) { text-align: center; } /* Reinforce center align */
 
 /* Custom SelectButton Styles */
-:deep(.p-selectbutton .p-button.p-highlight) { background: #3b82f6; border-color: #3b82f6; color: white; }
-:deep(.p-selectbutton .p-button) { background: #1e293b; border-color: #334155; color: #94a3b8; }
-:deep(.p-selectbutton .p-button:hover) { background: #0f172a; }
+/* :deep(.p-selectbutton .p-button.p-highlight) { background: #3b82f6; border-color: #3b82f6; color: white; } */
+/* :deep(.p-selectbutton .p-button) { background: #1e293b; border-color: #334155; color: #94a3b8; } */
+/* :deep(.p-selectbutton .p-button:hover) { background: #0f172a; } */
 </style>

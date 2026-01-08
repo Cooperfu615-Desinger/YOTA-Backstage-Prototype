@@ -1,41 +1,41 @@
 <template>
   <div class="p-6 space-y-6">
     <!-- Breadcrumb -->
-    <div class="flex items-center gap-2 text-sm text-surface-400">
-      <i class="pi pi-sitemap text-blue-400"></i>
-      <span class="text-surface-300">代理管理</span>
+    <div class="flex items-center gap-2 text-sm text-surface-600 dark:text-surface-400">
+      <i class="pi pi-sitemap text-blue-500 dark:text-blue-400"></i>
+      <span class="text-surface-500 dark:text-surface-300">代理管理</span>
       <span>></span>
-      <span class="text-white font-medium">代理列表</span>
+      <span class="text-surface-900 dark:text-surface-0 font-medium">代理列表</span>
     </div>
 
     <!-- Search Section -->
-    <Card class="bg-surface-800/50 border border-surface-700">
+    <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
       <template #title>
-        <div class="flex items-center gap-2 text-white text-lg">
-          <i class="pi pi-search text-blue-400"></i>
+        <div class="flex items-center gap-2 text-surface-900 dark:text-surface-0 text-lg">
+          <i class="pi pi-search text-blue-500 dark:text-blue-400"></i>
           代理搜尋
         </div>
       </template>
       <template #content>
         <div class="flex flex-wrap gap-4 mb-4">
           <div class="flex flex-col gap-1">
-            <label class="text-surface-300 text-sm font-medium">代理帳號</label>
+            <label class="text-surface-700 dark:text-surface-300 text-sm font-medium">代理帳號</label>
             <InputText v-model="filters.account" placeholder="輸入代理帳號" class="w-[220px]" />
           </div>
           <div class="flex flex-col gap-1">
-            <label class="text-surface-300 text-sm font-medium">手機號碼</label>
+            <label class="text-surface-700 dark:text-surface-300 text-sm font-medium">手機號碼</label>
             <InputText v-model="filters.phone" placeholder="輸入手機號碼" class="w-[220px]" />
           </div>
           <div class="flex flex-col gap-1">
-            <label class="text-surface-300 text-sm font-medium">代理等級</label>
+            <label class="text-surface-700 dark:text-surface-300 text-sm font-medium">代理等級</label>
             <Dropdown v-model="filters.level" :options="levelOptions" optionLabel="label" optionValue="value" placeholder="選擇等級" class="w-[220px]" showClear />
           </div>
           <div class="flex flex-col gap-1">
-            <label class="text-surface-300 text-sm font-medium">狀態</label>
+            <label class="text-surface-700 dark:text-surface-300 text-sm font-medium">狀態</label>
             <Dropdown v-model="filters.status" :options="statusOptions" optionLabel="label" optionValue="value" placeholder="選擇狀態" class="w-[220px]" showClear />
           </div>
           <div class="flex flex-col gap-1">
-            <label class="text-surface-300 text-sm font-medium">註冊日期</label>
+            <label class="text-surface-700 dark:text-surface-300 text-sm font-medium">註冊日期</label>
             <Calendar v-model="filters.dateRange" selectionMode="range" :manualInput="false" placeholder="選擇日期範圍" class="w-[220px]" showIcon />
           </div>
         </div>
@@ -48,15 +48,15 @@
     </Card>
 
     <!-- Agent List -->
-    <Card class="bg-surface-800/50 border border-surface-700">
+    <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
       <template #title>
-        <div class="flex items-center gap-2 text-white text-lg">
-          <i class="pi pi-users text-purple-400"></i>
+        <div class="flex items-center gap-2 text-surface-900 dark:text-surface-0 text-lg">
+          <i class="pi pi-users text-purple-500 dark:text-purple-400"></i>
           代理列表
         </div>
       </template>
       <template #content>
-         <DataTable :value="filteredAgents" stripedRows class="p-datatable-sm" :pt="{ table: { class: 'min-w-full' }, tbody: { class: 'text-surface-300' } }">
+         <DataTable :value="filteredAgents" stripedRows class="p-datatable-sm" :pt="{ table: { class: 'min-w-full' }, tbody: { class: 'text-surface-700 dark:text-surface-300' } }">
             <Column field="account" header="代理帳號" style="min-width: 140px">
                  <template #body="slotProps">
                     <span class="text-blue-400 font-medium cursor-pointer hover:underline" 
@@ -123,8 +123,8 @@
             <div class="flex items-center gap-3">
                 <i v-if="currentAgent" :class="['pi text-2xl', getLevelIcon(currentAgent.level), getLevelColor(currentAgent.level)]"></i>
                 <div>
-                    <div class="text-white font-bold text-lg">代理詳情 - {{ currentAgent?.account }}</div>
-                    <div class="text-surface-400 text-sm">{{ currentAgent?.level }}</div>
+                    <div class="text-surface-900 dark:text-surface-0 font-bold text-lg">代理詳情 - {{ currentAgent?.account }}</div>
+                    <div class="text-surface-600 dark:text-surface-400 text-sm">{{ currentAgent?.level }}</div>
                 </div>
             </div>
         </template>
@@ -132,12 +132,12 @@
             <TabPanel header="基本資料" value="基本資料">
                 <div class="grid grid-cols-2 gap-4 p-4">
                     <div>
-                        <label class="text-surface-400 text-sm">代理帳號</label>
-                        <div class="text-white font-medium">{{ currentAgent.account }}</div>
+                        <label class="text-surface-600 dark:text-surface-400 text-sm">代理帳號</label>
+                        <div class="text-surface-900 dark:text-surface-0 font-medium">{{ currentAgent.account }}</div>
                     </div>
                     <div>
-                        <label class="text-surface-400 text-sm">手機號碼</label>
-                        <div class="text-white">{{ currentAgent.phone }}</div>
+                        <label class="text-surface-600 dark:text-surface-400 text-sm">手機號碼</label>
+                        <div class="text-surface-900 dark:text-surface-0">{{ currentAgent.phone }}</div>
                     </div>
                     <div>
                         <label class="text-surface-400 text-sm">上級代理</label>
@@ -165,19 +165,19 @@
                     </div>
                 </div>
                 
-                <div class="border-t border-surface-700 pt-4 mt-4">
+                <div class="border-t border-surface-200 dark:border-surface-700 pt-4 mt-4">
                     <div class="flex items-center justify-between mb-3">
-                        <label class="text-white font-semibold">手動鎖定等級</label>
+                        <label class="text-surface-900 dark:text-surface-0 font-semibold">手動鎖定等級</label>
                         <InputSwitch v-model="currentAgent.manualLevelLock" />
                     </div>
                     
                     <div v-if="currentAgent.manualLevelLock" class="space-y-3">
                         <div>
-                            <label class="text-surface-300 text-sm font-medium mb-2 block">指定等級</label>
+                            <label class="text-surface-700 dark:text-surface-300 text-sm font-medium mb-2 block">指定等級</label>
                             <Dropdown v-model="currentAgent.level" :options="availableLevels" optionLabel="label" optionValue="value" placeholder="選擇等級" class="w-full" />
                         </div>
                         <div>
-                            <label class="text-surface-300 text-sm font-medium mb-2 block">調整原因</label>
+                            <label class="text-surface-700 dark:text-surface-300 text-sm font-medium mb-2 block">調整原因</label>
                             <Textarea v-model="currentAgent.levelLockReason" rows="3" placeholder="請輸入手動調整原因..." class="w-full" />
                         </div>
                         <div class="text-xs text-surface-500">
@@ -189,33 +189,33 @@
             
             <TabPanel header="佔成設定" value="佔成設定">
                 <div class="space-y-4 p-4">
-                    <div class="flex items-center gap-4 p-3 bg-surface-900 rounded">
+                    <div class="flex items-center gap-4 p-4 bg-surface-50 dark:bg-surface-900 border border-surface-200 dark:border-surface-700 rounded-lg">
                         <div class="flex items-center gap-2 w-32">
-                            <i class="pi pi-star text-yellow-400"></i>
-                            <span class="text-white font-medium">真人遊戲佔成</span>
+                            <i class="pi pi-star text-yellow-500 dark:text-yellow-400"></i>
+                            <span class="text-surface-900 dark:text-surface-0 font-medium">真人遊戲佔成</span>
                         </div>
-                        <div style="width: 100px">
-                            <InputNumber v-model="currentAgent.commissions.live" suffix="%" :min="0" :max="100" class="w-full" inputClass="text-center" />
+                        <div class="w-[100px]">
+                            <InputNumber v-model="currentAgent.commissions.live" suffix="%" :min="0" :max="100" class="w-full text-center" :showButtons="false" />
                         </div>
                     </div>
                     
-                    <div class="flex items-center gap-4 p-3 bg-surface-900 rounded">
+                    <div class="flex items-center gap-4 p-4 bg-surface-50 dark:bg-surface-900 border border-surface-200 dark:border-surface-700 rounded-lg">
                         <div class="flex items-center gap-2 w-32">
-                            <i class="pi pi-bolt text-purple-400"></i>
-                            <span class="text-white font-medium">電子遊戲佔成</span>
+                            <i class="pi pi-bolt text-purple-500 dark:text-purple-400"></i>
+                            <span class="text-surface-900 dark:text-surface-0 font-medium">電子遊戲佔成</span>
                         </div>
-                        <div style="width: 100px">
-                            <InputNumber v-model="currentAgent.commissions.slot" suffix="%" :min="0" :max="100" class="w-full" inputClass="text-center" />
+                        <div class="w-[100px]">
+                            <InputNumber v-model="currentAgent.commissions.slot" suffix="%" :min="0" :max="100" class="w-full text-center" :showButtons="false" />
                         </div>
                     </div>
                     
-                    <div class="flex items-center gap-4 p-3 bg-surface-900 rounded">
+                    <div class="flex items-center gap-4 p-4 bg-surface-50 dark:bg-surface-900 border border-surface-200 dark:border-surface-700 rounded-lg">
                         <div class="flex items-center gap-2 w-32">
-                            <i class="pi pi-trophy text-green-400"></i>
-                            <span class="text-white font-medium">體育投注佔成</span>
+                            <i class="pi pi-trophy text-green-500 dark:text-green-400"></i>
+                            <span class="text-surface-900 dark:text-surface-0 font-medium">體育投注佔成</span>
                         </div>
-                        <div style="width: 100px">
-                            <InputNumber v-model="currentAgent.commissions.sports" suffix="%" :min="0" :max="100" class="w-full" inputClass="text-center" />
+                        <div class="w-[100px]">
+                            <InputNumber v-model="currentAgent.commissions.sports" suffix="%" :min="0" :max="100" class="w-full text-center" :showButtons="false" />
                         </div>
                     </div>
 
@@ -227,22 +227,22 @@
             
             <TabPanel header="銀行卡資訊" value="銀行卡資訊">
                 <div class="space-y-3 p-4">
-                    <div class="flex items-center justify-between p-3 bg-surface-900 rounded">
+                    <div class="flex items-center justify-between p-4 bg-surface-50 dark:bg-surface-900 border border-surface-200 dark:border-surface-700 rounded-lg">
                         <div>
-                            <div class="text-surface-400 text-sm">銀行名稱</div>
-                            <div class="text-white font-medium">{{ currentAgent.bankInfo.bankName }}</div>
+                            <div class="text-surface-600 dark:text-surface-400 text-sm">銀行名稱</div>
+                            <div class="text-surface-900 dark:text-surface-0 font-medium">{{ currentAgent.bankInfo.bankName }}</div>
                         </div>
                     </div>
-                    <div class="flex items-center justify-between p-3 bg-surface-900 rounded">
+                    <div class="flex items-center justify-between p-4 bg-surface-50 dark:bg-surface-900 border border-surface-200 dark:border-surface-700 rounded-lg">
                         <div>
-                            <div class="text-surface-400 text-sm">帳戶號碼</div>
-                            <div class="text-white font-mono">{{ currentAgent.bankInfo.accountNumber }}</div>
+                            <div class="text-surface-600 dark:text-surface-400 text-sm">帳戶號碼</div>
+                            <div class="text-surface-900 dark:text-surface-0 font-mono">{{ currentAgent.bankInfo.accountNumber }}</div>
                         </div>
                     </div>
-                    <div class="flex items-center justify-between p-3 bg-surface-900 rounded">
+                    <div class="flex items-center justify-between p-4 bg-surface-50 dark:bg-surface-900 border border-surface-200 dark:border-surface-700 rounded-lg">
                         <div>
-                            <div class="text-surface-400 text-sm">戶名</div>
-                            <div class="text-white">{{ currentAgent.bankInfo.accountName }}</div>
+                            <div class="text-surface-600 dark:text-surface-400 text-sm">戶名</div>
+                            <div class="text-surface-900 dark:text-surface-0">{{ currentAgent.bankInfo.accountName }}</div>
                         </div>
                     </div>
                 </div>
@@ -533,14 +533,7 @@ const formatCurrency = (val: number) => new Intl.NumberFormat('zh-TW', { style: 
 </script>
 
 <style scoped>
-:deep(.p-card .p-card-body) { padding: 1rem; }
-:deep(.p-card .p-card-content) { padding: 0; }
-:deep(.p-datatable .p-datatable-thead > tr > th) { background-color: rgba(30, 41, 59, 0.5); color: #94a3b8; border-color: rgba(71, 85, 105, 0.5); padding: 0.75rem 1rem; font-weight: 600; }
-:deep(.p-datatable .p-datatable-tbody > tr) { background-color: transparent; }
-:deep(.p-datatable .p-datatable-tbody > tr:nth-child(even)) { background-color: rgba(30, 41, 59, 0.3); }
-:deep(.p-datatable .p-datatable-tbody > tr > td) { border-color: rgba(71, 85, 105, 0.3); padding: 0.75rem 1rem; }
-:deep(.p-datatable .p-datatable-tbody > tr:hover) { background-color: rgba(59, 130, 246, 0.1); }
-:deep(.p-inputtext), :deep(.p-dropdown), :deep(.p-calendar), :deep(.p-inputnumber) { background-color: rgba(30, 41, 59, 0.5); border-color: rgba(71, 85, 105, 0.5); }
-:deep(.p-tabview .p-tabview-nav) { background: rgba(30, 41, 59, 0.5); }
-:deep(.p-tabview .p-tabview-panels) { background: transparent; }
+:deep(.p-card .p-card-body) { padding: 1.5rem; }
+:deep(.p-datatable-tbody > tr > td) { padding: 0.75rem 1rem; }
+:deep(.p-inputnumber-input) { text-align: center; }
 </style>

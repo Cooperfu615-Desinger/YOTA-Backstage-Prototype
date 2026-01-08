@@ -1,23 +1,23 @@
 <template>
   <div class="p-6 space-y-6">
     <!-- Breadcrumb -->
-    <div class="flex items-center gap-2 text-sm text-surface-400">
-      <i class="pi pi-wallet text-emerald-400"></i>
-      <span class="text-surface-300">財務管理</span>
+    <div class="flex items-center gap-2 text-sm text-surface-600 dark:text-surface-400">
+      <i class="pi pi-wallet text-emerald-500 dark:text-emerald-400"></i>
+      <span class="text-surface-500 dark:text-surface-300">財務管理</span>
       <span>></span>
-      <span class="text-white font-medium">總覽</span>
+      <span class="text-surface-900 dark:text-surface-0 font-medium">總覽</span>
     </div>
 
     <!-- Page Header -->
     <div class="flex items-center justify-between">
       <div>
-        <h1 class="text-2xl font-bold text-white flex items-center gap-3">
-          <i class="pi pi-chart-line text-emerald-400"></i>
+        <h1 class="text-2xl font-bold text-surface-900 dark:text-white flex items-center gap-3">
+          <i class="pi pi-chart-line text-emerald-500 dark:text-emerald-400"></i>
           財務管理總覽
         </h1>
-        <p class="text-surface-400 mt-1">Financial Overview - 即時監控平台財務數據與交易狀態</p>
+        <p class="text-surface-500 dark:text-surface-400 mt-1">Financial Overview - 即時監控平台財務數據與交易狀態</p>
       </div>
-      <div class="flex items-center gap-2 text-surface-400 text-sm">
+      <div class="flex items-center gap-2 text-surface-500 dark:text-surface-400 text-sm">
         <i class="pi pi-clock"></i>
         <span>最後更新: {{ lastUpdate }}</span>
       </div>
@@ -26,56 +26,56 @@
     <!-- Stats Cards Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
       <!-- Today Deposit -->
-      <Card class="bg-surface-800/50 border border-surface-700">
+      <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
         <template #content>
           <div class="flex items-start justify-between">
             <div>
-              <p class="text-surface-400 text-sm mb-1">今日總入金</p>
-              <p class="text-2xl font-bold text-white">{{ formatCurrency(stats.todayDeposit) }}</p>
-              <div class="flex items-center gap-1 mt-2 text-emerald-400 text-sm">
+              <p class="text-surface-500 dark:text-surface-400 text-sm mb-1">今日總入金</p>
+              <p class="text-2xl font-bold text-surface-900 dark:text-white">{{ formatCurrency(stats.todayDeposit) }}</p>
+              <div class="flex items-center gap-1 mt-2 text-emerald-500 dark:text-emerald-400 text-sm">
                 <i class="pi pi-arrow-up"></i>
                 <span>+{{ stats.depositGrowth }}% vs 昨日</span>
               </div>
             </div>
-            <div class="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center">
-              <i class="pi pi-download text-emerald-400 text-xl"></i>
+            <div class="w-12 h-12 rounded-xl bg-emerald-100 dark:bg-emerald-500/20 flex items-center justify-center">
+              <i class="pi pi-download text-emerald-500 dark:text-emerald-400 text-xl"></i>
             </div>
           </div>
         </template>
       </Card>
 
       <!-- Today Withdrawal -->
-      <Card class="bg-surface-800/50 border border-surface-700">
+      <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
         <template #content>
           <div class="flex items-start justify-between">
             <div>
-              <p class="text-surface-400 text-sm mb-1">今日總出金</p>
-              <p class="text-2xl font-bold text-white">{{ formatCurrency(stats.todayWithdrawal) }}</p>
+              <p class="text-surface-500 dark:text-surface-400 text-sm mb-1">今日總出金</p>
+              <p class="text-2xl font-bold text-surface-900 dark:text-white">{{ formatCurrency(stats.todayWithdrawal) }}</p>
               <div class="flex items-center gap-2 mt-2 text-sm">
                 <Tag severity="success" :value="`成功率 ${stats.withdrawalSuccessRate}%`" />
               </div>
             </div>
-            <div class="w-12 h-12 rounded-xl bg-orange-500/20 flex items-center justify-center">
-              <i class="pi pi-upload text-orange-400 text-xl"></i>
+            <div class="w-12 h-12 rounded-xl bg-orange-100 dark:bg-orange-500/20 flex items-center justify-center">
+              <i class="pi pi-upload text-orange-500 dark:text-orange-400 text-xl"></i>
             </div>
           </div>
         </template>
       </Card>
 
       <!-- Net Profit (GGR) -->
-      <Card class="bg-surface-800/50 border border-surface-700">
+      <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
         <template #content>
           <div class="flex items-start justify-between">
             <div>
-              <p class="text-surface-400 text-sm mb-1">淨獲利 (GGR)</p>
-              <p class="text-2xl font-bold text-emerald-400">{{ formatCurrency(stats.netProfit) }}</p>
-              <div class="flex items-center gap-1 mt-2 text-surface-400 text-sm">
+              <p class="text-surface-500 dark:text-surface-400 text-sm mb-1">淨獲利 (GGR)</p>
+              <p class="text-2xl font-bold text-emerald-500 dark:text-emerald-400">{{ formatCurrency(stats.netProfit) }}</p>
+              <div class="flex items-center gap-1 mt-2 text-surface-500 dark:text-surface-400 text-sm">
                 <i class="pi pi-percentage"></i>
                 <span>毛利率 {{ stats.marginRate }}%</span>
               </div>
             </div>
-            <div class="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center">
-              <i class="pi pi-wallet text-blue-400 text-xl"></i>
+            <div class="w-12 h-12 rounded-xl bg-blue-100 dark:bg-blue-500/20 flex items-center justify-center">
+              <i class="pi pi-wallet text-blue-500 dark:text-blue-400 text-xl"></i>
             </div>
           </div>
         </template>
@@ -104,15 +104,15 @@
     <!-- Charts & Tables Row -->
     <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
       <!-- Trend Chart -->
-      <Card class="xl:col-span-2 bg-surface-800/50 border border-surface-700">
+      <Card class="xl:col-span-2 bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
         <template #title>
-          <div class="flex items-center gap-2 text-white">
-            <i class="pi pi-chart-line text-blue-400"></i>
+          <div class="flex items-center gap-2 text-surface-900 dark:text-white">
+            <i class="pi pi-chart-line text-blue-500 dark:text-blue-400"></i>
             今日存提款趨勢
           </div>
         </template>
         <template #subtitle>
-          <span class="text-surface-400">24小時即時數據</span>
+          <span class="text-surface-500 dark:text-surface-400">24小時即時數據</span>
         </template>
         <template #content>
           <Chart type="line" :data="chartData" :options="chartOptions" class="h-72" />
@@ -120,15 +120,15 @@
       </Card>
 
       <!-- Risk Alert Timeline -->
-      <Card class="bg-surface-800/50 border border-surface-700">
+      <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
         <template #title>
-          <div class="flex items-center gap-2 text-white">
-            <i class="pi pi-shield text-red-400"></i>
+          <div class="flex items-center gap-2 text-surface-900 dark:text-white">
+            <i class="pi pi-shield text-red-500 dark:text-red-400"></i>
             風控預警
           </div>
         </template>
         <template #subtitle>
-          <span class="text-surface-400">大額提款審核</span>
+          <span class="text-surface-500 dark:text-surface-400">大額提款審核</span>
         </template>
         <template #content>
           <Timeline :value="riskAlerts" class="custom-timeline">
@@ -141,16 +141,16 @@
               </div>
             </template>
             <template #content="slotProps">
-              <div class="bg-surface-700/50 rounded-lg p-3 mb-3">
+              <div class="bg-surface-100 dark:bg-surface-700/50 rounded-lg p-3 mb-3">
                 <div class="flex items-center justify-between mb-2">
-                  <span class="text-white font-medium">{{ slotProps.item.member }}</span>
+                  <span class="text-surface-900 dark:text-white font-medium">{{ slotProps.item.member }}</span>
                   <Tag 
                     :severity="slotProps.item.status === 'pending' ? 'warn' : 'info'" 
                     :value="slotProps.item.statusText" 
                   />
                 </div>
-                <p class="text-lg font-bold text-red-400">{{ formatCurrency(slotProps.item.amount) }}</p>
-                <p class="text-surface-400 text-xs mt-1">{{ slotProps.item.time }}</p>
+                <p class="text-lg font-bold text-red-500 dark:text-red-400">{{ formatCurrency(slotProps.item.amount) }}</p>
+                <p class="text-surface-500 dark:text-surface-400 text-xs mt-1">{{ slotProps.item.time }}</p>
               </div>
             </template>
           </Timeline>
@@ -159,15 +159,15 @@
     </div>
 
     <!-- Payment Channel Monitor -->
-    <Card class="bg-surface-800/50 border border-surface-700">
+    <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
       <template #title>
-        <div class="flex items-center gap-2 text-white">
-          <i class="pi pi-server text-purple-400"></i>
+        <div class="flex items-center gap-2 text-surface-900 dark:text-white">
+          <i class="pi pi-server text-purple-500 dark:text-purple-400"></i>
           支付通道監控
         </div>
       </template>
       <template #subtitle>
-        <span class="text-surface-400">各通道即時狀態與成功率</span>
+        <span class="text-surface-500 dark:text-surface-400">各通道即時狀態與成功率</span>
       </template>
       <template #content>
         <DataTable 
@@ -176,14 +176,14 @@
           class="p-datatable-sm"
           :pt="{
             table: { class: 'min-w-full' },
-            tbody: { class: 'text-surface-300' }
+            tbody: { class: 'text-surface-700 dark:text-surface-300' }
           }"
         >
           <Column field="name" header="通道名稱">
             <template #body="slotProps">
               <div class="flex items-center gap-2">
                 <i :class="slotProps.data.icon" class="text-lg"></i>
-                <span class="font-medium text-white">{{ slotProps.data.name }}</span>
+                <span class="font-medium text-surface-900 dark:text-white">{{ slotProps.data.name }}</span>
               </div>
             </template>
           </Column>
@@ -228,7 +228,7 @@
           </Column>
           <Column field="todayVolume" header="今日交易量">
             <template #body="slotProps">
-              <span class="text-surface-300">{{ formatCurrency(slotProps.data.todayVolume) }}</span>
+              <span class="text-surface-500 dark:text-surface-300">{{ formatCurrency(slotProps.data.todayVolume) }}</span>
             </template>
           </Column>
         </DataTable>
@@ -516,23 +516,7 @@ const getAlertMarkerClass = (severity: string) => {
   padding: 0;
 }
 
-:deep(.p-datatable .p-datatable-thead > tr > th) {
-  background-color: rgba(30, 41, 59, 0.5);
-  color: #94a3b8;
-  border-color: rgba(71, 85, 105, 0.5);
-  padding: 0.75rem 1rem;
-}
-
-:deep(.p-datatable .p-datatable-tbody > tr) {
-  background-color: transparent;
-}
-
-:deep(.p-datatable .p-datatable-tbody > tr:nth-child(even)) {
-  background-color: rgba(30, 41, 59, 0.3);
-}
-
-:deep(.p-datatable .p-datatable-tbody > tr > td) {
-  border-color: rgba(71, 85, 105, 0.3);
+:deep(.p-datatable-tbody > tr > td) {
   padding: 0.75rem 1rem;
 }
 

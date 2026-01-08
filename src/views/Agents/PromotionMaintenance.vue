@@ -1,29 +1,29 @@
 <template>
   <div class="p-6 space-y-6">
     <!-- Breadcrumb -->
-    <div class="flex items-center gap-2 text-sm text-surface-400">
-      <i class="pi pi-sitemap text-blue-400"></i>
-      <span class="text-surface-300">代理管理</span>
+    <div class="flex items-center gap-2 text-sm text-surface-600 dark:text-surface-400">
+      <i class="pi pi-sitemap text-blue-500 dark:text-blue-400"></i>
+      <span class="text-surface-500 dark:text-surface-300">代理管理</span>
       <span>></span>
-      <span class="text-white font-medium">推廣維護</span>
+      <span class="text-surface-900 dark:text-surface-0 font-medium">推廣維護</span>
     </div>
 
     <!-- Configuration Panel -->
-    <Card class="bg-surface-800/50 border border-surface-700">
+    <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
       <template #title>
-        <div class="flex items-center gap-2 text-white text-lg">
-          <i class="pi pi-cog text-blue-400"></i>
+        <div class="flex items-center gap-2 text-surface-900 dark:text-surface-0 text-lg">
+          <i class="pi pi-cog text-blue-500 dark:text-blue-400"></i>
           推廣基礎設定
         </div>
       </template>
       <template #content>
         <div class="flex items-end gap-4 flex-wrap">
           <div>
-            <label class="text-surface-400 text-sm mb-2 block">主推廣域名</label>
+            <label class="text-surface-700 dark:text-surface-300 text-sm mb-2 block">主推廣域名</label>
             <InputText v-model="config.domain" placeholder="https://example.com" class="w-[300px]" />
           </div>
           <div>
-            <label class="text-surface-400 text-sm mb-2 block">默認落地頁</label>
+            <label class="text-surface-700 dark:text-surface-300 text-sm mb-2 block">默認落地頁</label>
             <Dropdown v-model="config.landingPage" :options="landingPageOptions" optionLabel="label" optionValue="value" placeholder="選擇頁面" class="w-[220px]" />
           </div>
           <div>
@@ -34,18 +34,18 @@
     </Card>
 
     <!-- Promotion List Table -->
-    <Card class="bg-surface-800/50 border border-surface-700">
+    <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
       <template #title>
-        <div class="flex items-center gap-2 text-white text-lg">
-          <i class="pi pi-link text-green-400"></i>
+        <div class="flex items-center gap-2 text-surface-900 dark:text-surface-0 text-lg">
+          <i class="pi pi-link text-green-500 dark:text-green-400"></i>
           代理推廣列表
         </div>
       </template>
       <template #content>
-         <DataTable :value="promotionList" stripedRows class="p-datatable-sm" :pt="{ table: { class: 'min-w-full' }, tbody: { class: 'text-surface-300' } }">
+         <DataTable :value="promotionList" stripedRows class="p-datatable-sm" :pt="{ table: { class: 'min-w-full' }, tbody: { class: 'text-surface-700 dark:text-surface-300' } }">
             <Column field="account" header="代理帳號" style="min-width: 150px">
                  <template #body="slotProps">
-                    <span class="text-white font-medium">{{ slotProps.data.account }}</span>
+                    <span class="text-surface-900 dark:text-surface-0 font-medium">{{ slotProps.data.account }}</span>
                 </template>
             </Column>
             <Column field="code" header="推廣代碼" style="min-width: 120px">
@@ -55,8 +55,8 @@
             </Column>
             <Column header="推廣連結" style="min-width: 300px">
                  <template #body="slotProps">
-                     <div class="flex items-center gap-2 bg-surface-900 p-2 rounded border border-surface-700">
-                         <span class="text-blue-400 text-sm truncate max-w-[200px]">{{ getFullLink(slotProps.data.code) }}</span>
+                     <div class="flex items-center gap-2 bg-surface-100 dark:bg-surface-900 p-2 rounded border border-surface-200 dark:border-surface-700">
+                         <span class="text-blue-500 dark:text-blue-400 text-sm truncate max-w-[200px]">{{ getFullLink(slotProps.data.code) }}</span>
                          <Button icon="pi pi-copy" size="small" text rounded severity="secondary" @click="copyLink(getFullLink(slotProps.data.code))" v-tooltip.top="'複製連結'" />
                      </div>
                 </template>
@@ -70,12 +70,12 @@
                  <template #body="slotProps">
                      <div class="flex items-center gap-6">
                          <div class="flex flex-col items-center">
-                             <span class="text-xs text-surface-400">點擊數</span>
-                             <span class="text-white font-mono font-bold">{{ slotProps.data.clicks }}</span>
+                             <span class="text-xs text-surface-500 dark:text-surface-400">點擊數</span>
+                             <span class="text-surface-900 dark:text-white font-mono font-bold">{{ slotProps.data.clicks }}</span>
                          </div>
                          <div class="flex flex-col items-center">
-                             <span class="text-xs text-surface-400">註冊轉化</span>
-                             <span class="text-green-400 font-mono font-bold">{{ slotProps.data.conversions }}</span>
+                             <span class="text-xs text-surface-500 dark:text-surface-400">註冊轉化</span>
+                             <span class="text-green-500 dark:text-green-400 font-mono font-bold">{{ slotProps.data.conversions }}</span>
                          </div>
                      </div>
                 </template>
@@ -92,8 +92,8 @@
                 <i class="pi pi-qrcode text-6xl text-black"></i>
             </div>
             <div class="text-center">
-                <div class="text-white font-bold text-lg">{{ currentQrAgent.account }}</div>
-                <div class="text-surface-400 text-sm">推廣代碼: {{ currentQrAgent.code }}</div>
+                <div class="text-surface-900 dark:text-white font-bold text-lg">{{ currentQrAgent.account }}</div>
+                <div class="text-surface-500 dark:text-surface-400 text-sm">推廣代碼: {{ currentQrAgent.code }}</div>
             </div>
             <Button label="下載圖片" icon="pi pi-download" size="small" severity="secondary" outlined class="w-full" @click="downloadQr" />
         </div>
@@ -176,12 +176,6 @@ const generateMockData = () => {
 </script>
 
 <style scoped>
-:deep(.p-card .p-card-body) { padding: 1rem; }
-:deep(.p-card .p-card-content) { padding: 0; }
-:deep(.p-datatable .p-datatable-thead > tr > th) { background-color: rgba(30, 41, 59, 0.5); color: #94a3b8; border-color: rgba(71, 85, 105, 0.5); padding: 0.75rem 1rem; font-weight: 600; }
-:deep(.p-datatable .p-datatable-tbody > tr) { background-color: transparent; }
-:deep(.p-datatable .p-datatable-tbody > tr:nth-child(even)) { background-color: rgba(30, 41, 59, 0.3); }
-:deep(.p-datatable .p-datatable-tbody > tr > td) { border-color: rgba(71, 85, 105, 0.3); padding: 0.75rem 1rem; }
-:deep(.p-datatable .p-datatable-tbody > tr:hover) { background-color: rgba(59, 130, 246, 0.1); }
-:deep(.p-inputtext), :deep(.p-dropdown) { background-color: rgba(30, 41, 59, 0.5); border-color: rgba(71, 85, 105, 0.5); }
+:deep(.p-card .p-card-body) { padding: 1.5rem; }
+:deep(.p-datatable-tbody > tr > td) { padding: 0.75rem 1rem; }
 </style>
