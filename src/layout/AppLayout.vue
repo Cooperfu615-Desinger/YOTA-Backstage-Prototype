@@ -331,6 +331,7 @@ const menuItems: MenuItem[] = [
       { path: '/promotion/management', title: '優惠管理', icon: 'pi-list' },
       { path: '/promotion/event-config', title: '活動設置', icon: 'pi-cog' },
       { path: '/promotion/achievement-config', title: '成就設置', icon: 'pi-star' },
+      { path: '/promotion/check-in/dashboard', title: '簽到看板', icon: 'pi-calendar' },
     ]
   },
   { 
