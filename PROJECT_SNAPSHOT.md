@@ -256,6 +256,13 @@ autoApprove = rolloverPercentage >= 100 && amount <= maxAmount && vipLevel >= mi
 - Real-time agent count per level
 - Icon and color customization
 
+**Manual Level Override**:
+
+- Administrators can manually lock an agent's level
+- Bypasses automatic promotion system
+- Requires reason for audit trail
+- Prevents system from auto-adjusting based on performance
+
 ---
 
 ## Mock Data Strategy

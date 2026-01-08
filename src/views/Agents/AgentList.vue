@@ -118,7 +118,16 @@
     </Card>
 
     <!-- Agent Detail Dialog -->
-    <Dialog v-model:visible="detailDialogVisible" modal :header="`代理詳情 - ${currentAgent?.account}`" :style="{ width: '800px' }">
+    <Dialog v-model:visible="detailDialogVisible" modal :style="{ width: '800px' }">
+        <template #header>
+            <div class="flex items-center gap-3">
+                <i v-if="currentAgent" :class="['pi text-2xl', getLevelIcon(currentAgent.level), getLevelColor(currentAgent.level)]"></i>
+                <div>
+                    <div class="text-white font-bold text-lg">代理詳情 - {{ currentAgent?.account }}</div>
+                    <div class="text-surface-400 text-sm">{{ currentAgent?.level }}</div>
+                </div>
+            </div>
+        </template>
         <TabView v-if="currentAgent">
             <TabPanel header="基本資料" value="基本資料">
                 <div class="grid grid-cols-2 gap-4 p-4">
@@ -153,6 +162,27 @@
                     <div>
                         <label class="text-surface-400 text-sm">註冊日期</label>
                         <div class="text-white">{{ currentAgent.registerDate }}</div>
+                    </div>
+                </div>
+                
+                <div class="border-t border-surface-700 pt-4 mt-4">
+                    <div class="flex items-center justify-between mb-3">
+                        <label class="text-white font-semibold">手動鎖定等級</label>
+                        <InputSwitch v-model="currentAgent.manualLevelLock" />
+                    </div>
+                    
+                    <div v-if="currentAgent.manualLevelLock" class="space-y-3">
+                        <div>
+                            <label class="text-surface-300 text-sm font-medium mb-2 block">指定等級</label>
+                            <Dropdown v-model="currentAgent.level" :options="availableLevels" optionLabel="label" optionValue="value" placeholder="選擇等級" class="w-full" />
+                        </div>
+                        <div>
+                            <label class="text-surface-300 text-sm font-medium mb-2 block">調整原因</label>
+                            <Textarea v-model="currentAgent.levelLockReason" rows="3" placeholder="請輸入手動調整原因..." class="w-full" />
+                        </div>
+                        <div class="text-xs text-surface-500">
+                            <i class="pi pi-info-circle"></i> 手動鎖定後，系統將不再自動蘇核搭成進度
+                        </div>
                     </div>
                 </div>
             </TabPanel>
@@ -236,6 +266,8 @@ import Dialog from 'primevue/dialog'
 import TabView from 'primevue/tabview'
 import TabPanel from 'primevue/tabpanel'
 import Calendar from 'primevue/calendar'
+import InputSwitch from 'primevue/inputswitch'
+import Textarea from 'primevue/textarea'
 import { useToast } from 'primevue/usetoast'
 
 const toast = useToast()
@@ -253,6 +285,12 @@ const levelOptions = ref([
 const statusOptions = ref([
     { label: '啟用', value: '啟用' },
     { label: '停用', value: '停用' },
+])
+
+const availableLevels = ref([
+    { label: 'L1 - 初級代理', value: 'L1' },
+    { label: 'L2 - 中級代理', value: 'L2' },
+    { label: 'L3 - 高級代理', value: 'L3' },
 ])
 
 const filters = ref({
@@ -303,6 +341,24 @@ const saveCommissions = () => {
     toast.add({ severity: 'success', summary: '設定已儲存', detail: '佔成比例已更新', life: 2000 })
 }
 
+const getLevelIcon = (level: string) => {
+    const iconMap: Record<string, string> = {
+        'L1': 'pi-star',
+        'L2': 'pi-shield',
+        'L3': 'pi-crown'
+    }
+    return iconMap[level] || 'pi-star'
+}
+
+const getLevelColor = (level: string) => {
+    const colorMap: Record<string, string> = {
+        'L1': 'text-gray-400',
+        'L2': 'text-blue-400',
+        'L3': 'text-yellow-400'
+    }
+    return colorMap[level] || 'text-gray-400'
+}
+
 const generateMockData = () => {
     // Top level agents
     agents.value = [
@@ -319,6 +375,8 @@ const generateMockData = () => {
             sharePercent: 50,
             status: '啟用',
             registerDate: '2024-01-15',
+            manualLevelLock: true,
+            levelLockReason: '高級 VIP 客戶，特殊案例',
             commissions: { live: 50, slot: 45, sports: 40 },
             bankInfo: { bankName: '中國信託', accountNumber: '1234-5678-9012-3456', accountName: '王大明' }
         },
@@ -335,6 +393,8 @@ const generateMockData = () => {
             sharePercent: 35,
             status: '啟用',
             registerDate: '2024-02-20',
+            manualLevelLock: false,
+            levelLockReason: '',
             commissions: { live: 35, slot: 30, sports: 28 },
             bankInfo: { bankName: '台新銀行', accountNumber: '9876-5432-1098-7654', accountName: '李小華' }
         },
