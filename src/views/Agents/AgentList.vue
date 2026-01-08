@@ -194,7 +194,7 @@
                             <i class="pi pi-star text-yellow-400"></i>
                             <span class="text-white font-medium">真人遊戲佔成</span>
                         </div>
-                        <div style="width: 140px">
+                        <div style="width: 100px">
                             <InputNumber v-model="currentAgent.commissions.live" suffix="%" :min="0" :max="100" showButtons buttonLayout="horizontal" class="w-full" inputClass="w-full text-center" />
                         </div>
                     </div>
@@ -204,7 +204,7 @@
                             <i class="pi pi-bolt text-purple-400"></i>
                             <span class="text-white font-medium">電子遊戲佔成</span>
                         </div>
-                        <div style="width: 140px">
+                        <div style="width: 100px">
                             <InputNumber v-model="currentAgent.commissions.slot" suffix="%" :min="0" :max="100" showButtons buttonLayout="horizontal" class="w-full" inputClass="w-full text-center" />
                         </div>
                     </div>
@@ -214,7 +214,7 @@
                             <i class="pi pi-trophy text-green-400"></i>
                             <span class="text-white font-medium">體育投注佔成</span>
                         </div>
-                        <div style="width: 140px">
+                        <div style="width: 100px">
                             <InputNumber v-model="currentAgent.commissions.sports" suffix="%" :min="0" :max="100" showButtons buttonLayout="horizontal" class="w-full" inputClass="w-full text-center" />
                         </div>
                     </div>
