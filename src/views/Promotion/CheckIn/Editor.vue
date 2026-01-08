@@ -44,15 +44,22 @@
                     
                     <span class="text-xs text-surface-500 absolute top-2 left-2">Day {{ index + 1 }}</span>
                     
+                    <!-- Top-Right Status Icon (Grey Dot or Star/Gift) -->
+                    <div class="absolute top-2 right-2">
+                         <div v-if="!cell.isBigPrize" class="w-2 h-2 rounded-full bg-surface-600"></div>
+                         <i v-else class="pi pi-star-fill text-yellow-500 text-xs"></i>
+                    </div>
+
                     <!-- Reward Icon -->
                     <div class="w-10 h-10 rounded-full bg-surface-800 flex items-center justify-center mt-4 group-hover:bg-blue-500/20 transition-colors">
-                        <i :class="['pi', cell.icon, 'text-xl', cell.isBigPrize ? 'text-yellow-400' : 'text-blue-400']"></i>
+                        <i v-if="cell.isBigPrize" class="pi pi-gift text-xl text-yellow-400"></i>
+                        <i v-else :class="['pi', cell.icon, 'text-xl text-surface-400']"></i>
                     </div>
                     
-                    <!-- Reward Value Display -->
-                    <div class="text-center">
-                        <div class="text-sm font-bold text-white">{{ cell.value }}</div>
-                        <div class="text-[10px] text-surface-400">{{ cell.type === 'points' ? '積分' : '道具' }}</div>
+                    <!-- Reward Value Display (Minimalist) -->
+                    <div class="text-center w-full">
+                         <!-- 100px Button-less Alignment -->
+                         <div class="text-sm font-bold text-white">{{ cell.value }}</div>
                     </div>
 
                     <!-- Edit Hint -->
@@ -139,7 +146,7 @@ const regenerateGrid = () => {
 const createDefaultCell = (i: number): Cell => ({
     value: 10,
     type: 'points',
-    icon: 'pi-star',
+    icon: 'pi-check-circle', // Default simple icon
     isBigPrize: (i + 1) % 7 === 0
 })
 
@@ -162,7 +169,7 @@ const openCellEditor = (index: number) => {
     
     if (currentCell.value) {
       if (currentCell.value.isBigPrize) currentCell.value.icon = 'pi-gift'
-      else currentCell.value.icon = 'pi-star'
+      else currentCell.value.icon = 'pi-check-circle'
     }
     
     editorVisible.value = true
