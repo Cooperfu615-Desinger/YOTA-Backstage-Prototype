@@ -39,6 +39,17 @@
 - **Negative amounts**: `text-red-400` (扣點, 投注, 提款)
 - **Status badges**: Success (green), Warning (yellow), Danger (red), Info (blue)
 
+### Numeric Input Standards
+
+**Percentage/Ratio Inputs**: All percentage or ratio inputs (commission rates, bonuses, adjustments) must follow:
+
+- **Layout**: Use `buttonLayout="horizontal"` with increment/decrement buttons
+- **Width Constraint**: Wrap InputNumber in `<div style="width: 140px">` container, apply `class="w-full"` to InputNumber
+- **Text Alignment**: Use `inputClass="text-center"` for centered display
+- **Deep CSS**: Apply horizontal button mode deep selectors from AgentList.vue pattern if needed
+
+**Currency Inputs**: Use `w-[220px]` for amount fields with proper locale formatting
+
 ---
 
 ## Route Mapping

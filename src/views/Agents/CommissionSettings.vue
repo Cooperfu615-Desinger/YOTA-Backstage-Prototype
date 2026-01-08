@@ -85,9 +85,13 @@
                 <div class="space-y-2">
                     <div v-for="(tier, index) in currentScheme.tiers" :key="index" class="flex items-center gap-3 p-3 bg-surface-900 rounded">
                         <span class="text-surface-400 text-sm">月淨盈利 ≥</span>
-                        <InputNumber v-model="tier.minProfit" :min="0" :step="10000" mode="currency" currency="TWD" locale="zh-TW" class="w-[220px]" />
+                        <div style="width: 220px">
+                            <InputNumber v-model="tier.minProfit" :min="0" :step="10000" mode="currency" currency="TWD" locale="zh-TW" class="w-full" inputClass="text-center" />
+                        </div>
                         <span class="text-surface-400 text-sm">佔成比例</span>
-                        <InputNumber v-model="tier.percentage" :min="0" :max="100" suffix="%" class="w-[150px]" showButtons />
+                        <div style="width: 140px">
+                            <InputNumber v-model="tier.percentage" :min="0" :max="100" suffix="%" showButtons buttonLayout="horizontal" class="w-full" inputClass="text-center" />
+                        </div>
                         <Button icon="pi pi-trash" severity="danger" text @click="removeTier(Number(index))" v-tooltip.top="'刪除'" />
                     </div>
                 </div>
@@ -99,15 +103,21 @@
                 <div class="grid grid-cols-3 gap-3">
                     <div>
                         <label class="text-surface-300 text-sm block mb-2">真人遊戲加成 (%)</label>
-                        <InputNumber v-model="currentScheme.categoryAdjustments.live" :min="-50" :max="50" suffix="%" showButtons class="w-full" />
+                        <div style="width: 140px">
+                            <InputNumber v-model="currentScheme.categoryAdjustments.live" :min="-50" :max="50" suffix="%" showButtons buttonLayout="horizontal" class="w-full" inputClass="text-center" />
+                        </div>
                     </div>
                     <div>
                         <label class="text-surface-300 text-sm block mb-2">電子遊戲加成 (%)</label>
-                        <InputNumber v-model="currentScheme.categoryAdjustments.slot" :min="-50" :max="50" suffix="%" showButtons class="w-full" />
+                        <div style="width: 140px">
+                            <InputNumber v-model="currentScheme.categoryAdjustments.slot" :min="-50" :max="50" suffix="%" showButtons buttonLayout="horizontal" class="w-full" inputClass="text-center" />
+                        </div>
                     </div>
                     <div>
                         <label class="text-surface-300 text-sm block mb-2">體育投注加成 (%)</label>
-                        <InputNumber v-model="currentScheme.categoryAdjustments.sports" :min="-50" :max="50" suffix="%" showButtons class="w-full" />
+                        <div style="width: 140px">
+                            <InputNumber v-model="currentScheme.categoryAdjustments.sports" :min="-50" :max="50" suffix="%" showButtons buttonLayout="horizontal" class="w-full" inputClass="text-center" />
+                        </div>
                     </div>
                 </div>
             </div>
@@ -123,7 +133,9 @@
                         </div>
                         <div v-if="currentScheme.costSharing.bonusDeduction.enabled" class="flex items-center gap-2">
                             <span class="text-surface-400 text-sm">扣除比例</span>
-                            <InputNumber v-model="currentScheme.costSharing.bonusDeduction.percentage" :min="0" :max="100" suffix="%" class="w-[150px]" showButtons />
+                            <div style="width: 140px">
+                                <InputNumber v-model="currentScheme.costSharing.bonusDeduction.percentage" :min="0" :max="100" suffix="%" showButtons buttonLayout="horizontal" class="w-full" inputClass="text-center" />
+                            </div>
                         </div>
                     </div>
                     <div class="flex items-center justify-between p-3 bg-surface-900 rounded">
@@ -133,7 +145,9 @@
                         </div>
                         <div v-if="currentScheme.costSharing.platformFee.enabled" class="flex items-center gap-2">
                             <span class="text-surface-400 text-sm">扣除比例</span>
-                            <InputNumber v-model="currentScheme.costSharing.platformFee.percentage" :min="0" :max="100" suffix="%" class="w-[150px]" showButtons />
+                            <div style="width: 140px">
+                                <InputNumber v-model="currentScheme.costSharing.platformFee.percentage" :min="0" :max="100" suffix="%" showButtons buttonLayout="horizontal" class="w-full" inputClass="text-center" />
+                            </div>
                         </div>
                     </div>
                 </div>
