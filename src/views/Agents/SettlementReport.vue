@@ -24,7 +24,13 @@
             <label class="text-surface-400 text-sm mb-2 block">發放狀態</label>
             <Dropdown v-model="filters.status" :options="statusOptions" placeholder="選擇狀態" class="w-[220px]" />
           </div>
-          <div class="flex items-end">
+          <div class="flex items-end gap-2">
+            <Button label="本月" size="small" outlined class="mb-[2px]" @click="quickFilter('thisMonth')" />
+            <Button label="上月" size="small" outlined class="mb-[2px]" @click="quickFilter('lastMonth')" />
+            <Button label="近三個月" size="small" outlined class="mb-[2px]" @click="quickFilter('last3Months')" />
+          </div>
+          <div class="flex items-end ml-auto gap-2">
+            <Button label="匯出 Excel" icon="pi pi-file-excel" severity="success" outlined @click="exportReport" />
             <Button label="搜尋" icon="pi pi-search" @click="handleSearch" />
           </div>
         </div>
@@ -78,11 +84,17 @@
                      <span class="font-mono text-yellow-400">{{ slotProps.data.commissionRate }}%</span>
                 </template>
             </Column>
-            <Column field="finalCommission" header="預計佣金" style="min-width: 130px">
+            <Column field="finalCommission" header="預計佣金" style="min-width: 150px">
                  <template #body="slotProps">
-                     <span class="font-mono text-green-400 font-bold text-lg">
+                     <div v-if="slotProps.data.finalCommission >= 0" class="font-mono text-green-400 font-bold text-lg">
                          {{ formatCurrency(slotProps.data.finalCommission) }}
-                     </span>
+                     </div>
+                     <div v-else class="flex flex-col items-start">
+                         <span class="font-mono text-red-400 font-bold text-lg">
+                             {{ formatCurrency(slotProps.data.finalCommission) }}
+                         </span>
+                         <Tag value="結轉下月" severity="danger" class="scale-75 origin-left" />
+                     </div>
                 </template>
             </Column>
             <Column field="status" header="狀態" style="min-width: 100px">
@@ -174,7 +186,11 @@ const reports = ref<any[]>([])
 const detailDialogVisible = ref(false)
 const currentReport = ref<any>(null)
 
-const filters = ref({
+const filters = ref<{
+    account: string
+    period: Date | null
+    status: string
+}>({
     account: '',
     period: null,
     status: ''
@@ -243,21 +259,21 @@ const generateMockData = () => {
                 { memberAccount: 'member_003', totalBets: 2000000, memberPL: -150000, bonusAllocation: 30000 }
             ]
         },
-        // Scenario 2: Negative P/L agent (team won)
+        // Scenario 2: Negative P/L agent (Members Won) - Carry Forward
         {
             id: 2,
             period: '2024/01',
             account: 'agent_001',
-            teamPL: -50000,
-            bonusDeduction: 0,
-            platformFee: 0,
-            netProfit: -50000,
+            teamPL: -150000,
+            bonusDeduction: 10000,
+            platformFee: 5000,
+            netProfit: 0, // Will be calculated
             commissionRate: 30,
-            finalCommission: 0,
+            finalCommission: 0, // Will be calculated
             status: '待結算',
             memberContributions: [
-                { memberAccount: 'member_101', totalBets: 1000000, memberPL: 30000, bonusAllocation: 0 },
-                { memberAccount: 'member_102', totalBets: 800000, memberPL: 20000, bonusAllocation: 0 }
+                { memberAccount: 'member_101', totalBets: 1000000, memberPL: 80000, bonusAllocation: 5000 },
+                { memberAccount: 'member_102', totalBets: 800000, memberPL: 70000, bonusAllocation: 5000 }
             ]
         },
         // Scenario 3: Pending payout
@@ -295,11 +311,33 @@ const generateMockData = () => {
         }))
     ]
     
-    // Calculate derived fields
+    // Generate derived fields
     reports.value.forEach(r => {
         r.netProfit = r.teamPL - r.bonusDeduction - r.platformFee
-        r.finalCommission = r.netProfit > 0 ? Math.floor(r.netProfit * r.commissionRate / 100) : 0
+        // Allow negative commission
+        r.finalCommission = Math.floor(r.netProfit * r.commissionRate / 100)
     })
+}
+
+const quickFilter = (type: 'thisMonth' | 'lastMonth' | 'last3Months') => {
+    const now = new Date()
+    let date = new Date()
+    
+    if (type === 'thisMonth') {
+        date = now
+    } else if (type === 'lastMonth') {
+        date.setMonth(now.getMonth() - 1)
+    } else if (type === 'last3Months') {
+        // Just setting to last month as a start for the range for this demo
+        date.setMonth(now.getMonth() - 3)
+    }
+    
+    filters.value.period = date
+    toast.add({ severity: 'info', summary: '已套用快速篩選', life: 1000 })
+}
+
+const exportReport = () => {
+    toast.add({ severity: 'success', summary: '匯出成功', detail: '報表已匯出至 Excel', life: 2000 })
 }
 
 const formatCurrency = (val: number) => new Intl.NumberFormat('zh-TW', { style: 'currency', currency: 'TWD', minimumFractionDigits: 0 }).format(val)
