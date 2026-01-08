@@ -282,7 +282,7 @@ const routes: RouteRecordRaw[] = [
         meta: { title: '代理管理', icon: 'pi-sitemap' }
     },
     {
-        path: '/agents/overview',
+        path: '/agent/overview',
         name: 'AgentsOverview',
         component: () => import('@/views/Agents/Overview.vue'),
         meta: { title: '代理總覽', icon: 'pi-chart-pie', parent: 'Agents' }
@@ -309,9 +309,7 @@ const routes: RouteRecordRaw[] = [
         path: '/agent/maintenance',
         name: 'AgentMaintenance',
         component: () => import('@/views/Agents/AgentMaintenance.vue'),
-        meta: {
-            title: '代理商維護'
-        }
+        meta: { title: '代理商維護', icon: 'pi-sitemap', parent: 'Agents' }
     },
     {
         path: '/agent/settlement',
@@ -320,13 +318,7 @@ const routes: RouteRecordRaw[] = [
         meta: { title: '佣金結算報表', icon: 'pi-calculator', parent: 'Agents' }
     },
     {
-        path: '/agents/maintenance',
-        name: 'AgentMaintenance',
-        component: () => import('@/views/Agents/AgentMaintenance.vue'),
-        meta: { title: '代理商維護', icon: 'pi-sitemap', parent: 'Agents' }
-    },
-    {
-        path: '/agents/promotion',
+        path: '/agent/promotion',
         name: 'PromotionMaintenance',
         component: () => import('@/views/Agents/PromotionMaintenance.vue'),
         meta: { title: '推廣維護', icon: 'pi-link', parent: 'Agents' }

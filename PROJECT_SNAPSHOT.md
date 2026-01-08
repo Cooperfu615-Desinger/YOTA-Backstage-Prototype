@@ -86,12 +86,13 @@
 
 ### Agents (代理管理)
 
-- `/agents/overview` - Agent Overview (代理總覽)
+- `/agent/overview` - Agent Overview (代理總覽)
 - `/agent/list` - Agent List (代理列表)
 - `/agent/maintenance` - Agent Maintenance (代理商維護)
 - `/agent/levels` - Agent Level System (代理等級)
 - `/agent/commission` - Commission Settings (佣金設定)
 - `/agent/settlement` - Settlement Report (佣金結算報表)
+- `/agent/promotion` - Promotion Maintenance (推廣維護)
 
 ### Finance Core (財務核心)
 
