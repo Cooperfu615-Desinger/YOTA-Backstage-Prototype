@@ -347,12 +347,6 @@ const routes: RouteRecordRaw[] = [
         meta: { title: '成就設置', icon: 'pi-star' }
     },
     {
-        path: '/promotion/check-in/dashboard',
-        name: 'CheckInDashboard',
-        component: () => import('@/views/Promotion/CheckIn/Dashboard.vue'),
-        meta: { title: '簽到看板', icon: 'pi-calendar' }
-    },
-    {
         path: '/promotion/check-in/editor',
         name: 'CheckInEditor',
         component: () => import('@/views/Promotion/CheckIn/Editor.vue'),
