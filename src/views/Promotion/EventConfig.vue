@@ -54,14 +54,6 @@
                         </div>
                     </template>
                 </Column>
-                <Column header="獎勵規則" style="min-width: 200px">
-                     <template #body="slotProps">
-                        <div class="text-xs text-surface-400">
-                            <div>紅利: {{ formatCurrency(slotProps.data.bonus) }}</div>
-                            <div>流水: {{ slotProps.data.turnoverMulti }}x</div>
-                        </div>
-                    </template>
-                </Column>
                 <Column header="狀態" style="min-width: 100px">
                      <template #body="slotProps">
                          <InputSwitch v-model="slotProps.data.status" />
@@ -81,9 +73,9 @@
     </Card>
 
     <!-- Config Dialog -->
-    <Dialog v-model:visible="dialogVisible" modal :header="`配置 - ${getCurrentTemplateName(currentConfig.type)}`" :style="{ width: '600px' }">
+    <Dialog v-model:visible="dialogVisible" modal :header="`配置 - ${getCurrentTemplateName(currentConfig.type)}`" :style="{ width: '650px' }">
         <div class="space-y-6 py-2">
-            <!-- Basic Info -->
+            <!-- Basic Info & Version -->
             <div class="grid grid-cols-2 gap-4">
                  <div class="flex flex-col gap-2">
                     <label class="text-surface-300 text-sm">活動名稱</label>
@@ -91,7 +83,7 @@
                 </div>
                  <div class="flex flex-col gap-2">
                     <label class="text-surface-300 text-sm">版本歸屬</label>
-                    <Dropdown v-model="currentConfig.version" :options="versionOptions" optionLabel="label" optionValue="value" class="w-full" />
+                    <Dropdown v-model="currentConfig.version" :options="versionOptions" optionLabel="label" optionValue="value" class="w-full" :disabled="isVersionLocked" />
                 </div>
             </div>
 
@@ -102,19 +94,32 @@
                     <div class="flex-1">
                         <label class="text-surface-400 text-xs block mb-1">平台出資 %</label>
                         <div style="width: 100px">
-                            <InputNumber v-model="currentConfig.platformShare" :min="0" :max="100" suffix="%" class="w-full" inputClass="text-center" @input="updateAgentShare" />
+                            <InputNumber v-model="currentConfig.platformShare" :min="0" :max="100" suffix="%" class="w-full" inputClass="text-center" :showButtons="false" @input="updateAgentShare" />
                         </div>
                     </div>
                         <div class="flex-1">
                         <label class="text-surface-400 text-xs block mb-1">代理出資 %</label>
                         <div style="width: 100px">
-                            <InputNumber v-model="currentConfig.agentShare" :min="0" :max="100" suffix="%" class="w-full" inputClass="text-center" disabled />
+                            <InputNumber v-model="currentConfig.agentShare" :min="0" :max="100" suffix="%" class="w-full" inputClass="text-center" disabled :showButtons="false" />
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Template Specific Logic -->
+            <!-- Game Promo Specifics -->
+            <div v-if="currentConfig.type === 'game_promo'" class="bg-purple-900/20 p-4 rounded border border-purple-800 space-y-4">
+                 <div class="text-sm font-bold text-purple-300 mb-2">遊戲推廣設定</div>
+                 <div class="flex flex-col gap-2">
+                    <label class="text-surface-300 text-sm">指定遊戲 (多選)</label>
+                    <MultiSelect v-model="currentConfig.selectedGames" :options="gameList" optionLabel="name" placeholder="請選擇遊戲" class="w-full" display="chip" filter />
+                </div>
+                <div class="flex flex-col gap-2">
+                    <label class="text-surface-300 text-sm">獲獎條件</label>
+                    <Dropdown v-model="currentConfig.winCondition" :options="winConditions" optionLabel="label" optionValue="value" class="w-full" />
+                </div>
+            </div>
+
+            <!-- Ranking Specifics -->
             <div v-if="currentConfig.type === 'ranking'" class="bg-blue-900/20 p-4 rounded border border-blue-800 space-y-4">
                 <div class="text-sm font-bold text-blue-300 mb-2">排行榜設定</div>
                 <div class="flex flex-col gap-2">
@@ -123,16 +128,43 @@
                 </div>
             </div>
 
-            <!-- Reward Standards -->
-             <div class="grid grid-cols-2 gap-4">
-                 <div class="flex flex-col gap-2">
-                    <label class="text-surface-300 text-sm">紅利金額上限</label>
-                    <InputNumber v-model="currentConfig.bonus" mode="currency" currency="TWD" locale="zh-TW" class="w-full" />
+            <!-- Reward Standards (Version Aware) -->
+             <div class="border-t border-surface-700 pt-4">
+                 <div class="text-sm font-bold text-white mb-4">獎勵配置 ({{ currentConfig.version === 'platform' ? '包網模式' : '上架模式' }})</div>
+                 
+                 <!-- Platform Mode Fields -->
+                 <div v-if="currentConfig.version === 'platform'" class="grid grid-cols-2 gap-4">
+                     <div class="flex flex-col gap-2">
+                        <label class="text-surface-300 text-sm">最低存款金額</label>
+                        <InputNumber v-model="currentConfig.minDeposit" mode="currency" currency="TWD" locale="zh-TW" class="w-full" :showButtons="false" />
+                    </div>
+                     <div class="flex flex-col gap-2">
+                        <label class="text-surface-300 text-sm">現金紅利 %</label>
+                        <div style="width: 100px">
+                             <InputNumber v-model="currentConfig.bonusPercent" :min="0" :max="100" suffix="%" class="w-full" inputClass="text-center" :showButtons="false" />
+                        </div>
+                    </div>
+                     <div class="flex flex-col gap-2">
+                        <label class="text-surface-300 text-sm">流水倍數 (Wagering)</label>
+                        <div style="width: 100px">
+                             <InputNumber v-model="currentConfig.turnoverMulti" :min="1" :max="50" suffix="x" class="w-full" inputClass="text-center" :showButtons="false" />
+                        </div>
+                    </div>
                 </div>
-                 <div class="flex flex-col gap-2">
-                    <label class="text-surface-300 text-sm">流水倍數 (x)</label>
-                    <div style="width: 100px">
-                         <InputNumber v-model="currentConfig.turnoverMulti" :min="1" :max="50" suffix="x" class="w-full" inputClass="text-center" />
+
+                <!-- SaaS Mode Fields -->
+                 <div v-else class="grid grid-cols-2 gap-4">
+                     <div class="flex flex-col gap-2">
+                        <label class="text-surface-300 text-sm">獎勵積分 (Points)</label>
+                        <InputNumber v-model="currentConfig.rewardPoints" class="w-full" :showButtons="false" />
+                    </div>
+                     <div class="flex flex-col gap-2">
+                        <label class="text-surface-300 text-sm">等級成長值 (EXP)</label>
+                        <InputNumber v-model="currentConfig.expValue" class="w-full" :showButtons="false" />
+                    </div>
+                     <div class="flex flex-col gap-2">
+                        <label class="text-surface-300 text-sm">虛擬福袋 (Lucky Bag)</label>
+                        <InputNumber v-model="currentConfig.luckyBags" suffix=" 個" class="w-full" :showButtons="false" />
                     </div>
                 </div>
             </div>
@@ -146,7 +178,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import Card from 'primevue/card'
 import Button from 'primevue/button'
 import InputText from 'primevue/inputtext'
@@ -157,6 +189,7 @@ import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import Tag from 'primevue/tag'
 import InputSwitch from 'primevue/inputswitch'
+import MultiSelect from 'primevue/multiselect'
 import { useToast } from 'primevue/usetoast'
 import { useConfirm } from 'primevue/useconfirm'
 
@@ -167,9 +200,9 @@ const templates = [
     { id: 'first_deposit', name: '首存優惠', icon: 'pi-star-fill' },
     { id: 're_deposit', name: '續存優惠', icon: 'pi-refresh' },
     { id: 'rescue', name: '虧損救濟', icon: 'pi-heart-fill' },
-    { id: 'rebate', name: '流水返利', icon: 'pi-money-bill' },
+    { id: 'rebate', name: '流水返利', icon: 'pi-money-bill' }, // Locked to Platform
     { id: 'game_promo', name: '遊戲推廣', icon: 'pi-play' },
-    { id: 'ranking', name: '排行榜', icon: 'pi-list' }
+    { id: 'ranking', name: '排行榜', icon: 'pi-list' }       // Locked to Platform
 ]
 
 const versionOptions = [
@@ -183,31 +216,60 @@ const rankingOptions = [
     { label: '總投注 (Total Bet)', value: 'total_bet' }
 ]
 
+const winConditions = [
+    { label: '累計有效投注', value: 'total_bet' },
+    { label: '單局贏分倍數', value: 'win_rate' },
+    { label: '累計贏分總額', value: 'total_win' },
+    { label: '指定遊戲局數', value: 'rounds' }
+]
+
+const gameList = ref([
+    { name: '雷神之錘', code: 'thor' },
+    { name: '戰神賽特', code: 'set' },
+    { name: '麻將發發發', code: 'mahjong' },
+    { name: '幸運輪盤', code: 'wheel' }
+])
+
 const eventList = ref<any[]>([
-    { id: 1, name: '春節首存大紅包', type: 'first_deposit', version: 'platform', platformShare: 70, agentShare: 30, bonus: 5000, turnoverMulti: 15, status: true },
-    { id: 2, name: '百家樂連贏榜', type: 'ranking', version: 'saas', platformShare: 0, agentShare: 100, bonus: 10000, turnoverMulti: 1, status: true }
+    { id: 1, name: '春節首存大紅包', type: 'first_deposit', version: 'platform', platformShare: 70, agentShare: 30, bonusPercent: 100, turnoverMulti: 15, status: true },
+    { id: 2, name: '百家樂連贏榜', type: 'ranking', version: 'platform', platformShare: 0, agentShare: 100, rankingType: 'win_rate', status: true }
 ])
 
 const dialogVisible = ref(false)
 const currentConfig = ref<any>({})
 
+const isVersionLocked = computed(() => {
+    return ['rebate', 'ranking'].includes(currentConfig.value.type)
+})
+
 const openTemplateDialog = (tpl: any) => {
+    const isLocked = ['rebate', 'ranking'].includes(tpl.id)
     currentConfig.value = {
         id: null,
         type: tpl.id,
         name: '',
-        version: 'platform',
+        version: isLocked ? 'platform' : 'platform', // Default to platform
         platformShare: 70,
         agentShare: 30,
-        bonus: 1000,
+        // Platform fields
+        minDeposit: 1000,
+        bonusPercent: 10,
         turnoverMulti: 10,
+        // SaaS fields
+        rewardPoints: 100,
+        expValue: 50,
+        luckyBags: 1,
+        // Game specific
+        selectedGames: [],
+        winCondition: 'total_bet',
+        // Ranking specific
         rankingType: 'win_rate'
     }
     dialogVisible.value = true
 }
 
 const editEvent = (event: any) => {
-    currentConfig.value = { ...event }
+    currentConfig.value = { ...event } // Clone
     dialogVisible.value = true
 }
 
@@ -243,7 +305,6 @@ const deleteEvent = (event: any) => {
 
 const getTemplateName = (type: string) => templates.find(t => t.id === type)?.name || type
 const getCurrentTemplateName = (type: string) => getTemplateName(type)
-const formatCurrency = (val: number) => new Intl.NumberFormat('zh-TW', { style: 'currency', currency: 'TWD', minimumFractionDigits: 0 }).format(val)
 </script>
 
 <style scoped>
