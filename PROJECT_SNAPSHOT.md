@@ -263,6 +263,30 @@ autoApprove = rolloverPercentage >= 100 && amount <= maxAmount && vipLevel >= mi
 - Requires reason for audit trail
 - Prevents system from auto-adjusting based on performance
 
+### 9. Commission Schemes
+
+**Location**: `CommissionSettings.vue`
+
+**Purpose**: Define profit-sharing models with tiered structures and cost allocation
+
+**Scheme Components**:
+
+- Settlement cycle (daily/weekly/monthly)
+- Tiered commission rates based on profit brackets
+- Game category bonus adjustments (+/- percentages)
+- Cost sharing toggles (bonus deduction, platform fees)
+
+**Mock Schemes**:
+
+1. **全能代理 A 方案**: 4-tier structure (30%→45%), 50% bonus deduction, 20% platform fee
+2. **電子遊戲專攻方案**: Fixed 45% commission, +10% slot bonus, -5% live/-10% sports penalty
+
+**Dynamic Features**:
+
+- Add/remove profit tiers on-the-fly
+- Independent adjustments per game category
+- Flexible cost sharing percentages
+
 ---
 
 ## Mock Data Strategy
