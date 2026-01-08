@@ -110,13 +110,13 @@
                     <div>
                         <label class="text-surface-300 text-sm block mb-2">電子遊戲加成 (%)</label>
                         <div style="width: 100px">
-                            <InputNumber v-model="currentScheme.categoryAdjustments.slot" :min="-50" :max="50" suffix="%" showButtons buttonLayout="horizontal" class="w-full" inputClass="text-center" />
+                            <InputNumber v-model="currentScheme.categoryAdjustments.slot" :min="-50" :max="50" suffix="%" showButtons buttonLayout="stacked" class="w-full" inputClass="text-center" />
                         </div>
                     </div>
                     <div>
                         <label class="text-surface-300 text-sm block mb-2">體育投注加成 (%)</label>
                         <div style="width: 100px">
-                            <InputNumber v-model="currentScheme.categoryAdjustments.sports" :min="-50" :max="50" suffix="%" showButtons buttonLayout="horizontal" class="w-full" inputClass="text-center" />
+                            <InputNumber v-model="currentScheme.categoryAdjustments.sports" :min="-50" :max="50" suffix="%" showButtons buttonLayout="stacked" class="w-full" inputClass="text-center" />
                         </div>
                     </div>
                 </div>
