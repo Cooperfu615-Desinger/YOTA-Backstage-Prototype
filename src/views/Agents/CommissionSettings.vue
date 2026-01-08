@@ -316,4 +316,30 @@ const generateMockData = () => {
 :deep(.p-datatable .p-datatable-tbody > tr > td) { border-color: rgba(71, 85, 105, 0.3); padding: 0.75rem 1rem; }
 :deep(.p-datatable .p-datatable-tbody > tr:hover) { background-color: rgba(59, 130, 246, 0.1); }
 :deep(.p-inputtext), :deep(.p-dropdown), :deep(.p-inputnumber) { background-color: rgba(30, 41, 59, 0.5); border-color: rgba(71, 85, 105, 0.5); }
+
+/* 強制水平模式下的 InputNumber 無縫佈局 */
+:deep(.p-inputnumber.p-inputnumber-buttons-horizontal) {
+    width: 100%;
+    gap: 0 !important;
+    border: 1px solid rgba(71, 85, 105, 0.5);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+/* 移除中間輸入框的內邊距 */
+:deep(.p-inputnumber-buttons-horizontal .p-inputnumber-input) {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    text-align: center !important;
+    border-radius: 0 !important;
+    border-left: none;
+    border-right: none;
+}
+
+/* 縮小左右按鈕 */
+:deep(.p-inputnumber-buttons-horizontal .p-button) {
+    width: 28px !important;
+    padding: 0 !important;
+    flex-shrink: 0 !important;
+}
 </style>

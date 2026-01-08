@@ -46,6 +46,7 @@
 - **Layout**: Use `buttonLayout="horizontal"` with increment/decrement buttons
 - **Width Constraint**: Wrap InputNumber in `<div style="width: 100px">` container, apply `class="w-full"` to InputNumber
   - *Rationale*: 100px provides the most compact visual presentation, ideal for 0-100 range values like commission rates and fees
+  - *Gap Elimination*: Must apply deep CSS to remove internal gaps and padding for seamless `[-][00%][+]` visual structure
 - **Text Alignment**: Use `inputClass="text-center"` for centered display
 - **Deep CSS**: Apply horizontal button mode deep selectors from AgentList.vue pattern if needed
 

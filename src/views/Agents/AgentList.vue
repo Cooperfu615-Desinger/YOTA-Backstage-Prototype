@@ -547,11 +547,29 @@ const formatCurrency = (val: number) => new Intl.NumberFormat('zh-TW', { style: 
 /* 強制水平模式下的 InputNumber 寬度符合預期 */
 :deep(.p-inputnumber.p-inputnumber-buttons-horizontal) {
     width: 100%;
+    gap: 0 !important;
+    border: 1px solid rgba(71, 85, 105, 0.5);
+    border-radius: 6px;
+    overflow: hidden;
 }
+
 /* 讓中間的輸入框縮小，留空間給兩側按鈕 */
 :deep(.p-inputnumber-buttons-horizontal .p-inputnumber-input) {
     width: 40px !important;
     flex: 1 1 auto;
     min-width: 0;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    text-align: center !important;
+    border-radius: 0 !important;
+    border-left: none;
+    border-right: none;
+}
+
+/* 縮小左右按鈕並移除內部間距 */
+:deep(.p-inputnumber-buttons-horizontal .p-button) {
+    width: 28px !important;
+    padding: 0 !important;
+    flex-shrink: 0 !important;
 }
 </style>
