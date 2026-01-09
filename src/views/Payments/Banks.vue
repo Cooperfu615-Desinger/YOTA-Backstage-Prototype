@@ -16,7 +16,7 @@
             <i class="pi pi-search text-blue-500 dark:text-blue-400"></i>
             銀行帳戶搜尋
           </div>
-          <Button label="新增銀行卡" icon="pi pi-plus" severity="success" @click="showAddDialog = true" class="!text-white" />
+          <Button label="新增銀行卡" icon="pi pi-plus" severity="success" @click="showAddDialog = true" />
         </div>
       </template>
       <template #content>
@@ -48,8 +48,8 @@
 
         <!-- Search & Reset Buttons - Right Aligned -->
         <div class="flex justify-end gap-3">
-          <Button label="重置" icon="pi pi-refresh" severity="secondary" @click="handleReset" class="border-none bg-surface-100 dark:bg-surface-700 text-surface-600 dark:text-surface-200 hover:bg-surface-200 dark:hover:bg-surface-600" />
-          <Button label="搜尋" icon="pi pi-search" :loading="isSearching" @click="handleSearch" class="px-6 !text-white" />
+          <Button label="重置" icon="pi pi-refresh" severity="secondary" outlined @click="handleReset" />
+          <Button label="搜尋" icon="pi pi-search" :loading="isSearching" @click="handleSearch" />
         </div>
       </template>
     </Card>
@@ -172,7 +172,7 @@
       </div>
       <template #footer>
         <Button label="取消" severity="secondary" @click="showAddDialog = false" />
-        <Button label="確認新增" icon="pi pi-check" @click="handleAddBank" severity="success" class="!text-white" />
+        <Button label="確認新增" icon="pi pi-check" @click="handleAddBank" severity="success" />
       </template>
     </Dialog>
   </div>

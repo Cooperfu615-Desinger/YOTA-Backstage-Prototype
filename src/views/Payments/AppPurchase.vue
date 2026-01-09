@@ -118,7 +118,7 @@
                             <i class="pi pi-search text-purple-500 dark:text-purple-400"></i>
                              訂單搜尋
                         </div>
-                        <Button label="重新整理" icon="pi pi-refresh" severity="secondary" @click="refreshOrders" class="border-none bg-surface-100 dark:bg-surface-700 text-surface-600 dark:text-surface-200 hover:bg-surface-200 dark:hover:bg-surface-600" />
+                        <Button label="重新整理" icon="pi pi-refresh" severity="secondary" outlined @click="refreshOrders" />
                     </div>
                 </template>
                 <template #content>
@@ -137,7 +137,7 @@
                              <Calendar selectionMode="range" placeholder="選擇日期區間" class="w-[220px]" dateFormat="yy-mm-dd" showIcon />
                         </div>
                         <div class="flex items-end">
-                            <Button label="搜尋" icon="pi pi-search" class="px-6 !text-white" />
+                            <Button label="搜尋" icon="pi pi-search" />
                         </div>
                      </div>
 
