@@ -57,6 +57,30 @@
 
 **Currency Inputs**: Use `w-[220px]` for amount fields with proper locale formatting
 
+### Additional UI Refinements (2026-01-09)
+
+- **Calendar Components**:
+  - Button Padding: `px-3` or `0.75rem` for better touch target
+  - Width: `w-[220px]` (including button)
+  - CSS Override:
+
+    ```css
+    :deep(.p-calendar-w-btn .p-button) {
+      padding-left: 0.75rem !important;
+      padding-right: 0.75rem !important;
+      width: auto !important;
+    }
+    ```
+
+- **Striped Rows (Dark Mode)**:
+  - Logic: Even rows must have specified background opacity
+  - CSS: `background-color: rgba(30, 41, 59, 0.5) !important;` (Surface-800 + 50% opacity)
+  
+- **Reset Buttons**:
+  - Style: Borderless, soft background
+  - Light Mode: `bg-surface-100 text-surface-600 hover:bg-surface-200`
+  - Dark Mode: `bg-surface-700 text-surface-200 hover:bg-surface-600`
+
 ---
 
 ## Route Mapping
@@ -141,7 +165,10 @@
 
 - `/payments/overview` - Payments Overview (支付總覽)
 - `/payments/banks` - Bank Management (銀行管理)
+- `/payments/overview` - Payments Overview (支付總覽)
+- `/payments/banks` - Bank Management (銀行管理)
 - `/payments/merchants` - Merchant Management (商號管理)
+- `/payments/app-purchase` - Mobile Payment Monitor (行動支付監控)
 
 ---
 

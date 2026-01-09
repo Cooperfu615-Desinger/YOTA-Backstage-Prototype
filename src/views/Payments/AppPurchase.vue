@@ -1,66 +1,66 @@
 <template>
   <div class="p-6 space-y-6">
     <!-- Breadcrumb -->
-    <div class="flex items-center gap-2 text-sm text-surface-400">
-      <i class="pi pi-credit-card text-blue-400"></i>
-      <span class="text-surface-300">金流平台</span>
+    <div class="flex items-center gap-2 text-sm text-surface-600 dark:text-surface-400">
+      <i class="pi pi-credit-card text-blue-500 dark:text-blue-400"></i>
+      <span class="text-surface-500 dark:text-surface-300">金流平台</span>
       <span>></span>
-      <span class="text-white font-medium">行動支付管理</span>
+      <span class="text-surface-900 dark:text-white font-medium">行動支付管理</span>
     </div>
 
     <!-- Stats Section -->
     <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-      <Card class="bg-surface-800/50 border border-surface-700">
+      <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
         <template #content>
           <div class="flex items-center justify-between">
             <div class="flex flex-col">
-              <span class="text-surface-400 text-sm mb-1">今日 iOS 總額</span>
-              <span class="text-2xl font-bold text-white">{{ formatCurrency(stats.iosTotal) }}</span>
+              <span class="text-surface-500 dark:text-surface-400 text-sm mb-1">今日 iOS 總額</span>
+              <span class="text-2xl font-bold text-surface-900 dark:text-white">{{ formatCurrency(stats.iosTotal) }}</span>
             </div>
-            <div class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-500/20">
-              <i class="pi pi-apple text-blue-400 text-xl"></i>
+            <div class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-500/10 dark:bg-blue-500/20">
+              <i class="pi pi-apple text-blue-500 dark:text-blue-400 text-xl"></i>
             </div>
           </div>
         </template>
       </Card>
-      <Card class="bg-surface-800/50 border border-surface-700">
+      <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
         <template #content>
           <div class="flex items-center justify-between">
             <div class="flex flex-col">
-              <span class="text-surface-400 text-sm mb-1">今日 GP 總額</span>
-              <span class="text-2xl font-bold text-white">{{ formatCurrency(stats.gpTotal) }}</span>
+              <span class="text-surface-500 dark:text-surface-400 text-sm mb-1">今日 GP 總額</span>
+              <span class="text-2xl font-bold text-surface-900 dark:text-white">{{ formatCurrency(stats.gpTotal) }}</span>
             </div>
-            <div class="flex items-center justify-center w-10 h-10 rounded-full bg-green-500/20">
-              <i class="pi pi-android text-green-400 text-xl"></i>
+            <div class="flex items-center justify-center w-10 h-10 rounded-full bg-green-500/10 dark:bg-green-500/20">
+              <i class="pi pi-android text-green-500 dark:text-green-400 text-xl"></i>
             </div>
           </div>
         </template>
       </Card>
-      <Card class="bg-surface-800/50 border border-surface-700">
+      <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
         <template #content>
           <div class="flex items-center justify-between">
             <div class="flex flex-col">
-              <span class="text-surface-400 text-sm mb-1">掉單率</span>
-              <span class="text-2xl font-bold text-white">{{ stats.dropRate }}%</span>
+              <span class="text-surface-500 dark:text-surface-400 text-sm mb-1">掉單率</span>
+              <span class="text-2xl font-bold text-surface-900 dark:text-white">{{ stats.dropRate }}%</span>
             </div>
-            <div class="flex items-center justify-center w-10 h-10 rounded-full bg-red-500/20">
-              <i class="pi pi-chart-line text-red-400 text-xl"></i>
+            <div class="flex items-center justify-center w-10 h-10 rounded-full bg-red-500/10 dark:bg-red-500/20">
+              <i class="pi pi-chart-line text-red-500 dark:text-red-400 text-xl"></i>
             </div>
           </div>
         </template>
       </Card>
-      <Card class="bg-surface-800/50 border border-surface-700">
+      <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
         <template #content>
           <div class="flex items-center justify-between">
             <div class="flex flex-col">
-              <span class="text-surface-400 text-sm mb-1">審核狀態</span>
-              <span class="text-lg font-bold text-emerald-400 flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+              <span class="text-surface-500 dark:text-surface-400 text-sm mb-1">審核狀態</span>
+              <span class="text-lg font-bold text-emerald-500 dark:text-emerald-400 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 dark:bg-emerald-400"></span>
                 正常運行
               </span>
             </div>
             <div class="flex items-center gap-2">
-               <label class="text-sm text-surface-400">全域審核模式</label>
+               <label class="text-sm text-surface-500 dark:text-surface-400">全域審核模式</label>
                <InputSwitch v-model="globalReviewMode" />
             </div>
           </div>
@@ -71,28 +71,30 @@
     <TabView>
         <!-- Product Management Tab -->
         <TabPanel header="內購商品列表" value="0">
-            <Card class="bg-surface-800/50 border border-surface-700">
+            <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
                 <template #title>
                     <div class="flex items-center justify-between">
-                         <div class="flex items-center gap-2 text-white text-lg">
-                            <i class="pi pi-list text-blue-400"></i>
+                         <div class="flex items-center gap-2 text-surface-900 dark:text-white text-lg">
+                            <i class="pi pi-list text-blue-500 dark:text-blue-400"></i>
                              商品列表
                         </div>
                     </div>
                 </template>
                 <template #content>
-                    <DataTable :value="products" stripedRows class="p-datatable-sm" :pt="{ table: { class: 'min-w-full' }, tbody: { class: 'text-surface-300' } }">
+                    <DataTable :value="products" stripedRows class="p-datatable-sm" :pt="{ table: { class: 'min-w-full' }, tbody: { class: 'text-surface-700 dark:text-surface-300' } }">
                         <Column field="productId" header="商品 ID" style="min-width: 150px">
-                             <template #body="slotProps"><span class="font-mono text-sm">{{ slotProps.data.productId }}</span></template>
+                             <template #body="slotProps"><span class="font-mono text-sm text-surface-900 dark:text-surface-200">{{ slotProps.data.productId }}</span></template>
                         </Column>
                         <Column field="platform" header="平台" style="min-width: 100px">
                             <template #body="slotProps">
-                                <i :class="['pi text-lg', slotProps.data.platform === 'iOS' ? 'pi-apple text-white' : 'pi-android text-green-400']"></i>
+                                <i :class="['pi text-lg', slotProps.data.platform === 'iOS' ? 'pi-apple text-surface-900 dark:text-white' : 'pi-android text-green-500 dark:text-green-400']"></i>
                             </template>
                         </Column>
                         <Column field="name" header="顯示名稱" style="min-width: 150px" />
                         <Column field="price" header="價格 (USD)" style="min-width: 100px">
-                             <template #body="slotProps">{{ formatUSD(slotProps.data.price) }}</template>
+                             <template #body="slotProps">
+                                <span class="text-surface-900 dark:text-white font-medium">{{ formatUSD(slotProps.data.price) }}</span>
+                             </template>
                         </Column>
                          <Column field="points" header="對應點數" style="min-width: 100px">
                              <template #body="slotProps">{{ slotProps.data.points.toLocaleString() }}</template>
@@ -109,30 +111,48 @@
 
         <!-- Order Monitor Tab -->
         <TabPanel header="訂單對帳監控" value="1">
-             <Card class="bg-surface-800/50 border border-surface-700">
+             <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
                 <template #title>
                     <div class="flex items-center justify-between">
-                         <div class="flex items-center gap-2 text-white text-lg">
-                            <i class="pi pi-search text-purple-400"></i>
+                         <div class="flex items-center gap-2 text-surface-900 dark:text-white text-lg">
+                            <i class="pi pi-search text-purple-500 dark:text-purple-400"></i>
                              訂單搜尋
                         </div>
-                        <Button label="重新整理" icon="pi pi-refresh" severity="secondary" outlined @click="refreshOrders" />
+                        <Button label="重新整理" icon="pi pi-refresh" severity="secondary" @click="refreshOrders" class="border-none bg-surface-100 dark:bg-surface-700 text-surface-600 dark:text-surface-200 hover:bg-surface-200 dark:hover:bg-surface-600" />
                     </div>
                 </template>
                 <template #content>
-                     <!-- Search fields would go here, omitting for brevity based on request focusing on monitor list -->
-                      <DataTable :value="orders" stripedRows class="p-datatable-sm" :pt="{ table: { class: 'min-w-full' }, tbody: { class: 'text-surface-300' } }">
+                     <!-- Search fields: Added as requested -->
+                     <div class="flex flex-wrap gap-4 mb-4">
+                        <div class="flex flex-col gap-1">
+                            <label class="text-surface-900 dark:text-surface-300 text-sm font-medium">訂單號</label>
+                            <InputText placeholder="輸入系統/平台訂單號" class="w-[220px]" />
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <label class="text-surface-900 dark:text-surface-300 text-sm font-medium">會員 ID</label>
+                            <InputText placeholder="輸入會員 ID" class="w-[220px]" />
+                        </div>
+                        <div class="flex flex-col gap-1">
+                             <label class="text-surface-900 dark:text-surface-300 text-sm font-medium">日期區間</label>
+                             <Calendar selectionMode="range" placeholder="選擇日期區間" class="w-[220px]" dateFormat="yy-mm-dd" showIcon />
+                        </div>
+                        <div class="flex items-end">
+                            <Button label="搜尋" icon="pi pi-search" class="px-6 !text-white" />
+                        </div>
+                     </div>
+
+                      <DataTable :value="orders" stripedRows class="p-datatable-sm" :pt="{ table: { class: 'min-w-full' }, tbody: { class: 'text-surface-700 dark:text-surface-300' } }">
                         <Column field="systemOrderId" header="系統訂單號" style="min-width: 160px">
-                            <template #body="slotProps"><span class="font-mono text-sm">{{ slotProps.data.systemOrderId }}</span></template>
+                            <template #body="slotProps"><span class="font-mono text-sm text-surface-900 dark:text-surface-200">{{ slotProps.data.systemOrderId }}</span></template>
                         </Column>
                          <Column field="platformOrderId" header="平台原始訂單號" style="min-width: 160px">
-                            <template #body="slotProps"><span class="font-mono text-xs text-surface-400">{{ slotProps.data.platformOrderId }}</span></template>
+                            <template #body="slotProps"><span class="font-mono text-xs text-surface-500 dark:text-surface-400">{{ slotProps.data.platformOrderId }}</span></template>
                         </Column>
                         <Column field="memberId" header="會員 ID" style="min-width: 120px">
-                             <template #body="slotProps"><span class="text-blue-400 font-medium">{{ slotProps.data.memberId }}</span></template>
+                             <template #body="slotProps"><span class="text-blue-500 dark:text-blue-400 font-medium">{{ slotProps.data.memberId }}</span></template>
                         </Column>
                         <Column field="amount" header="金額" style="min-width: 100px">
-                            <template #body="slotProps">{{ formatUSD(slotProps.data.amount) }}</template>
+                            <template #body="slotProps"><span class="text-surface-900 dark:text-white font-medium">{{ formatUSD(slotProps.data.amount) }}</span></template>
                         </Column>
                          <Column field="receiptStatus" header="驗證狀態" style="min-width: 120px">
                             <template #body="slotProps">
@@ -170,6 +190,8 @@ import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import Tag from 'primevue/tag'
 import Button from 'primevue/button'
+import InputText from 'primevue/inputtext'
+import Calendar from 'primevue/calendar'
 import { useToast } from 'primevue/usetoast'
 
 const toast = useToast()
@@ -256,9 +278,20 @@ const refreshOrders = () => {
 <style scoped>
 :deep(.p-card .p-card-body) { padding: 1rem; }
 :deep(.p-card .p-card-content) { padding: 0; }
-:deep(.p-datatable .p-datatable-thead > tr > th) { background-color: rgba(30, 41, 59, 0.5); color: #94a3b8; border-color: rgba(71, 85, 105, 0.5); padding: 0.75rem 1rem; font-weight: 600; }
-:deep(.p-datatable .p-datatable-tbody > tr) { background-color: transparent; }
-:deep(.p-datatable .p-datatable-tbody > tr:nth-child(even)) { background-color: rgba(30, 41, 59, 0.3); }
-:deep(.p-datatable .p-datatable-tbody > tr > td) { border-color: rgba(71, 85, 105, 0.3); padding: 0.75rem 1rem; }
-:deep(.p-datatable .p-datatable-tbody > tr:hover) { background-color: rgba(59, 130, 246, 0.1); }
+
+/* Light Mode Striped Rows */
+:deep(.p-datatable-striped .p-datatable-tbody > tr:nth-child(even)) {
+  background-color: #f9fafb !important; /* bg-surface-50 */
+}
+
+/* Dark Mode Striped Rows */
+:global(.dark) :deep(.p-datatable-striped .p-datatable-tbody > tr:nth-child(even)) {
+  background-color: rgba(30, 41, 59, 0.5) !important; /* bg-surface-800/50 */
+}
+
+:deep(.p-calendar-w-btn .p-button) {
+  padding-left: 0.75rem !important;
+  padding-right: 0.75rem !important;
+  width: auto !important;
+}
 </style>
