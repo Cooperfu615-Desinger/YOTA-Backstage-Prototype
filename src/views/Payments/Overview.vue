@@ -516,13 +516,5 @@ const getSuccessRateColor = (rate: number) => {
 :deep(.p-card .p-card-body) { padding: 1rem; }
 :deep(.p-card .p-card-content) { padding: 0; }
 
-/* Light Mode Striped Rows */
-:deep(.p-datatable-striped .p-datatable-tbody > tr:nth-child(even)) {
-  background-color: #f9fafb !important; /* bg-surface-50 */
-}
 
-/* Dark Mode Striped Rows */
-:global(.dark) :deep(.p-datatable-striped .p-datatable-tbody > tr:nth-child(even)) {
-  background-color: rgba(30, 41, 59, 0.5) !important; /* bg-surface-800/50 */
-}
 </style>

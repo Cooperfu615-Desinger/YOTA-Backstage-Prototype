@@ -73,8 +73,10 @@
     ```
 
 - **Striped Rows (Dark Mode)**:
+  - Global Hardening: Styles are now managed globally in `src/style.css`
   - Logic: Even rows must have specified background opacity
   - CSS: `background-color: rgba(30, 41, 59, 0.5) !important;` (Surface-800 + 50% opacity)
+  - **No local overrides required**
   
 - **Reset Buttons**:
   - Style: Borderless, soft background
