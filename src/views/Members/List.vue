@@ -68,8 +68,8 @@
 
         <!-- Search & Reset Buttons - Right Aligned -->
         <div class="flex justify-end gap-3">
-          <Button label="重置" icon="pi pi-refresh" severity="secondary" @click="handleReset" class="border-none bg-surface-100 dark:bg-surface-700 text-surface-600 dark:text-surface-200 hover:bg-surface-200 dark:hover:bg-surface-600" />
-          <Button label="搜尋" icon="pi pi-search" :loading="isSearching" @click="handleSearch" class="px-6 !text-white" />
+          <Button label="重置" icon="pi pi-refresh" severity="secondary" outlined @click="handleReset" />
+          <Button label="搜尋" icon="pi pi-search" :loading="isSearching" @click="handleSearch" />
         </div>
       </template>
     </Card>
@@ -83,7 +83,7 @@
             會員列表
             <span v-if="hasSearched" class="text-sm text-surface-500 dark:text-surface-400 font-normal ml-2">(共 {{ members.length }} 筆)</span>
           </div>
-          <Button label="新增會員" icon="pi pi-plus" severity="success" @click="showAddMemberDialog = true" class="!text-white" />
+          <Button label="新增會員" icon="pi pi-plus" severity="success" @click="showAddMemberDialog = true" />
         </div>
       </template>
       <template #content>
