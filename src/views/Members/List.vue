@@ -1131,15 +1131,5 @@ const handleFreezeAccount = () => toast.add({ severity: 'info', summary: '帳號
   width: auto !important; /* Allow auto width */
 }
 
-/* 3. DataTable Striped Rows Correction */
-/* Light Mode */
-:deep(.p-datatable-striped .p-datatable-tbody > tr:nth-child(even)) {
-  background-color: #f9fafb !important; /* bg-surface-50 */
-}
 
-/* Dark Mode - Specific Override */
-:global(.dark) :deep(.p-datatable-striped .p-datatable-tbody > tr:nth-child(even)) {
-  /* Using higher specificity or !important to force dark mode color */
-  background-color: rgba(30, 41, 59, 0.5) !important; /* bg-surface-800/50 */
-}
 </style>

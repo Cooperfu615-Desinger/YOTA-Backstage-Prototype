@@ -226,7 +226,19 @@ body,
 }
 
 /* 3. Panel Padding Consistency */
-.p-tabview .p-tabview-panels {
-  padding: 1.5rem 0 0 0 !important;
-  /* Top padding only, let containers handle horizontal */
+/* ========================================= */
+/* Global DataTable Striped Rows Hardening   */
+/* ========================================= */
+
+/* Light Mode (High Specificity) */
+body:not(.dark) .p-datatable.p-datatable-striped .p-datatable-tbody>tr:nth-child(even),
+.light .p-datatable.p-datatable-striped .p-datatable-tbody>tr:nth-child(even) {
+  background-color: #f9fafb !important;
+  /* bg-surface-50 */
+}
+
+/* Dark Mode (High Specificity) */
+.dark .p-datatable.p-datatable-striped .p-datatable-tbody>tr:nth-child(even) {
+  background-color: rgba(30, 41, 59, 0.5) !important;
+  /* Force Dark Mode Background */
 }

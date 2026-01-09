@@ -57,6 +57,13 @@
 
 **Currency Inputs**: Use `w-[220px]` for amount fields with proper locale formatting
 
+### Technical Debt & Solutions (2026-01-09)
+
+- **Problem**: Global striped rows failed in Light Mode due to specificity conflicts with PrimeVue default theme.
+- **Root Cause**: Specificity of `.p-datatable-striped` at component level was insufficient against theme default.
+- **Solution**: Implemented high-specificity global override in `src/style.css` using `body:not(.dark)` and `.light` prefixes.
+- **Guideline**: **Mandatory Global Styling**. Future DataTable striped rows MUST rely on the global definition in `style.css`. Local `:deep` overrides for striped rows are strictly prohibited to ensure consistency.
+
 ### Additional UI Refinements (2026-01-09)
 
 - **Calendar Components**:
