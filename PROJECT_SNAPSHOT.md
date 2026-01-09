@@ -79,10 +79,10 @@
     }
     ```
 
-- **Striped Rows (Dark Mode)**:
-  - Global Hardening: Styles are now managed globally in `src/style.css`
-  - Logic: Even rows must have specified background opacity
-  - CSS: `background-color: rgba(30, 41, 59, 0.5) !important;` (Surface-800 + 50% opacity)
+- **Striped Rows (Updated 2026-01-09)**:
+  - **Approach**: Opacity Overlay (Texture over uniform color)
+  - Light Mode: `rgba(0, 0, 0, 0.02) !important` (Subtle density)
+  - Dark Mode: `rgba(255, 255, 255, 0.05) !important` (Light enhancement)
   - **No local overrides required**
   
 - **Reset Buttons**:

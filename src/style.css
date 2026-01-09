@@ -230,15 +230,13 @@ body,
 /* Global DataTable Striped Rows Hardening   */
 /* ========================================= */
 
-/* Light Mode (High Specificity) */
+/* Light Mode (High Specificity) - 2% Black Overlay */
 body:not(.dark) .p-datatable.p-datatable-striped .p-datatable-tbody>tr:nth-child(even),
 .light .p-datatable.p-datatable-striped .p-datatable-tbody>tr:nth-child(even) {
-  background-color: #f9fafb !important;
-  /* bg-surface-50 */
+  background-color: rgba(0, 0, 0, 0.02) !important;
 }
 
-/* Dark Mode (High Specificity) */
+/* Dark Mode (High Specificity) - 5% White Overlay */
 .dark .p-datatable.p-datatable-striped .p-datatable-tbody>tr:nth-child(even) {
-  background-color: rgba(30, 41, 59, 0.5) !important;
-  /* Force Dark Mode Background */
+  background-color: rgba(255, 255, 255, 0.05) !important;
 }
