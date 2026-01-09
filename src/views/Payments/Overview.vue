@@ -1,23 +1,23 @@
 <template>
   <div class="p-6 space-y-6">
     <!-- Breadcrumb -->
-    <div class="flex items-center gap-2 text-sm text-surface-400">
-      <i class="pi pi-credit-card text-purple-400"></i>
-      <span class="text-surface-300">金流平台</span>
+    <div class="flex items-center gap-2 text-sm text-surface-600 dark:text-surface-400">
+      <i class="pi pi-credit-card text-purple-500 dark:text-purple-400"></i>
+      <span class="text-surface-500 dark:text-surface-300">金流平台</span>
       <span>></span>
-      <span class="text-white font-medium">總覽</span>
+      <span class="text-surface-900 dark:text-white font-medium">總覽</span>
     </div>
 
     <!-- Page Header -->
     <div class="flex items-center justify-between">
       <div>
-        <h1 class="text-2xl font-bold text-white flex items-center gap-3">
-          <i class="pi pi-credit-card text-purple-400"></i>
+        <h1 class="text-2xl font-bold text-surface-900 dark:text-white flex items-center gap-3">
+          <i class="pi pi-credit-card text-purple-500 dark:text-purple-400"></i>
           金流平台總覽
         </h1>
-        <p class="text-surface-400 mt-1">Payment Overview - 即時監控金流通道穩定性與轉換率</p>
+        <p class="text-surface-500 dark:text-surface-400 mt-1">Payment Overview - 即時監控金流通道穩定性與轉換率</p>
       </div>
-      <div class="flex items-center gap-2 text-surface-400 text-sm">
+      <div class="flex items-center gap-2 text-surface-500 dark:text-surface-400 text-sm">
         <i class="pi pi-clock"></i>
         <span>最後更新: {{ lastUpdate }}</span>
       </div>
@@ -26,18 +26,18 @@
     <!-- Core Monitoring Stats Cards -->
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
       <!-- Active Channels -->
-      <Card class="bg-surface-800/50 border border-surface-700">
+      <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
         <template #content>
           <div class="flex items-start justify-between">
             <div>
-              <p class="text-surface-400 text-sm mb-1">運作中通道</p>
-              <p class="text-2xl font-bold text-white">{{ stats.activeChannels }}</p>
+              <p class="text-surface-500 dark:text-surface-400 text-sm mb-1">運作中通道</p>
+              <p class="text-2xl font-bold text-surface-900 dark:text-white">{{ stats.activeChannels }}</p>
               <div class="flex items-center gap-2 mt-2 text-sm">
                 <Tag severity="info" :value="`負載 ${stats.loadPercentage}%`" />
               </div>
             </div>
-            <div class="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center">
-              <i class="pi pi-server text-blue-400 text-xl"></i>
+            <div class="w-12 h-12 rounded-xl bg-blue-500/10 dark:bg-blue-500/20 flex items-center justify-center">
+              <i class="pi pi-server text-blue-500 dark:text-blue-400 text-xl"></i>
             </div>
           </div>
         </template>
@@ -81,19 +81,19 @@
       </Card>
 
       <!-- Today's Processing Fee -->
-      <Card class="bg-surface-800/50 border border-surface-700">
+      <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
         <template #content>
           <div class="flex items-start justify-between">
             <div>
-              <p class="text-surface-400 text-sm mb-1">今日支付手續費</p>
-              <p class="text-2xl font-bold text-white">{{ formatCurrency(stats.todayFee) }}</p>
-              <div class="flex items-center gap-1 mt-2 text-orange-400 text-sm">
+              <p class="text-surface-500 dark:text-surface-400 text-sm mb-1">今日支付手續費</p>
+              <p class="text-2xl font-bold text-surface-900 dark:text-white">{{ formatCurrency(stats.todayFee) }}</p>
+              <div class="flex items-center gap-1 mt-2 text-orange-500 dark:text-orange-400 text-sm">
                 <i class="pi pi-arrow-up"></i>
                 <span>+{{ stats.feeGrowth }}% vs 昨日</span>
               </div>
             </div>
-            <div class="w-12 h-12 rounded-xl bg-orange-500/20 flex items-center justify-center">
-              <i class="pi pi-percentage text-orange-400 text-xl"></i>
+            <div class="w-12 h-12 rounded-xl bg-orange-500/10 dark:bg-orange-500/20 flex items-center justify-center">
+              <i class="pi pi-percentage text-orange-500 dark:text-orange-400 text-xl"></i>
             </div>
           </div>
         </template>
@@ -122,15 +122,15 @@
     <!-- Charts Section -->
     <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
       <!-- Payment Type Distribution (Doughnut) -->
-      <Card class="bg-surface-800/50 border border-surface-700">
+      <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
         <template #title>
-          <div class="flex items-center gap-2 text-white">
-            <i class="pi pi-chart-pie text-purple-400"></i>
+          <div class="flex items-center gap-2 text-surface-900 dark:text-white">
+            <i class="pi pi-chart-pie text-purple-500 dark:text-purple-400"></i>
             支付類型佔比
           </div>
         </template>
         <template #subtitle>
-          <span class="text-surface-400">入金流量分佈分析</span>
+          <span class="text-surface-500 dark:text-surface-400">入金流量分佈分析</span>
         </template>
         <template #content>
           <div class="flex items-center justify-center">
@@ -140,15 +140,15 @@
       </Card>
 
       <!-- Success Rate Trend (Line) -->
-      <Card class="bg-surface-800/50 border border-surface-700">
+      <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
         <template #title>
-          <div class="flex items-center gap-2 text-white">
-            <i class="pi pi-chart-line text-blue-400"></i>
+          <div class="flex items-center gap-2 text-surface-900 dark:text-white">
+            <i class="pi pi-chart-line text-blue-500 dark:text-blue-400"></i>
             各時段成功率趨勢
           </div>
         </template>
         <template #subtitle>
-          <span class="text-surface-400">24小時成功率波動</span>
+          <span class="text-surface-500 dark:text-surface-400">24小時成功率波動</span>
         </template>
         <template #content>
           <Chart type="line" :data="lineChartData" :options="lineChartOptions" class="h-72" />
@@ -157,15 +157,15 @@
     </div>
 
     <!-- Gateway List DataTable -->
-    <Card class="bg-surface-800/50 border border-surface-700">
+    <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
       <template #title>
-        <div class="flex items-center gap-2 text-white">
-          <i class="pi pi-list text-cyan-400"></i>
+        <div class="flex items-center gap-2 text-surface-900 dark:text-white">
+          <i class="pi pi-list text-cyan-500 dark:text-cyan-400"></i>
           商戶通道詳情列表
         </div>
       </template>
       <template #subtitle>
-        <span class="text-surface-400">Gateway List - 各商戶通道即時狀態</span>
+        <span class="text-surface-500 dark:text-surface-400">Gateway List - 各商戶通道即時狀態</span>
       </template>
       <template #content>
         <DataTable 
@@ -174,7 +174,7 @@
           class="p-datatable-sm"
           :pt="{
             table: { class: 'min-w-full' },
-            tbody: { class: 'text-surface-300' }
+            tbody: { class: 'text-surface-700 dark:text-surface-300' }
           }"
         >
           <!-- Merchant Name -->
@@ -182,7 +182,7 @@
             <template #body="slotProps">
               <div class="flex items-center gap-2">
                 <i :class="slotProps.data.icon" class="text-lg"></i>
-                <span class="font-medium text-white">{{ slotProps.data.merchantName }}</span>
+                <span class="font-medium text-surface-900 dark:text-white">{{ slotProps.data.merchantName }}</span>
               </div>
             </template>
           </Column>
@@ -240,8 +240,8 @@
           <Column field="avgTime" header="平均到帳時間">
             <template #body="slotProps">
               <div class="flex items-center gap-2">
-                <i class="pi pi-clock text-surface-500"></i>
-                <span class="text-surface-300">{{ slotProps.data.avgTime }}</span>
+                <i class="pi pi-clock text-surface-500 dark:text-surface-400"></i>
+                <span class="text-surface-700 dark:text-surface-300">{{ slotProps.data.avgTime }}</span>
               </div>
             </template>
           </Column>
@@ -513,44 +513,16 @@ const getSuccessRateColor = (rate: number) => {
 </script>
 
 <style scoped>
-/* Card styling for dark mode */
-:deep(.p-card .p-card-body) {
-  padding: 1rem;
+:deep(.p-card .p-card-body) { padding: 1rem; }
+:deep(.p-card .p-card-content) { padding: 0; }
+
+/* Light Mode Striped Rows */
+:deep(.p-datatable-striped .p-datatable-tbody > tr:nth-child(even)) {
+  background-color: #f9fafb !important; /* bg-surface-50 */
 }
 
-:deep(.p-card .p-card-content) {
-  padding: 0;
-}
-
-/* DataTable dark mode styling */
-:deep(.p-datatable .p-datatable-thead > tr > th) {
-  background-color: rgba(30, 41, 59, 0.5);
-  color: #94a3b8;
-  border-color: rgba(71, 85, 105, 0.5);
-  padding: 0.75rem 1rem;
-}
-
-:deep(.p-datatable .p-datatable-tbody > tr) {
-  background-color: transparent;
-}
-
-:deep(.p-datatable .p-datatable-tbody > tr:nth-child(even)) {
-  background-color: rgba(30, 41, 59, 0.3);
-}
-
-:deep(.p-datatable .p-datatable-tbody > tr > td) {
-  border-color: rgba(71, 85, 105, 0.3);
-  padding: 0.75rem 1rem;
-}
-
-/* ProgressBar styling */
-:deep(.p-progressbar) {
-  background-color: rgba(71, 85, 105, 0.5);
-  border-radius: 9999px;
-}
-
-/* InputSwitch disabled styling */
-:deep(.p-inputswitch.p-disabled) {
-  opacity: 0.8;
+/* Dark Mode Striped Rows */
+:global(.dark) :deep(.p-datatable-striped .p-datatable-tbody > tr:nth-child(even)) {
+  background-color: rgba(30, 41, 59, 0.5) !important; /* bg-surface-800/50 */
 }
 </style>

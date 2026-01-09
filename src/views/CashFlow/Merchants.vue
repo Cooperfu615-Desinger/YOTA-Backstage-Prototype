@@ -1,60 +1,60 @@
 <template>
   <div class="p-6 space-y-6">
     <!-- Breadcrumb -->
-    <div class="flex items-center gap-2 text-sm text-surface-400">
-      <i class="pi pi-credit-card text-blue-400"></i>
-      <span class="text-surface-300">金流平台</span>
+    <div class="flex items-center gap-2 text-sm text-surface-600 dark:text-surface-400">
+      <i class="pi pi-credit-card text-blue-500 dark:text-blue-400"></i>
+      <span class="text-surface-500 dark:text-surface-300">金流平台</span>
       <span>></span>
-      <span class="text-white font-medium">商號管理</span>
+      <span class="text-surface-900 dark:text-white font-medium">商號管理</span>
     </div>
 
     <!-- Search Section -->
-    <Card class="bg-surface-800/50 border border-surface-700">
+    <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
       <template #title>
         <div class="flex items-center justify-between">
-          <div class="flex items-center gap-2 text-white text-lg">
-            <i class="pi pi-search text-blue-400"></i>
+          <div class="flex items-center gap-2 text-surface-900 dark:text-white text-lg">
+            <i class="pi pi-search text-blue-500 dark:text-blue-400"></i>
             商號搜尋
           </div>
-          <Button label="新增商號" icon="pi pi-plus" severity="success" @click="showAddDialog = true" />
+          <Button label="新增商號" icon="pi pi-plus" severity="success" @click="showAddDialog = true" class="!text-white" />
         </div>
       </template>
       <template #content>
         <!-- Search Fields - Fixed Width Left-Aligned Layout -->
         <div class="flex flex-wrap gap-4 mb-4">
-          <div class="flex flex-col gap-1">
-            <label class="text-surface-300 text-sm font-medium">商號名稱</label>
-            <InputText v-model="filters.name" placeholder="輸入商號名稱" class="w-[220px]" />
-          </div>
-          <div class="flex flex-col gap-1">
-            <label class="text-surface-300 text-sm font-medium">商號代碼</label>
-            <InputText v-model="filters.code" placeholder="輸入商號代碼" class="w-[220px]" />
-          </div>
-          <div class="flex flex-col gap-1">
-            <label class="text-surface-300 text-sm font-medium">狀態</label>
-            <Dropdown v-model="filters.status" :options="statusOptions" optionLabel="label" optionValue="value" placeholder="選擇狀態" class="w-[220px]" showClear />
-          </div>
-          <div class="flex flex-col gap-1">
-            <label class="text-surface-300 text-sm font-medium">分組</label>
-            <Dropdown v-model="filters.group" :options="groupOptions" optionLabel="label" optionValue="value" placeholder="選擇分組" class="w-[220px]" showClear />
-          </div>
+           <div class="flex flex-col gap-1">
+             <label class="text-surface-900 dark:text-surface-300 text-sm font-medium">商號名稱</label>
+             <InputText v-model="filters.name" placeholder="輸入商號名稱" class="w-[220px]" />
+           </div>
+           <div class="flex flex-col gap-1">
+             <label class="text-surface-900 dark:text-surface-300 text-sm font-medium">商號代碼</label>
+             <InputText v-model="filters.code" placeholder="輸入商號代碼" class="w-[220px]" />
+           </div>
+           <div class="flex flex-col gap-1">
+             <label class="text-surface-900 dark:text-surface-300 text-sm font-medium">狀態</label>
+             <Dropdown v-model="filters.status" :options="statusOptions" optionLabel="label" optionValue="value" placeholder="選擇狀態" class="w-[220px]" showClear />
+           </div>
+           <div class="flex flex-col gap-1">
+             <label class="text-surface-900 dark:text-surface-300 text-sm font-medium">分組</label>
+             <Dropdown v-model="filters.group" :options="groupOptions" optionLabel="label" optionValue="value" placeholder="選擇分組" class="w-[220px]" showClear />
+           </div>
         </div>
 
         <!-- Search & Reset Buttons - Right Aligned -->
         <div class="flex justify-end gap-3">
-          <Button label="重置" icon="pi pi-refresh" severity="secondary" outlined @click="handleReset" />
-          <Button label="搜尋" icon="pi pi-search" :loading="isSearching" @click="handleSearch" class="px-6" />
+          <Button label="重置" icon="pi pi-refresh" severity="secondary" @click="handleReset" class="border-none bg-surface-100 dark:bg-surface-700 text-surface-600 dark:text-surface-200 hover:bg-surface-200 dark:hover:bg-surface-600" />
+          <Button label="搜尋" icon="pi pi-search" :loading="isSearching" @click="handleSearch" class="px-6 !text-white" />
         </div>
       </template>
     </Card>
 
     <!-- Merchant List Section -->
-    <Card class="bg-surface-800/50 border border-surface-700">
+    <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
       <template #title>
-        <div class="flex items-center gap-2 text-white text-lg">
-          <i class="pi pi-list text-purple-400"></i>
+        <div class="flex items-center gap-2 text-surface-900 dark:text-white text-lg">
+          <i class="pi pi-list text-purple-500 dark:text-purple-400"></i>
           商號列表
-          <span v-if="hasSearched" class="text-sm text-surface-400 font-normal ml-2">(共 {{ merchants.length }} 筆)</span>
+          <span v-if="hasSearched" class="text-sm text-surface-500 dark:text-surface-400 font-normal ml-2">(共 {{ merchants.length }} 筆)</span>
         </div>
       </template>
       <template #content>
@@ -74,7 +74,7 @@
           </div>
 
           <!-- DataTable -->
-          <DataTable :value="hasSearched ? paginatedMerchants : []" :loading="isSearching" stripedRows class="p-datatable-sm" :pt="{ table: { class: 'min-w-full' }, tbody: { class: 'text-surface-300' } }">
+          <DataTable :value="hasSearched ? paginatedMerchants : []" :loading="isSearching" stripedRows class="p-datatable-sm" :pt="{ table: { class: 'min-w-full' }, tbody: { class: 'text-surface-700 dark:text-surface-300' } }">
             <template #empty>
               <div class="flex flex-col items-center justify-center py-12 text-center">
                 <i :class="['pi text-5xl mb-3', hasSearched ? 'pi-inbox text-surface-500' : 'pi-search text-surface-600']"></i>
@@ -107,11 +107,11 @@
                 <span class="font-mono text-blue-400 font-bold">{{ formatCurrency(slotProps.data.channelBalance) }}</span>
               </template>
             </Column>
-            <Column field="feeRate" header="手續費" style="min-width: 100px">
-              <template #body="slotProps">
-                <span class="text-surface-300">{{ slotProps.data.feeRate }}%</span>
-              </template>
-            </Column>
+             <Column field="feeRate" header="手續費" style="min-width: 100px">
+               <template #body="slotProps">
+                 <span class="text-surface-500 dark:text-surface-300">{{ slotProps.data.feeRate }}%</span>
+               </template>
+             </Column>
             <Column field="depositStatus" header="入金開關" style="min-width: 100px">
               <template #body="slotProps">
                 <InputSwitch v-model="slotProps.data.depositStatus" @change="handleStatusChange(slotProps.data, 'deposit')" />
@@ -161,8 +161,8 @@
                 <InputText :value="formatCurrency(selectedMerchant.balance)" class="w-full" disabled />
               </div>
               <div class="flex flex-col gap-2">
-                <label class="text-surface-400 text-sm">手續費率 (%)</label>
-                <InputNumber v-model="selectedMerchant.feeRate" class="w-full" :minFractionDigits="2" :maxFractionDigits="2" suffix="%" />
+                <label class="text-surface-900 dark:text-surface-400 text-sm">手續費率 (%)</label>
+                <InputNumber v-model="selectedMerchant.feeRate" class="w-[100px]" :minFractionDigits="2" :maxFractionDigits="2" fluid :useGrouping="false" inputClass="text-center" :showButtons="false" />
               </div>
               <div class="flex flex-col gap-2">
                 <label class="text-surface-400 text-sm">每日限額</label>
@@ -232,7 +232,7 @@
       </div>
       <template #footer>
         <Button label="取消" severity="secondary" @click="showAddDialog = false" />
-        <Button label="確認新增" icon="pi pi-check" @click="showAddDialog = false" severity="success" />
+        <Button label="確認新增" icon="pi pi-check" @click="showAddDialog = false" severity="success" class="!text-white" />
       </template>
     </Dialog>
   </div>
@@ -429,16 +429,14 @@ const paginatedMerchants = computed(() => merchants.value.slice((currentPage.val
 <style scoped>
 :deep(.p-card .p-card-body) { padding: 1rem; }
 :deep(.p-card .p-card-content) { padding: 0; }
-:deep(.p-datatable .p-datatable-thead > tr > th) { background-color: rgba(30, 41, 59, 0.5); color: #94a3b8; border-color: rgba(71, 85, 105, 0.5); padding: 0.75rem 1rem; font-weight: 600; }
-:deep(.p-datatable .p-datatable-tbody > tr) { background-color: transparent; }
-:deep(.p-datatable .p-datatable-tbody > tr:nth-child(even)) { background-color: rgba(30, 41, 59, 0.3); }
-:deep(.p-datatable .p-datatable-tbody > tr > td) { border-color: rgba(71, 85, 105, 0.3); padding: 0.75rem 1rem; }
-:deep(.p-datatable .p-datatable-tbody > tr:hover) { background-color: rgba(59, 130, 246, 0.1); }
-:deep(.p-inputtext), :deep(.p-dropdown), :deep(.p-calendar) { background-color: rgba(30, 41, 59, 0.5); border-color: rgba(71, 85, 105, 0.5); }
-:deep(.p-dialog) { background-color: #1e293b; }
-:deep(.p-dialog .p-dialog-header) { background-color: #1e293b; border-bottom: 1px solid rgba(71, 85, 105, 0.5); }
-:deep(.p-dialog .p-dialog-content) { background-color: #1e293b; }
-:deep(.p-dialog .p-dialog-footer) { background-color: #1e293b; border-top: 1px solid rgba(71, 85, 105, 0.5); }
-:deep(.p-progressbar) { background-color: rgba(255,255,255,0.1); }
-:deep(.p-progressbar .p-progressbar-value) { background-color: #10b981; } /* Default emerald */
+
+/* Light Mode Striped Rows */
+:deep(.p-datatable-striped .p-datatable-tbody > tr:nth-child(even)) {
+  background-color: #f9fafb !important; /* bg-surface-50 */
+}
+
+/* Dark Mode Striped Rows */
+:global(.dark) :deep(.p-datatable-striped .p-datatable-tbody > tr:nth-child(even)) {
+  background-color: rgba(30, 41, 59, 0.5) !important; /* bg-surface-800/50 */
+}
 </style>

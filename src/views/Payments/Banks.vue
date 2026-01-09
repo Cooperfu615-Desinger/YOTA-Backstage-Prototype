@@ -1,72 +1,72 @@
 <template>
   <div class="p-6 space-y-6">
     <!-- Breadcrumb -->
-    <div class="flex items-center gap-2 text-sm text-surface-400">
-      <i class="pi pi-credit-card text-blue-400"></i>
-      <span class="text-surface-300">金流平台</span>
+    <div class="flex items-center gap-2 text-sm text-surface-600 dark:text-surface-400">
+      <i class="pi pi-credit-card text-blue-500 dark:text-blue-400"></i>
+      <span class="text-surface-500 dark:text-surface-300">金流平台</span>
       <span>></span>
-      <span class="text-white font-medium">銀行管理</span>
+      <span class="text-surface-900 dark:text-white font-medium">銀行管理</span>
     </div>
 
     <!-- Search Section -->
-    <Card class="bg-surface-800/50 border border-surface-700">
+    <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
       <template #title>
         <div class="flex items-center justify-between">
-          <div class="flex items-center gap-2 text-white text-lg">
-            <i class="pi pi-search text-blue-400"></i>
+          <div class="flex items-center gap-2 text-surface-900 dark:text-white text-lg">
+            <i class="pi pi-search text-blue-500 dark:text-blue-400"></i>
             銀行帳戶搜尋
           </div>
-          <Button label="新增銀行卡" icon="pi pi-plus" severity="success" @click="showAddDialog = true" />
+          <Button label="新增銀行卡" icon="pi pi-plus" severity="success" @click="showAddDialog = true" class="!text-white" />
         </div>
       </template>
       <template #content>
         <!-- Search Fields - Fixed Width Left-Aligned Layout -->
         <div class="flex flex-wrap gap-4 mb-4">
           <div class="flex flex-col gap-1">
-            <label class="text-surface-300 text-sm font-medium">銀行名稱</label>
+            <label class="text-surface-900 dark:text-surface-300 text-sm font-medium">銀行名稱</label>
             <Dropdown v-model="filters.bankName" :options="bankOptions" optionLabel="label" optionValue="value" placeholder="選擇銀行" class="w-[220px]" showClear />
           </div>
           <div class="flex flex-col gap-1">
-             <label class="text-surface-300 text-sm font-medium">開戶姓名</label>
+             <label class="text-surface-900 dark:text-surface-300 text-sm font-medium">開戶姓名</label>
              <InputText v-model="filters.holderName" placeholder="輸入開戶姓名" class="w-[220px]" />
           </div>
           <div class="flex flex-col gap-1">
-             <label class="text-surface-300 text-sm font-medium">銀行帳號</label>
+             <label class="text-surface-900 dark:text-surface-300 text-sm font-medium">銀行帳號</label>
              <InputText v-model="filters.accountNumber" placeholder="輸入銀行帳號" class="w-[220px]" />
           </div>
           <div class="flex flex-col gap-1">
-            <label class="text-surface-300 text-sm font-medium">狀態</label>
+            <label class="text-surface-900 dark:text-surface-300 text-sm font-medium">狀態</label>
             <Dropdown v-model="filters.status" :options="statusOptions" optionLabel="label" optionValue="value" placeholder="選擇狀態" class="w-[220px]" showClear />
           </div>
           <div class="flex flex-col gap-1 justify-end pb-2">
             <div class="flex items-center gap-2">
                  <Checkbox v-model="filters.hasBalance" :binary="true" inputId="hasBalance" />
-                 <label for="hasBalance" class="text-surface-300 text-sm font-medium cursor-pointer">僅顯示有餘額</label>
+                 <label for="hasBalance" class="text-surface-900 dark:text-surface-300 text-sm font-medium cursor-pointer">僅顯示有餘額</label>
             </div>
           </div>
         </div>
 
         <!-- Search & Reset Buttons - Right Aligned -->
         <div class="flex justify-end gap-3">
-          <Button label="重置" icon="pi pi-refresh" severity="secondary" outlined @click="handleReset" />
-          <Button label="搜尋" icon="pi pi-search" :loading="isSearching" @click="handleSearch" class="px-6" />
+          <Button label="重置" icon="pi pi-refresh" severity="secondary" @click="handleReset" class="border-none bg-surface-100 dark:bg-surface-700 text-surface-600 dark:text-surface-200 hover:bg-surface-200 dark:hover:bg-surface-600" />
+          <Button label="搜尋" icon="pi pi-search" :loading="isSearching" @click="handleSearch" class="px-6 !text-white" />
         </div>
       </template>
     </Card>
 
     <!-- Bank List Section -->
-    <Card class="bg-surface-800/50 border border-surface-700">
+    <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
       <template #title>
-        <div class="flex items-center gap-2 text-white text-lg">
-          <i class="pi pi-list text-purple-400"></i>
+        <div class="flex items-center gap-2 text-surface-900 dark:text-white text-lg">
+          <i class="pi pi-list text-purple-500 dark:text-purple-400"></i>
           銀行帳戶列表
-          <span v-if="hasSearched" class="text-sm text-surface-400 font-normal ml-2">(共 {{ banks.length }} 筆)</span>
+          <span v-if="hasSearched" class="text-sm text-surface-500 dark:text-surface-400 font-normal ml-2">(共 {{ banks.length }} 筆)</span>
         </div>
       </template>
       <template #content>
         <div class="min-h-[400px]">
            <!-- DataTable -->
-           <DataTable :value="hasSearched ? banks : []" :loading="isSearching" stripedRows class="p-datatable-sm" :pt="{ table: { class: 'min-w-full' }, tbody: { class: 'text-surface-300' } }">
+           <DataTable :value="hasSearched ? banks : []" :loading="isSearching" stripedRows class="p-datatable-sm" :pt="{ table: { class: 'min-w-full' }, tbody: { class: 'text-surface-700 dark:text-surface-300' } }">
             <template #empty>
               <div class="flex flex-col items-center justify-center py-12 text-center">
                 <i :class="['pi text-5xl mb-3', hasSearched ? 'pi-inbox text-surface-500' : 'pi-search text-surface-600']"></i>
@@ -80,7 +80,7 @@
                       <i class="pi pi-building-columns text-xl text-surface-400"></i>
                    </div>
                    <div class="flex flex-col">
-                     <span class="text-white font-medium">{{ slotProps.data.bankName }}</span>
+                     <span class="text-surface-900 dark:text-white font-medium">{{ slotProps.data.bankName }}</span>
                      <span class="text-surface-500 text-xs">{{ slotProps.data.branchName }}</span>
                    </div>
                  </div>
@@ -99,7 +99,7 @@
             </Column>
             <Column field="currentBalance" header="當前餘額" sortable style="min-width: 150px">
               <template #body="slotProps">
-                 <span :class="['font-mono', slotProps.data.currentBalance > 500000 ? 'text-white font-bold' : 'text-surface-300']">
+                 <span :class="['font-mono', slotProps.data.currentBalance > 500000 ? 'text-surface-900 dark:text-white font-bold' : 'text-surface-700 dark:text-surface-300']">
                     {{ formatCurrency(slotProps.data.currentBalance) }}
                  </span>
               </template>
@@ -141,38 +141,38 @@
     <Dialog v-model:visible="showAddDialog" header="新增銀行卡" :modal="true" :style="{ width: '500px' }">
       <div class="space-y-4">
         <div class="flex flex-col gap-2">
-          <label class="text-surface-300">銀行</label>
+          <label class="text-surface-900 dark:text-surface-300">銀行</label>
           <Dropdown v-model="newBank.bankName" :options="bankOptions" optionLabel="label" optionValue="value" placeholder="選擇銀行" class="w-full" />
         </div>
          <div class="flex flex-col gap-2">
-          <label class="text-surface-300">分行名稱</label>
+          <label class="text-surface-900 dark:text-surface-300">分行名稱</label>
           <InputText v-model="newBank.branchName" placeholder="輸入分行名稱" class="w-full" />
         </div>
         <div class="flex flex-col gap-2">
-          <label class="text-surface-300">開戶姓名</label>
+          <label class="text-surface-900 dark:text-surface-300">開戶姓名</label>
           <InputText v-model="newBank.holderName" placeholder="輸入開戶姓名" class="w-full" />
         </div>
         <div class="flex flex-col gap-2">
-          <label class="text-surface-300">銀行帳號</label>
+          <label class="text-surface-900 dark:text-surface-300">銀行帳號</label>
           <InputText v-model="newBank.accountNumber" placeholder="輸入銀行帳號" class="w-full" />
         </div>
          <div class="flex flex-col gap-2">
-          <label class="text-surface-300">每日收款上限</label>
+          <label class="text-surface-900 dark:text-surface-300">每日收款上限</label>
           <InputNumber v-model="newBank.dailyLimit" class="w-full" mode="currency" currency="TWD" :minFractionDigits="0" />
         </div>
         <div class="flex flex-col gap-2">
-           <label class="text-surface-300">顯示等級 (可複選)</label>
-           <div class="flex flex-wrap gap-3 p-2 bg-surface-900/50 rounded-lg border border-surface-700">
+           <label class="text-surface-900 dark:text-surface-300">顯示等級 (可複選)</label>
+           <div class="flex flex-wrap gap-3 p-2 bg-surface-50 dark:bg-surface-900/50 rounded-lg border border-surface-200 dark:border-surface-700">
              <div v-for="level in levelOptions" :key="level" class="flex items-center gap-2">
                <Checkbox v-model="newBank.levels" :inputId="level" :value="level" />
-               <label :for="level" class="text-sm cursor-pointer">{{ level }}</label>
+               <label :for="level" class="text-sm cursor-pointer text-surface-900 dark:text-surface-200">{{ level }}</label>
              </div>
            </div>
         </div>
       </div>
       <template #footer>
         <Button label="取消" severity="secondary" @click="showAddDialog = false" />
-        <Button label="確認新增" icon="pi pi-check" @click="handleAddBank" severity="success" />
+        <Button label="確認新增" icon="pi pi-check" @click="handleAddBank" severity="success" class="!text-white" />
       </template>
     </Dialog>
   </div>
@@ -327,16 +327,14 @@ const getProgressBarColor = (current: number, max: number) => {
 <style scoped>
 :deep(.p-card .p-card-body) { padding: 1rem; }
 :deep(.p-card .p-card-content) { padding: 0; }
-:deep(.p-datatable .p-datatable-thead > tr > th) { background-color: rgba(30, 41, 59, 0.5); color: #94a3b8; border-color: rgba(71, 85, 105, 0.5); padding: 0.75rem 1rem; font-weight: 600; }
-:deep(.p-datatable .p-datatable-tbody > tr) { background-color: transparent; }
-:deep(.p-datatable .p-datatable-tbody > tr:nth-child(even)) { background-color: rgba(30, 41, 59, 0.3); }
-:deep(.p-datatable .p-datatable-tbody > tr > td) { border-color: rgba(71, 85, 105, 0.3); padding: 0.75rem 1rem; }
-:deep(.p-datatable .p-datatable-tbody > tr:hover) { background-color: rgba(59, 130, 246, 0.1); }
-:deep(.p-inputtext), :deep(.p-dropdown), :deep(.p-calendar) { background-color: rgba(30, 41, 59, 0.5); border-color: rgba(71, 85, 105, 0.5); }
-:deep(.p-dialog) { background-color: #1e293b; }
-:deep(.p-dialog .p-dialog-header) { background-color: #1e293b; border-bottom: 1px solid rgba(71, 85, 105, 0.5); }
-:deep(.p-dialog .p-dialog-content) { background-color: #1e293b; }
-:deep(.p-dialog .p-dialog-footer) { background-color: #1e293b; border-top: 1px solid rgba(71, 85, 105, 0.5); }
-:deep(.p-progressbar) { background-color: rgba(255,255,255,0.1); }
-:deep(.p-progressbar .p-progressbar-value) { background-color: #10b981; }
+
+/* Light Mode Striped Rows */
+:deep(.p-datatable-striped .p-datatable-tbody > tr:nth-child(even)) {
+  background-color: #f9fafb !important; /* bg-surface-50 */
+}
+
+/* Dark Mode Striped Rows */
+:global(.dark) :deep(.p-datatable-striped .p-datatable-tbody > tr:nth-child(even)) {
+  background-color: rgba(30, 41, 59, 0.5) !important; /* bg-surface-800/50 */
+}
 </style>
