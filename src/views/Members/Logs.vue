@@ -1,18 +1,18 @@
 <template>
   <div class="p-6 space-y-6">
     <!-- Breadcrumb -->
-    <div class="flex items-center gap-2 text-sm text-surface-400">
-      <i class="pi pi-users text-blue-400"></i>
-      <span class="text-surface-300">會員管理</span>
+    <div class="flex items-center gap-2 text-sm text-surface-600 dark:text-surface-400">
+      <i class="pi pi-users text-blue-500 dark:text-blue-400"></i>
+      <span class="text-surface-500 dark:text-surface-300">會員管理</span>
       <span>></span>
-      <span class="text-white font-medium">會員日誌</span>
+      <span class="text-surface-900 dark:text-white font-medium">會員日誌</span>
     </div>
 
     <!-- Search Section -->
-    <Card class="bg-surface-800/50 border border-surface-700">
+    <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
       <template #title>
-        <div class="flex items-center gap-2 text-white text-lg">
-          <i class="pi pi-search text-blue-400"></i>
+        <div class="flex items-center gap-2 text-surface-900 dark:text-white text-lg">
+          <i class="pi pi-search text-blue-500 dark:text-blue-400"></i>
           日誌搜尋
         </div>
       </template>
@@ -20,23 +20,23 @@
         <!-- Search Fields - Fixed Width Left-Aligned Layout -->
         <div class="flex flex-wrap gap-4 mb-4">
           <div class="flex flex-col gap-1">
-            <label class="text-surface-300 text-sm font-medium">暱稱</label>
+            <label class="text-surface-900 dark:text-surface-0 text-sm font-medium">暱稱</label>
             <InputText v-model="filters.nickname" placeholder="輸入會員暱稱" class="w-[220px]" />
           </div>
           <div class="flex flex-col gap-1">
-            <label class="text-surface-300 text-sm font-medium">IP 地址</label>
+            <label class="text-surface-900 dark:text-surface-0 text-sm font-medium">IP 地址</label>
             <InputText v-model="filters.ip" placeholder="輸入 IP 地址" class="w-[220px]" />
           </div>
           <div class="flex flex-col gap-1">
-            <label class="text-surface-300 text-sm font-medium">行為類型</label>
+            <label class="text-surface-900 dark:text-surface-0 text-sm font-medium">行為類型</label>
             <Dropdown v-model="filters.actionType" :options="actionTypeOptions" optionLabel="label" optionValue="value" placeholder="選擇行為類型" class="w-[220px]" showClear />
           </div>
           <div class="flex flex-col gap-1">
-            <label class="text-surface-300 text-sm font-medium">時間範圍</label>
+            <label class="text-surface-900 dark:text-surface-0 text-sm font-medium">時間範圍</label>
             <Calendar v-model="filters.dateRange" selectionMode="range" placeholder="選擇日期區間" class="w-[220px]" dateFormat="yy-mm-dd" showIcon :manualInput="false" />
           </div>
           <div class="flex flex-col gap-1">
-            <label class="text-surface-300 text-sm font-medium">會員標籤</label>
+            <label class="text-surface-900 dark:text-surface-0 text-sm font-medium">會員標籤</label>
             <MultiSelect v-model="filters.tags" :options="tagOptions" optionLabel="label" optionValue="value" placeholder="選擇標籤" class="w-[220px]" display="chip" />
           </div>
         </div>
@@ -50,13 +50,13 @@
     </Card>
 
     <!-- Log List Section -->
-    <Card class="bg-surface-800/50 border border-surface-700">
+    <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
       <template #title>
         <div class="flex items-center justify-between">
-          <div class="flex items-center gap-2 text-white text-lg">
-            <i class="pi pi-history text-green-400"></i>
+          <div class="flex items-center gap-2 text-surface-900 dark:text-white text-lg">
+            <i class="pi pi-history text-green-500 dark:text-green-400"></i>
             日誌列表
-            <span v-if="hasSearched" class="text-sm text-surface-400 font-normal ml-2">(共 {{ logs.length }} 筆)</span>
+            <span v-if="hasSearched" class="text-sm text-surface-500 dark:text-surface-400 font-normal ml-2">(共 {{ logs.length }} 筆)</span>
           </div>
         </div>
       </template>
@@ -67,33 +67,33 @@
             <Button icon="pi pi-angle-double-left" text @click="goToPage(1)" :disabled="currentPage === 1" />
             <Button icon="pi pi-angle-left" text @click="goToPage(currentPage - 1)" :disabled="currentPage === 1" />
             <template v-for="page in visiblePages" :key="page">
-              <Button :label="String(page)" :class="page === currentPage ? 'bg-surface-600' : ''" :text="page !== currentPage" @click="goToPage(page)" />
+              <Button :label="String(page)" :class="page === currentPage ? 'bg-surface-200 dark:bg-surface-700' : ''" :text="page !== currentPage" @click="goToPage(page)" />
             </template>
             <Button icon="pi pi-angle-right" text @click="goToPage(currentPage + 1)" :disabled="currentPage === totalPages" />
             <Button icon="pi pi-angle-double-right" text @click="goToPage(totalPages)" :disabled="currentPage === totalPages" />
-            <span class="text-surface-400 text-sm ml-2">每頁</span>
+            <span class="text-surface-500 dark:text-surface-400 text-sm ml-2">每頁</span>
             <Dropdown v-model="rowsPerPage" :options="[10, 20, 50, 100]" class="w-24" />
-            <span class="text-surface-400 text-sm">筆</span>
+            <span class="text-surface-500 dark:text-surface-400 text-sm">筆</span>
           </div>
 
           <!-- DataTable -->
-          <DataTable :value="hasSearched ? paginatedLogs : []" :loading="isSearching" stripedRows class="p-datatable-sm" :pt="{ table: { class: 'min-w-full' }, tbody: { class: 'text-surface-300' } }">
+          <DataTable :value="hasSearched ? paginatedLogs : []" :loading="isSearching" stripedRows class="p-datatable-sm" :pt="{ table: { class: 'min-w-full' }, tbody: { class: 'text-surface-700 dark:text-surface-300' } }">
             <template #empty>
               <div class="flex flex-col items-center justify-center py-12 text-center">
-                <i :class="['pi text-5xl mb-3', hasSearched ? 'pi-inbox text-surface-500' : 'pi-search text-surface-600']"></i>
-                <p class="text-surface-400">{{ hasSearched ? '暫無搜尋結果' : '請先設定搜尋條件並點擊「搜尋」按鈕' }}</p>
+                <i :class="['pi text-5xl mb-3', hasSearched ? 'pi-inbox text-surface-500 dark:text-surface-400' : 'pi-search text-surface-600 dark:text-surface-500']"></i>
+                <p class="text-surface-500 dark:text-surface-400">{{ hasSearched ? '暫無搜尋結果' : '請先設定搜尋條件並點擊「搜尋」按鈕' }}</p>
               </div>
             </template>
             <Column field="time" header="時間" sortable style="min-width: 160px">
-              <template #body="slotProps"><span class="text-surface-400 text-sm">{{ slotProps.data.time }}</span></template>
+              <template #body="slotProps"><span class="text-surface-500 dark:text-surface-400 text-sm">{{ slotProps.data.time }}</span></template>
             </Column>
             <Column field="account" header="會員 ID / 暱稱" sortable style="min-width: 200px">
               <template #body="slotProps">
                 <div class="flex flex-col gap-1">
                   <div class="flex items-center gap-2">
-                    <span class="text-blue-400 font-medium cursor-pointer hover:underline" @click="openMemberDetail(slotProps.data)">{{ slotProps.data.account }}</span>
+                    <span class="text-blue-500 dark:text-blue-400 font-medium cursor-pointer hover:underline" @click="openMemberDetail(slotProps.data)">{{ slotProps.data.account }}</span>
                   </div>
-                  <span class="text-surface-500 text-xs">{{ slotProps.data.nickname || '未設定暱稱' }}</span>
+                  <span class="text-surface-500 dark:text-surface-400 text-xs">{{ slotProps.data.nickname || '未設定暱稱' }}</span>
                   <div v-if="slotProps.data.tags.length > 0" class="flex flex-wrap gap-1">
                     <Tag v-for="tag in slotProps.data.tags" :key="tag.name" :value="tag.name" :style="{ backgroundColor: tag.color }" class="text-xs" />
                   </div>
@@ -106,18 +106,18 @@
               </template>
             </Column>
             <Column field="description" header="操作描述" style="min-width: 220px">
-              <template #body="slotProps"><span class="text-white">{{ slotProps.data.description }}</span></template>
+              <template #body="slotProps"><span class="text-surface-900 dark:text-white">{{ slotProps.data.description }}</span></template>
             </Column>
             <Column field="ip" header="操作 IP / 地點" style="min-width: 180px">
               <template #body="slotProps">
                 <div class="flex flex-col">
-                  <span class="text-surface-300 font-mono text-sm">{{ slotProps.data.ip }}</span>
-                  <span class="text-surface-500 text-xs">{{ slotProps.data.location }}</span>
+                  <span class="text-surface-700 dark:text-surface-300 font-mono text-sm">{{ slotProps.data.ip }}</span>
+                  <span class="text-surface-500 dark:text-surface-400 text-xs">{{ slotProps.data.location }}</span>
                 </div>
               </template>
             </Column>
             <Column field="device" header="設備/瀏覽器" style="min-width: 140px">
-              <template #body="slotProps"><span class="text-surface-400 text-sm">{{ slotProps.data.device }}</span></template>
+              <template #body="slotProps"><span class="text-surface-500 dark:text-surface-400 text-sm">{{ slotProps.data.device }}</span></template>
             </Column>
           </DataTable>
         </div>
@@ -135,26 +135,26 @@
     >
       <div v-if="selectedMember" class="space-y-4">
         <div class="grid grid-cols-2 gap-4">
-          <div class="bg-surface-800/50 rounded-lg p-3 border border-surface-700">
-            <p class="text-surface-400 text-xs mb-1">會員帳號</p>
-            <p class="text-white font-medium">{{ selectedMember.account }}</p>
+          <div class="bg-surface-50 dark:bg-surface-800/50 rounded-lg p-3 border border-surface-200 dark:border-surface-700">
+            <p class="text-surface-500 dark:text-surface-400 text-xs mb-1">會員帳號</p>
+            <p class="text-surface-900 dark:text-white font-medium">{{ selectedMember.account }}</p>
           </div>
-          <div class="bg-surface-800/50 rounded-lg p-3 border border-surface-700">
-            <p class="text-surface-400 text-xs mb-1">暱稱</p>
-            <p class="text-white font-medium">{{ selectedMember.nickname || '未設定' }}</p>
+          <div class="bg-surface-50 dark:bg-surface-800/50 rounded-lg p-3 border border-surface-200 dark:border-surface-700">
+            <p class="text-surface-500 dark:text-surface-400 text-xs mb-1">暱稱</p>
+            <p class="text-surface-900 dark:text-white font-medium">{{ selectedMember.nickname || '未設定' }}</p>
           </div>
-          <div class="bg-surface-800/50 rounded-lg p-3 border border-surface-700">
-            <p class="text-surface-400 text-xs mb-1">最後登入 IP</p>
-            <p class="text-white font-mono text-sm">{{ selectedMember.ip }}</p>
+          <div class="bg-surface-50 dark:bg-surface-800/50 rounded-lg p-3 border border-surface-200 dark:border-surface-700">
+            <p class="text-surface-500 dark:text-surface-400 text-xs mb-1">最後登入 IP</p>
+            <p class="text-surface-900 dark:text-white font-mono text-sm">{{ selectedMember.ip }}</p>
           </div>
-          <div class="bg-surface-800/50 rounded-lg p-3 border border-surface-700">
-            <p class="text-surface-400 text-xs mb-1">最後活動時間</p>
-            <p class="text-white font-medium">{{ selectedMember.time }}</p>
+          <div class="bg-surface-50 dark:bg-surface-800/50 rounded-lg p-3 border border-surface-200 dark:border-surface-700">
+            <p class="text-surface-500 dark:text-surface-400 text-xs mb-1">最後活動時間</p>
+            <p class="text-surface-900 dark:text-white font-medium">{{ selectedMember.time }}</p>
           </div>
         </div>
-        <div class="bg-surface-800/50 rounded-lg p-3 border border-surface-700">
-          <p class="text-surface-400 text-xs mb-1">最近操作</p>
-          <p class="text-white">{{ selectedMember.actionType }} - {{ selectedMember.description }}</p>
+        <div class="bg-surface-50 dark:bg-surface-800/50 rounded-lg p-3 border border-surface-200 dark:border-surface-700">
+          <p class="text-surface-500 dark:text-surface-400 text-xs mb-1">最近操作</p>
+          <p class="text-surface-900 dark:text-white">{{ selectedMember.actionType }} - {{ selectedMember.description }}</p>
         </div>
       </div>
     </Dialog>
@@ -365,13 +365,4 @@ const handleReset = () => {
 <style scoped>
 :deep(.p-card .p-card-body) { padding: 1rem; }
 :deep(.p-card .p-card-content) { padding: 0; }
-:deep(.p-datatable .p-datatable-thead > tr > th) { background-color: rgba(30, 41, 59, 0.5); color: #94a3b8; border-color: rgba(71, 85, 105, 0.5); padding: 0.75rem 1rem; font-weight: 600; }
-:deep(.p-datatable .p-datatable-tbody > tr) { background-color: transparent; }
-:deep(.p-datatable .p-datatable-tbody > tr:nth-child(even)) { background-color: rgba(30, 41, 59, 0.3); }
-:deep(.p-datatable .p-datatable-tbody > tr > td) { border-color: rgba(71, 85, 105, 0.3); padding: 0.75rem 1rem; }
-:deep(.p-datatable .p-datatable-tbody > tr:hover) { background-color: rgba(59, 130, 246, 0.1); }
-:deep(.p-inputtext), :deep(.p-dropdown), :deep(.p-calendar) { background-color: rgba(30, 41, 59, 0.5); border-color: rgba(71, 85, 105, 0.5); }
-:deep(.p-dialog) { background-color: #1e293b; }
-:deep(.p-dialog .p-dialog-header) { background-color: #1e293b; border-bottom: 1px solid rgba(71, 85, 105, 0.5); }
-:deep(.p-dialog .p-dialog-content) { background-color: #1e293b; }
 </style>

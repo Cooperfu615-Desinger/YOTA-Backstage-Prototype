@@ -100,8 +100,8 @@
             </div>
 
             <!-- Game Category Adjustments -->
-            <div class="border-t border-surface-700 pt-4">
-                <h4 class="text-white font-semibold mb-3">遊戲類別加成調整</h4>
+            <div class="border-t border-surface-200 dark:border-surface-700 pt-4">
+                <h4 class="text-surface-900 dark:text-surface-0 font-semibold mb-3">遊戲類別加成調整</h4>
                 <div class="grid grid-cols-3 gap-3">
                     <div>
                         <label class="text-surface-300 text-sm block mb-2">真人遊戲加成 (%)</label>

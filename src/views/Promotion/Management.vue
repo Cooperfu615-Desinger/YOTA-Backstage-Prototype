@@ -67,14 +67,14 @@
                                 {{ selectedActivity.name }}
                             </div>
                             <!-- Title -->
-                            <div class="text-xl font-bold text-white">{{ selectedActivity.name }}</div>
+                            <div class="text-xl font-bold text-surface-900 dark:text-white">{{ selectedActivity.name }}</div>
                             <!-- Tags -->
                             <div class="flex gap-2">
                                 <Tag value="限時優惠" severity="warning" />
                                 <Tag :value="mode === 'saas' ? '全站適用' : '平台專屬'" severity="info" />
                             </div>
                             <!-- Content -->
-                            <div class="text-surface-300 text-sm leading-relaxed whitespace-pre-line">
+                            <div class="text-surface-600 dark:text-surface-300 text-sm leading-relaxed whitespace-pre-line">
                                 {{ selectedActivity.content || '這裡顯示活動的詳細說明文案...' }}
                             </div>
                             <!-- Button -->

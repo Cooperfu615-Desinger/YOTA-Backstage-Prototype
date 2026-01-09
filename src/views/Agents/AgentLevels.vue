@@ -20,7 +20,7 @@
         </div>
       </template>
       <template #content>
-         <DataTable :value="levels" stripedRows class="p-datatable-sm" :pt="{ table: { class: 'min-w-full' }, tbody: { class: 'text-surface-300' } }">
+         <DataTable :value="levels" stripedRows class="p-datatable-sm" :pt="{ table: { class: 'min-w-full' }, tbody: { class: 'text-surface-700 dark:text-surface-300' } }">
             <Column field="name" header="等級名稱" style="min-width: 150px">
                  <template #body="slotProps">
                      <div class="flex items-center gap-2">

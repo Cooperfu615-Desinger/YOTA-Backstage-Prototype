@@ -1,23 +1,23 @@
 <template>
   <div class="p-6 space-y-6">
     <!-- Breadcrumb -->
-    <div class="flex items-center gap-2 text-sm text-surface-400">
-      <i class="pi pi-users text-blue-400"></i>
-      <span class="text-surface-300">會員管理</span>
+    <div class="flex items-center gap-2 text-sm text-surface-600 dark:text-surface-400">
+      <i class="pi pi-users text-blue-500 dark:text-blue-400"></i>
+      <span class="text-surface-500 dark:text-surface-300">會員管理</span>
       <span>></span>
-      <span class="text-white font-medium">總覽</span>
+      <span class="text-surface-900 dark:text-surface-0 font-medium">總覽</span>
     </div>
 
     <!-- Page Header -->
     <div class="flex items-center justify-between">
       <div>
-        <h1 class="text-2xl font-bold text-white flex items-center gap-3">
-          <i class="pi pi-users text-blue-400"></i>
+        <h1 class="text-2xl font-bold text-surface-900 dark:text-white flex items-center gap-3">
+          <i class="pi pi-users text-blue-500 dark:text-blue-400"></i>
           會員管理總覽
         </h1>
-        <p class="text-surface-400 mt-1">Member Overview - 即時監控玩家動態與核心指標</p>
+        <p class="text-surface-500 dark:text-surface-400 mt-1">Member Overview - 即時監控玩家動態與核心指標</p>
       </div>
-      <div class="flex items-center gap-2 text-surface-400 text-sm">
+      <div class="flex items-center gap-2 text-surface-500 dark:text-surface-400 text-sm">
         <i class="pi pi-clock"></i>
         <span>最後更新: {{ lastUpdate }}</span>
       </div>
@@ -26,80 +26,80 @@
     <!-- Stats Widgets - Top Row -->
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
       <!-- Today New Registrations -->
-      <Card class="bg-surface-800/50 border border-surface-700">
+      <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
         <template #content>
           <div class="flex items-start justify-between">
             <div>
-              <p class="text-surface-400 text-sm mb-1">今日新註冊</p>
-              <p class="text-3xl font-bold text-white">{{ formatNumber(stats.todayNewUsers) }}</p>
-              <div class="flex items-center gap-1 mt-2 text-sm" :class="stats.newUsersTrend >= 0 ? 'text-emerald-400' : 'text-red-400'">
+              <p class="text-surface-500 dark:text-surface-400 text-sm mb-1">今日新註冊</p>
+              <p class="text-3xl font-bold text-surface-900 dark:text-white">{{ formatNumber(stats.todayNewUsers) }}</p>
+              <div class="flex items-center gap-1 mt-2 text-sm" :class="stats.newUsersTrend >= 0 ? 'text-emerald-500 dark:text-emerald-400' : 'text-red-500 dark:text-red-400'">
                 <i :class="['pi', stats.newUsersTrend >= 0 ? 'pi-arrow-up' : 'pi-arrow-down']"></i>
                 <span>{{ stats.newUsersTrend >= 0 ? '+' : '' }}{{ stats.newUsersTrend }}% vs 昨日</span>
               </div>
             </div>
-            <div class="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center">
-              <i class="pi pi-user-plus text-blue-400 text-xl"></i>
+            <div class="w-12 h-12 rounded-xl bg-blue-500/10 dark:bg-blue-500/20 flex items-center justify-center">
+              <i class="pi pi-user-plus text-blue-500 dark:text-blue-400 text-xl"></i>
             </div>
           </div>
         </template>
       </Card>
 
       <!-- Real-time Online -->
-      <Card class="bg-surface-800/50 border border-surface-700">
+      <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
         <template #content>
           <div class="flex items-start justify-between">
             <div>
-              <p class="text-surface-400 text-sm mb-1 flex items-center gap-2">
+              <p class="text-surface-500 dark:text-surface-400 text-sm mb-1 flex items-center gap-2">
                 當前在線
                 <span class="relative flex h-2 w-2">
                   <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                   <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                 </span>
               </p>
-              <p class="text-3xl font-bold text-emerald-400">{{ formatNumber(stats.onlineUsers) }}</p>
-              <div class="flex items-center gap-2 mt-2 text-sm text-surface-400">
+              <p class="text-3xl font-bold text-emerald-500 dark:text-emerald-400">{{ formatNumber(stats.onlineUsers) }}</p>
+              <div class="flex items-center gap-2 mt-2 text-sm text-surface-500 dark:text-surface-400">
                 <span>峰值: {{ formatNumber(stats.peakOnline) }}</span>
               </div>
             </div>
-            <div class="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center">
-              <i class="pi pi-wifi text-emerald-400 text-xl"></i>
+            <div class="w-12 h-12 rounded-xl bg-emerald-500/10 dark:bg-emerald-500/20 flex items-center justify-center">
+              <i class="pi pi-wifi text-emerald-500 dark:text-emerald-400 text-xl"></i>
             </div>
           </div>
         </template>
       </Card>
 
       <!-- Today First Deposit -->
-      <Card class="bg-gradient-to-br from-amber-900/30 to-surface-800/50 border border-amber-600/30">
+      <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
         <template #content>
           <div class="flex items-start justify-between">
             <div>
-              <p class="text-amber-300 text-sm mb-1 font-medium">今日首存人數</p>
-              <p class="text-3xl font-bold text-amber-400">{{ formatNumber(stats.todayFirstDeposit) }}</p>
+              <p class="text-surface-500 dark:text-surface-400 text-sm mb-1 font-medium">今日首存人數</p>
+              <p class="text-3xl font-bold text-amber-500 dark:text-amber-400">{{ formatNumber(stats.todayFirstDeposit) }}</p>
               <div class="flex items-center gap-2 mt-2 text-sm">
                 <Tag severity="success" :value="`轉換率 ${stats.conversionRate}%`" />
               </div>
             </div>
-            <div class="w-12 h-12 rounded-xl bg-amber-500/20 flex items-center justify-center">
-              <i class="pi pi-dollar text-amber-400 text-xl"></i>
+            <div class="w-12 h-12 rounded-xl bg-amber-500/10 dark:bg-amber-500/20 flex items-center justify-center">
+              <i class="pi pi-dollar text-amber-500 dark:text-amber-400 text-xl"></i>
             </div>
           </div>
         </template>
       </Card>
 
       <!-- DAU -->
-      <Card class="bg-surface-800/50 border border-surface-700">
+      <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
         <template #content>
           <div class="flex items-start justify-between">
             <div>
-              <p class="text-surface-400 text-sm mb-1">今日活躍玩家 (DAU)</p>
-              <p class="text-3xl font-bold text-white">{{ formatNumber(stats.dau) }}</p>
-              <div class="flex items-center gap-1 mt-2 text-sm" :class="stats.dauTrend >= 0 ? 'text-emerald-400' : 'text-red-400'">
+              <p class="text-surface-500 dark:text-surface-400 text-sm mb-1">今日活躍玩家 (DAU)</p>
+              <p class="text-3xl font-bold text-surface-900 dark:text-white">{{ formatNumber(stats.dau) }}</p>
+              <div class="flex items-center gap-1 mt-2 text-sm" :class="stats.dauTrend >= 0 ? 'text-emerald-500 dark:text-emerald-400' : 'text-red-500 dark:text-red-400'">
                 <i :class="['pi', stats.dauTrend >= 0 ? 'pi-arrow-up' : 'pi-arrow-down']"></i>
                 <span>{{ stats.dauTrend >= 0 ? '+' : '' }}{{ stats.dauTrend }}% vs 昨日</span>
               </div>
             </div>
-            <div class="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center">
-              <i class="pi pi-chart-line text-purple-400 text-xl"></i>
+            <div class="w-12 h-12 rounded-xl bg-purple-500/10 dark:bg-purple-500/20 flex items-center justify-center">
+              <i class="pi pi-chart-line text-purple-500 dark:text-purple-400 text-xl"></i>
             </div>
           </div>
         </template>
@@ -109,15 +109,15 @@
     <!-- Charts Row -->
     <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
       <!-- VIP Distribution - Doughnut Chart -->
-      <Card class="bg-surface-800/50 border border-surface-700">
+      <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
         <template #title>
-          <div class="flex items-center gap-2 text-white">
-            <i class="pi pi-star text-amber-400"></i>
+          <div class="flex items-center gap-2 text-surface-900 dark:text-white">
+            <i class="pi pi-star text-amber-500 dark:text-amber-400"></i>
             會員等級分佈
           </div>
         </template>
         <template #subtitle>
-          <span class="text-surface-400">VIP 0 - VIP 10</span>
+          <span class="text-surface-500 dark:text-surface-400">VIP 0 - VIP 10</span>
         </template>
         <template #content>
           <Chart type="doughnut" :data="vipChartData" :options="doughnutOptions" class="h-64" />
@@ -125,15 +125,15 @@
       </Card>
 
       <!-- 24h Activity Trend - Mixed Chart -->
-      <Card class="xl:col-span-2 bg-surface-800/50 border border-surface-700">
+      <Card class="xl:col-span-2 bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
         <template #title>
-          <div class="flex items-center gap-2 text-white">
-            <i class="pi pi-chart-bar text-blue-400"></i>
+          <div class="flex items-center gap-2 text-surface-900 dark:text-white">
+            <i class="pi pi-chart-bar text-blue-500 dark:text-blue-400"></i>
             24 小時活躍趨勢
           </div>
         </template>
         <template #subtitle>
-          <span class="text-surface-400">新註冊 vs 登入人數</span>
+          <span class="text-surface-500 dark:text-surface-400">新註冊 vs 登入人數</span>
         </template>
         <template #content>
           <Chart type="bar" :data="activityChartData" :options="mixedChartOptions" class="h-64" />
@@ -142,10 +142,10 @@
     </div>
 
     <!-- Live Monitor - Latest Registrations -->
-    <Card class="bg-surface-800/50 border border-surface-700">
+    <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
       <template #title>
-        <div class="flex items-center gap-2 text-white">
-          <i class="pi pi-users text-green-400"></i>
+        <div class="flex items-center gap-2 text-surface-900 dark:text-white">
+          <i class="pi pi-users text-green-500 dark:text-green-400"></i>
           最新註冊會員
           <span class="relative flex h-2 w-2 ml-2">
             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
@@ -154,7 +154,7 @@
         </div>
       </template>
       <template #subtitle>
-        <span class="text-surface-400">即時監控新會員註冊</span>
+        <span class="text-surface-500 dark:text-surface-400">即時監控新會員註冊</span>
       </template>
       <template #content>
         <DataTable 
@@ -163,29 +163,29 @@
           class="p-datatable-sm"
           :pt="{
             table: { class: 'min-w-full' },
-            tbody: { class: 'text-surface-300' }
+            tbody: { class: 'text-surface-700 dark:text-surface-300' }
           }"
         >
           <Column field="account" header="帳號" style="min-width: 120px">
             <template #body="slotProps">
-              <span class="text-blue-400 font-medium">{{ slotProps.data.account }}</span>
+              <span class="text-blue-500 dark:text-blue-400 font-medium">{{ slotProps.data.account }}</span>
             </template>
           </Column>
           <Column field="agent" header="代理" style="min-width: 100px">
             <template #body="slotProps">
-              <span class="text-surface-300">{{ slotProps.data.agent }}</span>
+              <span class="text-surface-500 dark:text-surface-300">{{ slotProps.data.agent }}</span>
             </template>
           </Column>
           <Column field="ip" header="註冊來源 IP" style="min-width: 140px">
             <template #body="slotProps">
-              <span class="text-surface-400 font-mono text-sm">{{ slotProps.data.ip }}</span>
+              <span class="text-surface-500 dark:text-surface-400 font-mono text-sm">{{ slotProps.data.ip }}</span>
             </template>
           </Column>
           <Column field="device" header="設備" style="min-width: 100px">
             <template #body="slotProps">
               <div class="flex items-center gap-2">
-                <i :class="['pi', slotProps.data.device === 'Mobile' ? 'pi-mobile' : 'pi-desktop', 'text-surface-400']"></i>
-                <span class="text-surface-300">{{ slotProps.data.device }}</span>
+                <i :class="['pi', slotProps.data.device === 'Mobile' ? 'pi-mobile' : 'pi-desktop', 'text-surface-500 dark:text-surface-400']"></i>
+                <span class="text-surface-500 dark:text-surface-300">{{ slotProps.data.device }}</span>
               </div>
             </template>
           </Column>
@@ -196,7 +196,7 @@
           </Column>
           <Column field="registeredAt" header="註冊時間" style="min-width: 160px">
             <template #body="slotProps">
-              <span class="text-surface-400 text-sm">{{ slotProps.data.registeredAt }}</span>
+              <span class="text-surface-500 dark:text-surface-400 text-sm">{{ slotProps.data.registeredAt }}</span>
             </template>
           </Column>
         </DataTable>
@@ -408,28 +408,7 @@ const getStatusSeverity = (status: string) => {
   padding: 0;
 }
 
-:deep(.p-datatable .p-datatable-thead > tr > th) {
-  background-color: rgba(30, 41, 59, 0.5);
-  color: #94a3b8;
-  border-color: rgba(71, 85, 105, 0.5);
+:deep(.p-datatable-tbody > tr > td) {
   padding: 0.75rem 1rem;
-  font-weight: 600;
-}
-
-:deep(.p-datatable .p-datatable-tbody > tr) {
-  background-color: transparent;
-}
-
-:deep(.p-datatable .p-datatable-tbody > tr:nth-child(even)) {
-  background-color: rgba(30, 41, 59, 0.3);
-}
-
-:deep(.p-datatable .p-datatable-tbody > tr > td) {
-  border-color: rgba(71, 85, 105, 0.3);
-  padding: 0.75rem 1rem;
-}
-
-:deep(.p-datatable .p-datatable-tbody > tr:hover) {
-  background-color: rgba(59, 130, 246, 0.1);
 }
 </style>

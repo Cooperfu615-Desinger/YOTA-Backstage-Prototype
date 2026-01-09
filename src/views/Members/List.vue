@@ -1,18 +1,18 @@
 <template>
   <div class="p-6 space-y-6">
     <!-- Breadcrumb -->
-    <div class="flex items-center gap-2 text-sm text-surface-400">
-      <i class="pi pi-users text-blue-400"></i>
-      <span class="text-surface-300">會員管理</span>
+    <div class="flex items-center gap-2 text-sm text-surface-600 dark:text-surface-400">
+      <i class="pi pi-users text-blue-500 dark:text-blue-400"></i>
+      <span class="text-surface-500 dark:text-surface-300">會員管理</span>
       <span>></span>
-      <span class="text-white font-medium">會員列表</span>
+      <span class="text-surface-900 dark:text-surface-0 font-medium">會員列表</span>
     </div>
 
     <!-- Search Section -->
-    <Card class="bg-surface-800/50 border border-surface-700">
+    <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
       <template #title>
-        <div class="flex items-center gap-2 text-white text-lg">
-          <i class="pi pi-search text-blue-400"></i>
+        <div class="flex items-center gap-2 text-surface-900 dark:text-white text-lg">
+          <i class="pi pi-search text-blue-500 dark:text-blue-400"></i>
           會員搜尋
         </div>
       </template>
@@ -21,15 +21,15 @@
         <div class="flex flex-wrap gap-4 mb-4">
           <!-- Row 1: Nickname, IP, Agent -->
           <div class="flex flex-col gap-1">
-            <label class="text-surface-300 text-sm font-medium">暱稱</label>
+            <label class="text-surface-900 dark:text-surface-0 text-sm font-medium">暱稱</label>
             <InputText v-model="filters.nickname" placeholder="輸入會員暱稱" class="w-[220px]" />
           </div>
           <div class="flex flex-col gap-1">
-            <label class="text-surface-300 text-sm font-medium">登入 IP</label>
+            <label class="text-surface-900 dark:text-surface-0 text-sm font-medium">登入 IP</label>
             <InputText v-model="filters.loginIp" placeholder="輸入 IP 地址" class="w-[220px]" />
           </div>
           <div class="flex flex-col gap-1">
-            <label class="text-surface-300 text-sm font-medium">代理帳號</label>
+            <label class="text-surface-900 dark:text-surface-0 text-sm font-medium">代理帳號</label>
             <InputText v-model="filters.agentAccount" placeholder="輸入代理帳號" class="w-[220px]" />
           </div>
         </div>
@@ -37,15 +37,15 @@
         <div class="flex flex-wrap gap-4 mb-4">
           <!-- Row 2: Balance Range, Balance Change Date -->
           <div class="flex flex-col gap-1">
-            <label class="text-surface-300 text-sm font-medium">錢包餘額範圍</label>
+            <label class="text-surface-900 dark:text-surface-0 text-sm font-medium">錢包餘額範圍</label>
             <div class="p-inputgroup w-[220px]">
               <InputText v-model="filters.balanceMinText" placeholder="最小" class="!w-[100px]" />
-              <span class="p-inputgroup-addon px-2">-</span>
+              <span class="p-inputgroup-addon px-2 text-surface-900 dark:text-white">-</span>
               <InputText v-model="filters.balanceMaxText" placeholder="最大" class="!w-[100px]" />
             </div>
           </div>
           <div class="flex flex-col gap-1">
-            <label class="text-surface-300 text-sm font-medium">錢包異動日期</label>
+            <label class="text-surface-900 dark:text-surface-0 text-sm font-medium">錢包異動日期</label>
             <Calendar v-model="filters.balanceChangeDateRange" selectionMode="range" placeholder="選擇日期區間" class="w-[220px]" dateFormat="yy-mm-dd" showIcon :manualInput="false" />
           </div>
         </div>
@@ -53,15 +53,15 @@
         <div class="flex flex-wrap gap-4 mb-4">
           <!-- Row 3: Registration Time, Last Login Time -->
           <div class="flex flex-col gap-1">
-            <label class="text-surface-300 text-sm font-medium">註冊時間</label>
+            <label class="text-surface-900 dark:text-surface-0 text-sm font-medium">註冊時間</label>
             <Calendar v-model="filters.registrationDateRange" selectionMode="range" placeholder="選擇日期區間" class="w-[220px]" dateFormat="yy-mm-dd" showIcon :manualInput="false" />
           </div>
           <div class="flex flex-col gap-1">
-            <label class="text-surface-300 text-sm font-medium">上次登入時間</label>
+            <label class="text-surface-900 dark:text-surface-0 text-sm font-medium">上次登入時間</label>
             <Calendar v-model="filters.lastLoginDateRange" selectionMode="range" placeholder="選擇日期區間" class="w-[220px]" dateFormat="yy-mm-dd" showIcon :manualInput="false" />
           </div>
           <div class="flex flex-col gap-1">
-            <label class="text-surface-300 text-sm font-medium">會員標籤</label>
+            <label class="text-surface-900 dark:text-surface-0 text-sm font-medium">會員標籤</label>
             <MultiSelect v-model="filters.tags" :options="tagOptions" optionLabel="label" optionValue="value" placeholder="選擇標籤" class="w-[220px]" display="chip" />
           </div>
         </div>
@@ -75,13 +75,13 @@
     </Card>
 
     <!-- Member List Section -->
-    <Card class="bg-surface-800/50 border border-surface-700">
+    <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
       <template #title>
         <div class="flex items-center justify-between">
-          <div class="flex items-center gap-2 text-white text-lg">
-            <i class="pi pi-users text-green-400"></i>
+          <div class="flex items-center gap-2 text-surface-900 dark:text-white text-lg">
+            <i class="pi pi-users text-green-500 dark:text-green-400"></i>
             會員列表
-            <span v-if="hasSearched" class="text-sm text-surface-400 font-normal ml-2">(共 {{ members.length }} 筆)</span>
+            <span v-if="hasSearched" class="text-sm text-surface-500 dark:text-surface-400 font-normal ml-2">(共 {{ members.length }} 筆)</span>
           </div>
           <Button label="新增會員" icon="pi pi-plus" severity="success" @click="showAddMemberDialog = true" />
         </div>
@@ -97,51 +97,51 @@
             </template>
             <Button icon="pi pi-angle-right" text @click="goToPage(currentPage + 1)" :disabled="currentPage === totalPages" />
             <Button icon="pi pi-angle-double-right" text @click="goToPage(totalPages)" :disabled="currentPage === totalPages" />
-            <span class="text-surface-400 text-sm ml-2">每頁</span>
+            <span class="text-surface-500 dark:text-surface-400 text-sm ml-2">每頁</span>
             <Dropdown v-model="rowsPerPage" :options="[10, 20, 50, 100]" class="w-24" />
-            <span class="text-surface-400 text-sm">筆</span>
+            <span class="text-surface-500 dark:text-surface-400 text-sm">筆</span>
           </div>
 
           <!-- DataTable -->
-          <DataTable :value="hasSearched ? paginatedMembers : []" :loading="isSearching" stripedRows class="p-datatable-sm" :pt="{ table: { class: 'min-w-full' }, tbody: { class: 'text-surface-300' } }">
+          <DataTable :value="hasSearched ? paginatedMembers : []" :loading="isSearching" stripedRows class="p-datatable-sm" :pt="{ table: { class: 'min-w-full' }, tbody: { class: 'text-surface-700 dark:text-surface-300' } }">
             <template #empty>
               <div class="flex flex-col items-center justify-center py-12 text-center">
-                <i :class="['pi text-5xl mb-3', hasSearched ? 'pi-inbox text-surface-500' : 'pi-search text-surface-600']"></i>
-                <p class="text-surface-400">{{ hasSearched ? '暫無搜尋結果' : '請先設定搜尋條件並點擊「搜尋」按鈕' }}</p>
+                <i :class="['pi text-5xl mb-3', hasSearched ? 'pi-inbox text-surface-500 dark:text-surface-400' : 'pi-search text-surface-500 dark:text-surface-400']"></i>
+                <p class="text-surface-500 dark:text-surface-400">{{ hasSearched ? '暫無搜尋結果' : '請先設定搜尋條件並點擊「搜尋」按鈕' }}</p>
               </div>
             </template>
             <Column selectionMode="multiple" headerStyle="width: 3rem" />
             <Column field="id" header="編號" sortable style="min-width: 80px">
-              <template #body="slotProps"><span class="text-surface-400">{{ slotProps.data.id }}</span></template>
+              <template #body="slotProps"><span class="text-surface-700 dark:text-surface-300">{{ slotProps.data.id }}</span></template>
             </Column>
             <Column field="account" header="ID" sortable style="min-width: 140px">
               <template #body="slotProps">
-                <span class="text-blue-400 font-medium cursor-pointer hover:underline" @click="openMemberDetail(slotProps.data)">{{ slotProps.data.account }}</span>
+                <span class="text-blue-500 dark:text-blue-400 font-medium cursor-pointer hover:underline" @click="openMemberDetail(slotProps.data)">{{ slotProps.data.account }}</span>
               </template>
             </Column>
             <Column field="nickname" header="暱稱" sortable style="min-width: 120px">
-              <template #body="slotProps"><span class="text-white">{{ slotProps.data.nickname }}</span></template>
+              <template #body="slotProps"><span class="text-surface-900 dark:text-white">{{ slotProps.data.nickname }}</span></template>
             </Column>
             <Column field="agent" header="代理" sortable style="min-width: 100px">
-              <template #body="slotProps"><span class="text-surface-300">{{ slotProps.data.agent }}</span></template>
+              <template #body="slotProps"><span class="text-surface-500 dark:text-surface-300">{{ slotProps.data.agent }}</span></template>
             </Column>
             <Column field="loginIp" header="登入IP" sortable style="min-width: 140px">
-              <template #body="slotProps"><span class="text-surface-400 text-sm font-mono">{{ slotProps.data.loginIp }}</span></template>
+              <template #body="slotProps"><span class="text-surface-500 dark:text-surface-400 text-sm font-mono">{{ slotProps.data.loginIp }}</span></template>
             </Column>
             <Column field="vip" header="VIP" sortable style="min-width: 60px">
-              <template #body="slotProps"><span class="text-amber-400 font-bold">{{ slotProps.data.vip }}</span></template>
+              <template #body="slotProps"><span class="text-amber-500 dark:text-amber-400 font-bold">{{ slotProps.data.vip }}</span></template>
             </Column>
             <Column field="wallet" header="錢包" sortable style="min-width: 130px">
-              <template #body="slotProps"><span class="text-white font-medium">{{ formatCurrency(slotProps.data.wallet) }}</span></template>
+              <template #body="slotProps"><span class="text-surface-900 dark:text-white font-medium">{{ formatCurrency(slotProps.data.wallet) }}</span></template>
             </Column>
             <Column field="status" header="狀態" style="min-width: 80px">
               <template #body="slotProps"><Tag :severity="getStatusSeverity(slotProps.data.status)" :value="slotProps.data.statusText" /></template>
             </Column>
             <Column field="registerDate" header="註冊日期" sortable style="min-width: 110px">
-              <template #body="slotProps"><span class="text-surface-400">{{ slotProps.data.registerDate }}</span></template>
+              <template #body="slotProps"><span class="text-surface-500 dark:text-surface-400">{{ slotProps.data.registerDate }}</span></template>
             </Column>
             <Column field="lastLogin" header="最後登入" sortable style="min-width: 160px">
-              <template #body="slotProps"><span class="text-surface-400 text-sm">{{ slotProps.data.lastLogin }}</span></template>
+              <template #body="slotProps"><span class="text-surface-500 dark:text-surface-400 text-sm">{{ slotProps.data.lastLogin }}</span></template>
             </Column>
             <Column field="memo" header="備註" style="min-width: 100px">
               <template #body="slotProps"><Tag v-if="slotProps.data.memo" :value="slotProps.data.memo" severity="contrast" class="text-xs" /></template>
@@ -162,19 +162,19 @@
     <Dialog v-model:visible="showAddMemberDialog" header="新增會員" :modal="true" :style="{ width: '500px' }">
       <div class="space-y-4">
         <div class="flex flex-col gap-2">
-          <label class="text-surface-300">帳號</label>
+          <label class="text-surface-900 dark:text-surface-0">帳號</label>
           <InputText v-model="newMember.account" placeholder="請輸入帳號" />
         </div>
         <div class="flex flex-col gap-2">
-          <label class="text-surface-300">暱稱</label>
+          <label class="text-surface-900 dark:text-surface-0">暱稱</label>
           <InputText v-model="newMember.nickname" placeholder="請輸入暱稱" />
         </div>
         <div class="flex flex-col gap-2">
-          <label class="text-surface-300">代理</label>
+          <label class="text-surface-900 dark:text-surface-0">代理</label>
           <Dropdown v-model="newMember.agent" :options="agentOptions" optionLabel="label" optionValue="value" placeholder="選擇代理" />
         </div>
         <div class="flex flex-col gap-2">
-          <label class="text-surface-300">VIP等級</label>
+          <label class="text-surface-900 dark:text-surface-0">VIP等級</label>
           <Dropdown v-model="newMember.vip" :options="vipOptions" optionLabel="label" optionValue="value" placeholder="選擇VIP等級" />
         </div>
       </div>
@@ -197,13 +197,13 @@
         <!-- Left Panel (25%) - Core Info Card -->
         <div class="w-1/4 space-y-4">
           <!-- Profile Card -->
-          <div class="bg-surface-800 rounded-lg p-4 border border-surface-700">
+          <div class="bg-surface-0 dark:bg-surface-800 rounded-lg p-4 border border-surface-200 dark:border-surface-700">
             <div class="text-center mb-4">
               <div class="w-20 h-20 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 mx-auto flex items-center justify-center text-3xl font-bold text-white">
                 {{ memberDetail.account.charAt(0).toUpperCase() }}
               </div>
-              <h3 class="text-white font-bold text-lg mt-3">{{ memberDetail.account }}</h3>
-              <p class="text-surface-400 text-sm">{{ memberDetail.nickname || '未設定暱稱' }}</p>
+              <h3 class="text-surface-900 dark:text-white font-bold text-lg mt-3">{{ memberDetail.account }}</h3>
+              <p class="text-surface-500 dark:text-surface-400 text-sm">{{ memberDetail.nickname || '未設定暱稱' }}</p>
             </div>
             
             <!-- VIP Badge -->
@@ -212,8 +212,8 @@
             </div>
             
             <!-- Wallet Balance -->
-            <div class="bg-gradient-to-r from-emerald-900/30 to-emerald-800/20 rounded-lg p-4 text-center border border-emerald-600/30 mb-4">
-              <p class="text-surface-400 text-xs mb-1">錢包總額</p>
+            <div class="bg-gradient-to-r from-emerald-500/10 to-emerald-500/5 dark:from-emerald-900/30 dark:to-emerald-800/20 rounded-lg p-4 text-center border border-emerald-500/20 dark:border-emerald-600/30 mb-4">
+              <p class="text-surface-500 dark:text-surface-400 text-xs mb-1">錢包總額</p>
               <p class="text-2xl font-bold text-emerald-400">${{ formatCurrency(memberDetail.wallet) }}</p>
             </div>
             
@@ -237,73 +237,74 @@
             <!-- Tab 1: 個人資料 -->
             <TabPanel value="0" header="個人資料">
               <!-- Basic Info Grid -->
+              <!-- Basic Info Grid -->
               <div class="grid grid-cols-2 gap-4 mb-4">
-                <div class="bg-surface-800/50 rounded-lg p-3 border border-surface-700">
-                  <p class="text-surface-400 text-xs mb-1">真實姓名</p>
-                  <p class="text-white font-medium">{{ memberDetail.profile.realName }}</p>
+                <div class="bg-surface-50 dark:bg-surface-800/50 rounded-lg p-3 border border-surface-200 dark:border-surface-700">
+                  <p class="text-surface-500 dark:text-surface-400 text-xs mb-1">真實姓名</p>
+                  <p class="text-surface-900 dark:text-white font-medium">{{ memberDetail.profile.realName }}</p>
                 </div>
-                <div class="bg-surface-800/50 rounded-lg p-3 border border-surface-700">
-                  <p class="text-surface-400 text-xs mb-1">手機號碼</p>
-                  <p class="text-white font-medium">{{ memberDetail.profile.phone }}</p>
+                <div class="bg-surface-50 dark:bg-surface-800/50 rounded-lg p-3 border border-surface-200 dark:border-surface-700">
+                  <p class="text-surface-500 dark:text-surface-400 text-xs mb-1">手機號碼</p>
+                  <p class="text-surface-900 dark:text-white font-medium">{{ memberDetail.profile.phone }}</p>
                 </div>
-                <div class="bg-surface-800/50 rounded-lg p-3 border border-surface-700">
-                  <p class="text-surface-400 text-xs mb-1">電子郵件</p>
-                  <p class="text-white font-medium">{{ memberDetail.profile.email }}</p>
+                <div class="bg-surface-50 dark:bg-surface-800/50 rounded-lg p-3 border border-surface-200 dark:border-surface-700">
+                  <p class="text-surface-500 dark:text-surface-400 text-xs mb-1">電子郵件</p>
+                  <p class="text-surface-900 dark:text-white font-medium">{{ memberDetail.profile.email }}</p>
                 </div>
-                <div class="bg-surface-800/50 rounded-lg p-3 border border-surface-700">
-                  <p class="text-surface-400 text-xs mb-1">代理路徑</p>
-                  <p class="text-blue-400 font-medium">{{ memberDetail.profile.agentPath }}</p>
+                <div class="bg-surface-50 dark:bg-surface-800/50 rounded-lg p-3 border border-surface-200 dark:border-surface-700">
+                  <p class="text-surface-500 dark:text-surface-400 text-xs mb-1">代理路徑</p>
+                  <p class="text-blue-500 dark:text-blue-400 font-medium">{{ memberDetail.profile.agentPath }}</p>
                 </div>
-                <div class="bg-surface-800/50 rounded-lg p-3 border border-surface-700">
-                  <p class="text-surface-400 text-xs mb-1">註冊 IP</p>
-                  <p class="text-white font-mono text-sm">{{ memberDetail.profile.registerIp }}</p>
+                <div class="bg-surface-50 dark:bg-surface-800/50 rounded-lg p-3 border border-surface-200 dark:border-surface-700">
+                  <p class="text-surface-500 dark:text-surface-400 text-xs mb-1">註冊 IP</p>
+                  <p class="text-surface-900 dark:text-white font-mono text-sm">{{ memberDetail.profile.registerIp }}</p>
                 </div>
-                <div class="bg-surface-800/50 rounded-lg p-3 border border-surface-700">
-                  <p class="text-surface-400 text-xs mb-1">最後登入 IP</p>
-                  <p class="text-white font-mono text-sm">{{ memberDetail.loginIp }}</p>
+                <div class="bg-surface-50 dark:bg-surface-800/50 rounded-lg p-3 border border-surface-200 dark:border-surface-700">
+                  <p class="text-surface-500 dark:text-surface-400 text-xs mb-1">最後登入 IP</p>
+                  <p class="text-surface-900 dark:text-white font-mono text-sm">{{ memberDetail.loginIp }}</p>
                 </div>
-                <div class="bg-surface-800/50 rounded-lg p-3 border border-surface-700">
-                  <p class="text-surface-400 text-xs mb-1">註冊時間</p>
-                  <p class="text-white font-medium">{{ memberDetail.registerDate }}</p>
+                <div class="bg-surface-50 dark:bg-surface-800/50 rounded-lg p-3 border border-surface-200 dark:border-surface-700">
+                  <p class="text-surface-500 dark:text-surface-400 text-xs mb-1">註冊時間</p>
+                  <p class="text-surface-900 dark:text-white font-medium">{{ memberDetail.registerDate }}</p>
                 </div>
-                <div class="bg-surface-800/50 rounded-lg p-3 border border-surface-700">
-                  <p class="text-surface-400 text-xs mb-1">最後登入</p>
-                  <p class="text-white font-medium">{{ memberDetail.lastLogin }}</p>
+                <div class="bg-surface-50 dark:bg-surface-800/50 rounded-lg p-3 border border-surface-200 dark:border-surface-700">
+                  <p class="text-surface-500 dark:text-surface-400 text-xs mb-1">最後登入</p>
+                  <p class="text-surface-900 dark:text-white font-medium">{{ memberDetail.lastLogin }}</p>
                 </div>
               </div>
 
               <!-- Security Risk Section -->
-              <h4 class="text-white font-medium mb-2 flex items-center gap-2">
-                <i class="pi pi-shield text-orange-400"></i>安全風險
+              <h4 class="text-surface-900 dark:text-white font-medium mb-2 flex items-center gap-2">
+                <i class="pi pi-shield text-orange-500 dark:text-orange-400"></i>安全風險
               </h4>
               <div class="grid grid-cols-2 gap-4 mb-4">
-                <div class="bg-gradient-to-br from-orange-900/20 to-surface-800 rounded-lg p-3 border border-orange-600/30">
-                  <p class="text-surface-400 text-xs mb-1">同 IP 關聯帳號數</p>
-                  <p class="text-xl font-bold" :class="memberDetail.security.sameIpAccounts > 3 ? 'text-red-400' : 'text-white'">{{ memberDetail.security.sameIpAccounts }} 個</p>
-                  <p v-if="memberDetail.security.sameIpAccounts > 3" class="text-red-400 text-xs mt-1">• 高風險！需人工審核</p>
+                <div class="bg-gradient-to-br from-orange-500/10 to-surface-50 dark:from-orange-900/20 dark:to-surface-800 rounded-lg p-3 border border-orange-500/20 dark:border-orange-600/30">
+                  <p class="text-surface-500 dark:text-surface-400 text-xs mb-1">同 IP 關聯帳號數</p>
+                  <p class="text-xl font-bold" :class="memberDetail.security.sameIpAccounts > 3 ? 'text-red-500 dark:text-red-400' : 'text-surface-900 dark:text-white'">{{ memberDetail.security.sameIpAccounts }} 個</p>
+                  <p v-if="memberDetail.security.sameIpAccounts > 3" class="text-red-500 dark:text-red-400 text-xs mt-1">• 高風險！需人工審核</p>
                 </div>
-                <div class="bg-surface-800/50 rounded-lg p-3 border border-surface-700">
-                  <p class="text-surface-400 text-xs mb-1">登入設備指紋</p>
-                  <p class="text-white font-mono text-sm">{{ memberDetail.security.deviceFingerprint }}</p>
+                <div class="bg-surface-50 dark:bg-surface-800/50 rounded-lg p-3 border border-surface-200 dark:border-surface-700">
+                  <p class="text-surface-500 dark:text-surface-400 text-xs mb-1">登入設備指紋</p>
+                  <p class="text-surface-900 dark:text-white font-mono text-sm">{{ memberDetail.security.deviceFingerprint }}</p>
                 </div>
               </div>
 
               <!-- Bank Cards Section -->
-              <h4 class="text-white font-medium mb-2 flex items-center gap-2">
-                <i class="pi pi-credit-card text-blue-400"></i>取款銀行卡
+              <h4 class="text-surface-900 dark:text-white font-medium mb-2 flex items-center gap-2">
+                <i class="pi pi-credit-card text-blue-500 dark:text-blue-400"></i>取款銀行卡
               </h4>
               <DataTable :value="memberDetail.bankCards" stripedRows class="p-datatable-sm mb-4">
                 <Column field="bank" header="銀行" style="min-width: 100px">
-                  <template #body="slotProps"><span class="text-white">{{ slotProps.data.bank }}</span></template>
+                  <template #body="slotProps"><span class="text-surface-900 dark:text-white">{{ slotProps.data.bank }}</span></template>
                 </Column>
                 <Column field="branch" header="分行" style="min-width: 120px">
-                  <template #body="slotProps"><span class="text-surface-300">{{ slotProps.data.branch }}</span></template>
+                  <template #body="slotProps"><span class="text-surface-500 dark:text-surface-300">{{ slotProps.data.branch }}</span></template>
                 </Column>
                 <Column field="accountNo" header="帳號" style="min-width: 150px">
-                  <template #body="slotProps"><span class="text-white font-mono text-sm">{{ slotProps.data.accountNo }}</span></template>
+                  <template #body="slotProps"><span class="text-surface-900 dark:text-white font-mono text-sm">{{ slotProps.data.accountNo }}</span></template>
                 </Column>
                 <Column field="holderName" header="姓名" style="min-width: 80px">
-                  <template #body="slotProps"><span class="text-white">{{ slotProps.data.holderName }}</span></template>
+                  <template #body="slotProps"><span class="text-surface-900 dark:text-white">{{ slotProps.data.holderName }}</span></template>
                 </Column>
                 <Column field="status" header="狀態" style="min-width: 80px">
                   <template #body="slotProps"><Tag :value="slotProps.data.status" :severity="slotProps.data.status === '已驗證' ? 'success' : 'warn'" /></template>
@@ -311,17 +312,18 @@
               </DataTable>
 
               <!-- Memo -->
-              <div class="bg-surface-800/50 rounded-lg p-3 border border-surface-700">
-                <p class="text-surface-400 text-xs mb-1">備註</p>
-                <p class="text-white">{{ memberDetail.memo || '無備註' }}</p>
+              <div class="bg-surface-50 dark:bg-surface-800/50 rounded-lg p-3 border border-surface-200 dark:border-surface-700">
+                <p class="text-surface-500 dark:text-surface-400 text-xs mb-1">備註</p>
+                <p class="text-surface-900 dark:text-white">{{ memberDetail.memo || '無備註' }}</p>
               </div>
             </TabPanel>
 
             <!-- Tab 2: 會員日誌 -->
+            <!-- Tab 2: 會員日誌 -->
             <TabPanel value="1" header="會員日誌">
               <!-- Activity Logs -->
-              <h4 class="text-white font-medium mb-2 flex items-center gap-2">
-                <i class="pi pi-history text-blue-400"></i>活動日誌
+              <h4 class="text-surface-900 dark:text-white font-medium mb-2 flex items-center gap-2">
+                <i class="pi pi-history text-blue-500 dark:text-blue-400"></i>活動日誌
               </h4>
               <DataTable :value="memberDetail.logs" stripedRows class="p-datatable-sm mb-4">
                 <Column field="action" header="行為" style="min-width: 120px">
@@ -330,27 +332,27 @@
                   </template>
                 </Column>
                 <Column field="ip" header="IP" style="min-width: 140px">
-                  <template #body="slotProps"><span class="text-surface-400 font-mono text-sm">{{ slotProps.data.ip }}</span></template>
+                  <template #body="slotProps"><span class="text-surface-500 dark:text-surface-400 font-mono text-sm">{{ slotProps.data.ip }}</span></template>
                 </Column>
                 <Column field="time" header="時間" style="min-width: 160px">
-                  <template #body="slotProps"><span class="text-surface-400">{{ slotProps.data.time }}</span></template>
+                  <template #body="slotProps"><span class="text-surface-500 dark:text-surface-400">{{ slotProps.data.time }}</span></template>
                 </Column>
                 <Column field="description" header="操作描述" style="min-width: 200px">
-                  <template #body="slotProps"><span class="text-white">{{ slotProps.data.description }}</span></template>
+                  <template #body="slotProps"><span class="text-surface-900 dark:text-white">{{ slotProps.data.description }}</span></template>
                 </Column>
               </DataTable>
 
               <!-- Operator Notes Section -->
-              <h4 class="text-white font-medium mb-2 flex items-center gap-2">
-                <i class="pi pi-comments text-purple-400"></i>營運備註
+              <h4 class="text-surface-900 dark:text-white font-medium mb-2 flex items-center gap-2">
+                <i class="pi pi-comments text-purple-500 dark:text-purple-400"></i>營運備註
               </h4>
               <div class="space-y-2">
-                <div v-for="(note, idx) in memberDetail.operatorNotes" :key="idx" class="bg-surface-800/50 rounded-lg p-3 border border-surface-700">
+                <div v-for="(note, idx) in memberDetail.operatorNotes" :key="idx" class="bg-surface-50 dark:bg-surface-800/50 rounded-lg p-3 border border-surface-200 dark:border-surface-700">
                   <div class="flex items-center justify-between mb-1">
-                    <span class="text-blue-400 font-medium text-sm">{{ note.operator }}</span>
+                    <span class="text-blue-500 dark:text-blue-400 font-medium text-sm">{{ note.operator }}</span>
                     <span class="text-surface-500 text-xs">{{ note.time }}</span>
                   </div>
-                  <p class="text-white text-sm">{{ note.content }}</p>
+                  <p class="text-surface-900 dark:text-white text-sm">{{ note.content }}</p>
                 </div>
                 <div v-if="!memberDetail.operatorNotes?.length" class="text-surface-500 text-sm text-center py-4">
                   暫無營運備註
@@ -359,49 +361,51 @@
             </TabPanel>
 
             <!-- Tab 3: 金流紀錄 -->
+            <!-- Tab 3: 金流紀錄 -->
             <TabPanel value="2" header="金流紀錄">
               <!-- Rollover Progress Bar -->
-              <div class="bg-gradient-to-r from-purple-900/30 to-surface-800 rounded-lg p-4 border border-purple-600/30 mb-4">
+              <div class="bg-gradient-to-r from-purple-500/10 to-surface-50 dark:from-purple-900/30 dark:to-surface-800 rounded-lg p-4 border border-purple-200 dark:border-purple-600/30 mb-4">
                 <div class="flex items-center justify-between mb-2">
-                  <span class="text-white font-medium flex items-center gap-2">
-                    <i class="pi pi-sync text-purple-400"></i>打碼量進度
+                  <span class="text-surface-900 dark:text-white font-medium flex items-center gap-2">
+                    <i class="pi pi-sync text-purple-500 dark:text-purple-400"></i>打碼量進度
                   </span>
-                  <span class="text-purple-400 font-bold">{{ memberDetail.finance.rolloverProgress }}%</span>
+                  <span class="text-purple-600 dark:text-purple-400 font-bold">{{ memberDetail.finance.rolloverProgress }}%</span>
                 </div>
                 <ProgressBar :value="memberDetail.finance.rolloverProgress" :showValue="false" class="h-3" />
-                <p class="text-surface-400 text-xs mt-2">已打碼 ${{ formatCurrency(memberDetail.finance.currentRollover) }} / 目標 ${{ formatCurrency(memberDetail.finance.requiredRollover) }}</p>
+                <p class="text-surface-500 dark:text-surface-400 text-xs mt-2">已打碼 ${{ formatCurrency(memberDetail.finance.currentRollover) }} / 目標 ${{ formatCurrency(memberDetail.finance.requiredRollover) }}</p>
               </div>
 
               <!-- Financial Summary Cards -->
               <div class="grid grid-cols-4 gap-4 mb-4">
-                <div class="bg-gradient-to-br from-green-900/30 to-surface-800 rounded-lg p-3 border border-green-600/30 text-center">
-                  <p class="text-surface-400 text-xs mb-1">總存</p>
-                  <p class="text-xl font-bold text-green-400">${{ formatCurrency(memberDetail.finance.totalDeposit) }}</p>
+                <div class="bg-gradient-to-br from-green-500/10 to-surface-50 dark:from-green-900/30 dark:to-surface-800 rounded-lg p-3 border border-green-200 dark:border-green-600/30 text-center">
+                  <p class="text-surface-500 dark:text-surface-400 text-xs mb-1">總存</p>
+                  <p class="text-xl font-bold text-green-600 dark:text-green-400">${{ formatCurrency(memberDetail.finance.totalDeposit) }}</p>
                 </div>
-                <div class="bg-gradient-to-br from-orange-900/30 to-surface-800 rounded-lg p-3 border border-orange-600/30 text-center">
-                  <p class="text-surface-400 text-xs mb-1">總提</p>
-                  <p class="text-xl font-bold text-orange-400">${{ formatCurrency(memberDetail.finance.totalWithdraw) }}</p>
+                <div class="bg-gradient-to-br from-orange-500/10 to-surface-50 dark:from-orange-900/30 dark:to-surface-800 rounded-lg p-3 border border-orange-200 dark:border-orange-600/30 text-center">
+                  <p class="text-surface-500 dark:text-surface-400 text-xs mb-1">總提</p>
+                  <p class="text-xl font-bold text-orange-600 dark:text-orange-400">${{ formatCurrency(memberDetail.finance.totalWithdraw) }}</p>
                 </div>
-                <div class="bg-gradient-to-br from-blue-900/30 to-surface-800 rounded-lg p-3 border border-blue-600/30 text-center">
-                  <p class="text-surface-400 text-xs mb-1">手動加款</p>
-                  <p class="text-xl font-bold text-blue-400">${{ formatCurrency(memberDetail.finance.manualAdd) }}</p>
+                <div class="bg-gradient-to-br from-blue-500/10 to-surface-50 dark:from-blue-900/30 dark:to-surface-800 rounded-lg p-3 border border-blue-200 dark:border-blue-600/30 text-center">
+                  <p class="text-surface-500 dark:text-surface-400 text-xs mb-1">手動加款</p>
+                  <p class="text-xl font-bold text-blue-600 dark:text-blue-400">${{ formatCurrency(memberDetail.finance.manualAdd) }}</p>
                 </div>
-                <div class="bg-gradient-to-br from-red-900/30 to-surface-800 rounded-lg p-3 border border-red-600/30 text-center">
-                  <p class="text-surface-400 text-xs mb-1">手動扣款</p>
-                  <p class="text-xl font-bold text-red-400">${{ formatCurrency(memberDetail.finance.manualDeduct) }}</p>
+                <div class="bg-gradient-to-br from-red-500/10 to-surface-50 dark:from-red-900/30 dark:to-surface-800 rounded-lg p-3 border border-red-200 dark:border-red-600/30 text-center">
+                  <p class="text-surface-500 dark:text-surface-400 text-xs mb-1">手動扣款</p>
+                  <p class="text-xl font-bold text-red-600 dark:text-red-400">${{ formatCurrency(memberDetail.finance.manualDeduct) }}</p>
                 </div>
               </div>
 
               <!-- Profit Summary -->
-              <div class="bg-gradient-to-br from-emerald-900/30 to-surface-800 rounded-lg p-4 border border-emerald-600/30 text-center mb-4">
-                <p class="text-surface-400 text-xs mb-1">總損益</p>
-                <p class="text-2xl font-bold" :class="memberDetail.finance.totalProfit >= 0 ? 'text-emerald-400' : 'text-red-400'">
+              <div class="bg-gradient-to-br from-emerald-500/10 to-surface-50 dark:from-emerald-900/30 dark:to-surface-800 rounded-lg p-4 border border-emerald-200 dark:border-emerald-600/30 text-center mb-4">
+                <p class="text-surface-500 dark:text-surface-400 text-xs mb-1">總損益</p>
+                <p class="text-2xl font-bold" :class="memberDetail.finance.totalProfit >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-600 dark:text-red-400'">
                   {{ memberDetail.finance.totalProfit >= 0 ? '+' : '' }}${{ formatCurrency(memberDetail.finance.totalProfit) }}
                 </p>
               </div>
               
               <!-- Recent Transactions -->
-              <h4 class="text-white font-medium mb-2">最近 5 筆交易</h4>
+              <!-- Recent Transactions -->
+              <h4 class="text-surface-900 dark:text-white font-medium mb-2">最近 5 筆交易</h4>
               <DataTable :value="memberDetail.finance.recentTransactions" stripedRows class="p-datatable-sm">
                 <Column field="type" header="類型" style="min-width: 80px">
                   <template #body="slotProps">
@@ -410,16 +414,16 @@
                 </Column>
                 <Column field="amount" header="金額" style="min-width: 120px">
                   <template #body="slotProps">
-                    <span :class="slotProps.data.type === '充值' ? 'text-green-400' : 'text-orange-400'" class="font-bold">
+                    <span :class="slotProps.data.type === '充值' ? 'text-green-600 dark:text-green-400' : 'text-orange-600 dark:text-orange-400'" class="font-bold">
                       {{ slotProps.data.type === '充值' ? '+' : '-' }}${{ formatCurrency(slotProps.data.amount) }}
                     </span>
                   </template>
                 </Column>
                 <Column field="channel" header="渠道" style="min-width: 100px">
-                  <template #body="slotProps"><span class="text-surface-300">{{ slotProps.data.channel }}</span></template>
+                  <template #body="slotProps"><span class="text-surface-700 dark:text-surface-300">{{ slotProps.data.channel }}</span></template>
                 </Column>
                 <Column field="time" header="時間" style="min-width: 160px">
-                  <template #body="slotProps"><span class="text-surface-400">{{ slotProps.data.time }}</span></template>
+                  <template #body="slotProps"><span class="text-surface-500 dark:text-surface-400">{{ slotProps.data.time }}</span></template>
                 </Column>
                 <Column field="status" header="狀態" style="min-width: 80px">
                   <template #body="slotProps"><Tag :value="slotProps.data.status" :severity="slotProps.data.status === '成功' ? 'success' : 'warn'" /></template>
@@ -428,35 +432,36 @@
             </TabPanel>
 
             <!-- Tab 4: 遊戲紀錄 -->
+            <!-- Tab 4: 遊戲紀錄 -->
             <TabPanel value="3" header="遊戲紀錄">
               <!-- Gaming Stats Summary Cards -->
               <div class="grid grid-cols-4 gap-4 mb-4">
-                <div class="bg-gradient-to-br from-blue-900/30 to-surface-800 rounded-lg p-3 border border-blue-600/30 text-center">
-                  <p class="text-surface-400 text-xs mb-1">總投注金額</p>
-                  <p class="text-xl font-bold text-blue-400">${{ formatCurrency(memberDetail.gaming.totalBet) }}</p>
+                <div class="bg-gradient-to-br from-blue-500/10 to-surface-50 dark:from-blue-900/30 dark:to-surface-800 rounded-lg p-3 border border-blue-200 dark:border-blue-600/30 text-center">
+                  <p class="text-surface-500 dark:text-surface-400 text-xs mb-1">總投注金額</p>
+                  <p class="text-xl font-bold text-blue-600 dark:text-blue-400">${{ formatCurrency(memberDetail.gaming.totalBet) }}</p>
                 </div>
-                <div class="bg-gradient-to-br from-green-900/30 to-surface-800 rounded-lg p-3 border border-green-600/30 text-center">
-                  <p class="text-surface-400 text-xs mb-1">總派彩金額</p>
-                  <p class="text-xl font-bold text-green-400">${{ formatCurrency(memberDetail.gaming.totalPayout) }}</p>
+                <div class="bg-gradient-to-br from-green-500/10 to-surface-50 dark:from-green-900/30 dark:to-surface-800 rounded-lg p-3 border border-green-200 dark:border-green-600/30 text-center">
+                  <p class="text-surface-500 dark:text-surface-400 text-xs mb-1">總派彩金額</p>
+                  <p class="text-xl font-bold text-green-600 dark:text-green-400">${{ formatCurrency(memberDetail.gaming.totalPayout) }}</p>
                 </div>
-                <div class="bg-gradient-to-br rounded-lg p-3 border text-center" :class="memberDetail.gaming.netProfit >= 0 ? 'from-emerald-900/30 to-surface-800 border-emerald-600/30' : 'from-red-900/30 to-surface-800 border-red-600/30'">
-                  <p class="text-surface-400 text-xs mb-1">淨盈虧</p>
-                  <p class="text-xl font-bold" :class="memberDetail.gaming.netProfit >= 0 ? 'text-emerald-400' : 'text-red-400'">
+                <div class="bg-gradient-to-br rounded-lg p-3 border text-center" :class="memberDetail.gaming.netProfit >= 0 ? 'from-emerald-500/10 to-surface-50 dark:from-emerald-900/30 dark:to-surface-800 border-emerald-200 dark:border-emerald-600/30' : 'from-red-500/10 to-surface-50 dark:from-red-900/30 dark:to-surface-800 border-red-200 dark:border-red-600/30'">
+                  <p class="text-surface-500 dark:text-surface-400 text-xs mb-1">淨盈虧</p>
+                  <p class="text-xl font-bold" :class="memberDetail.gaming.netProfit >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-600 dark:text-red-400'">
                     {{ memberDetail.gaming.netProfit >= 0 ? '+' : '' }}${{ formatCurrency(memberDetail.gaming.netProfit) }}
                   </p>
                 </div>
-                <div class="bg-gradient-to-br from-purple-900/30 to-surface-800 rounded-lg p-3 border border-purple-600/30 text-center">
-                  <p class="text-surface-400 text-xs mb-1">有效流水</p>
-                  <p class="text-xl font-bold text-purple-400">${{ formatCurrency(memberDetail.gaming.validBet) }}</p>
+                <div class="bg-gradient-to-br from-purple-500/10 to-surface-50 dark:from-purple-900/30 dark:to-surface-800 rounded-lg p-3 border border-purple-200 dark:border-purple-600/30 text-center">
+                  <p class="text-surface-500 dark:text-surface-400 text-xs mb-1">有效流水</p>
+                  <p class="text-xl font-bold text-purple-600 dark:text-purple-400">${{ formatCurrency(memberDetail.gaming.validBet) }}</p>
                 </div>
               </div>
 
               <!-- Charts Row -->
               <div class="grid grid-cols-2 gap-4 mb-4">
                 <!-- Game Category Doughnut Chart -->
-                <div class="bg-surface-800/50 rounded-lg p-4 border border-surface-700">
-                  <h4 class="text-white font-medium mb-3 flex items-center gap-2">
-                    <i class="pi pi-chart-pie text-cyan-400"></i>遊戲類型佔比
+                <div class="bg-surface-50 dark:bg-surface-800/50 rounded-lg p-4 border border-surface-200 dark:border-surface-700">
+                  <h4 class="text-surface-900 dark:text-white font-medium mb-3 flex items-center gap-2">
+                    <i class="pi pi-chart-pie text-cyan-500 dark:text-cyan-400"></i>遊戲類型佔比
                   </h4>
                   <div class="h-48">
                     <Chart type="doughnut" :data="categoryChartData" :options="categoryChartOptions" class="h-full" />
@@ -464,9 +469,9 @@
                 </div>
                 
                 <!-- Profit Trend Line Chart -->
-                <div class="bg-surface-800/50 rounded-lg p-4 border border-surface-700">
-                  <h4 class="text-white font-medium mb-3 flex items-center gap-2">
-                    <i class="pi pi-chart-line text-blue-400"></i>近 7 日損益走勢
+                <div class="bg-surface-50 dark:bg-surface-800/50 rounded-lg p-4 border border-surface-200 dark:border-surface-700">
+                  <h4 class="text-surface-900 dark:text-white font-medium mb-3 flex items-center gap-2">
+                    <i class="pi pi-chart-line text-blue-500 dark:text-blue-400"></i>近 7 日損益走勢
                   </h4>
                   <div class="h-48">
                     <Chart type="line" :data="profitChartData" :options="profitChartOptions" class="h-full" />
@@ -476,23 +481,23 @@
 
               <!-- Platform Stats -->
               <div class="grid grid-cols-4 gap-4 mb-4">
-                <div v-for="platform in memberDetail.gaming.platforms" :key="platform.name" class="bg-surface-800/50 rounded-lg p-3 border border-surface-700">
+                <div v-for="platform in memberDetail.gaming.platforms" :key="platform.name" class="bg-surface-50 dark:bg-surface-800/50 rounded-lg p-3 border border-surface-200 dark:border-surface-700">
                   <div class="flex items-center gap-2 mb-2">
                     <i :class="platform.icon" class="text-lg"></i>
-                    <span class="text-white font-medium">{{ platform.name }}</span>
+                    <span class="text-surface-900 dark:text-white font-medium">{{ platform.name }}</span>
                   </div>
-                  <p class="text-surface-400 text-xs">投注額</p>
-                  <p class="text-white font-bold">${{ formatCurrency(platform.totalBet) }}</p>
-                  <p class="text-surface-400 text-xs mt-1">盈虧</p>
-                  <p :class="platform.profit >= 0 ? 'text-emerald-400' : 'text-red-400'" class="font-bold">
+                  <p class="text-surface-500 dark:text-surface-400 text-xs">投注額</p>
+                  <p class="text-surface-900 dark:text-white font-bold">${{ formatCurrency(platform.totalBet) }}</p>
+                  <p class="text-surface-500 dark:text-surface-400 text-xs mt-1">盈虧</p>
+                  <p :class="platform.profit >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-600 dark:text-red-400'" class="font-bold">
                     {{ platform.profit >= 0 ? '+' : '' }}${{ formatCurrency(platform.profit) }}
                   </p>
                 </div>
               </div>
               
               <!-- Betting Records DataTable -->
-              <h4 class="text-white font-medium mb-2 flex items-center gap-2">
-                <i class="pi pi-list text-orange-400"></i>投注明細
+              <h4 class="text-surface-900 dark:text-white font-medium mb-2 flex items-center gap-2">
+                <i class="pi pi-list text-orange-500 dark:text-orange-400"></i>投注明細
               </h4>
               <DataTable 
                 :value="memberDetail.gaming.bettingRecords" 
@@ -505,31 +510,31 @@
                 :sortOrder="-1"
               >
                 <Column field="orderId" header="注單編號" sortable style="min-width: 140px">
-                  <template #body="slotProps"><span class="text-blue-400 font-mono text-sm">{{ slotProps.data.orderId }}</span></template>
+                  <template #body="slotProps"><span class="text-blue-500 dark:text-blue-400 font-mono text-sm">{{ slotProps.data.orderId }}</span></template>
                 </Column>
                 <Column field="gameName" header="遊戲名稱" sortable style="min-width: 140px">
                   <template #body="slotProps">
                     <div class="flex flex-col">
-                      <span class="text-white">{{ slotProps.data.gameName }}</span>
+                      <span class="text-surface-900 dark:text-white">{{ slotProps.data.gameName }}</span>
                       <Tag :value="slotProps.data.platform" severity="secondary" class="text-xs w-fit mt-1" />
                     </div>
                   </template>
                 </Column>
                 <Column field="betTime" header="投注時間" sortable style="min-width: 150px">
-                  <template #body="slotProps"><span class="text-surface-400 text-sm">{{ slotProps.data.betTime }}</span></template>
+                  <template #body="slotProps"><span class="text-surface-500 dark:text-surface-400 text-sm">{{ slotProps.data.betTime }}</span></template>
                 </Column>
                 <Column field="betAmount" header="投注金額" sortable style="min-width: 100px">
-                  <template #body="slotProps"><span class="text-white font-medium">${{ formatCurrency(slotProps.data.betAmount) }}</span></template>
+                  <template #body="slotProps"><span class="text-surface-900 dark:text-white font-medium">${{ formatCurrency(slotProps.data.betAmount) }}</span></template>
                 </Column>
                 <Column field="validBet" header="有效投注" sortable style="min-width: 100px">
-                  <template #body="slotProps"><span class="text-surface-300">${{ formatCurrency(slotProps.data.validBet) }}</span></template>
+                  <template #body="slotProps"><span class="text-surface-700 dark:text-surface-300">${{ formatCurrency(slotProps.data.validBet) }}</span></template>
                 </Column>
                 <Column field="payout" header="派彩金額" sortable style="min-width: 100px">
-                  <template #body="slotProps"><span class="text-green-400 font-medium">${{ formatCurrency(slotProps.data.payout) }}</span></template>
+                  <template #body="slotProps"><span class="text-green-600 dark:text-green-400 font-medium">${{ formatCurrency(slotProps.data.payout) }}</span></template>
                 </Column>
                 <Column field="profit" header="盈虧" sortable style="min-width: 100px">
                   <template #body="slotProps">
-                    <span :class="slotProps.data.profit >= 0 ? 'text-emerald-400' : 'text-red-400'" class="font-bold">
+                    <span :class="slotProps.data.profit >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-600 dark:text-red-400'" class="font-bold">
                       {{ slotProps.data.profit >= 0 ? '+' : '' }}${{ formatCurrency(slotProps.data.profit) }}
                     </span>
                   </template>
@@ -1114,18 +1119,4 @@ const handleFreezeAccount = () => toast.add({ severity: 'info', summary: '帳號
 <style scoped>
 :deep(.p-card .p-card-body) { padding: 1rem; }
 :deep(.p-card .p-card-content) { padding: 0; }
-:deep(.p-datatable .p-datatable-thead > tr > th) { background-color: rgba(30, 41, 59, 0.5); color: #94a3b8; border-color: rgba(71, 85, 105, 0.5); padding: 0.75rem 1rem; font-weight: 600; }
-:deep(.p-datatable .p-datatable-tbody > tr) { background-color: transparent; }
-:deep(.p-datatable .p-datatable-tbody > tr:nth-child(even)) { background-color: rgba(30, 41, 59, 0.3); }
-:deep(.p-datatable .p-datatable-tbody > tr > td) { border-color: rgba(71, 85, 105, 0.3); padding: 0.75rem 1rem; }
-:deep(.p-datatable .p-datatable-tbody > tr:hover) { background-color: rgba(59, 130, 246, 0.1); }
-:deep(.p-inputtext), :deep(.p-dropdown), :deep(.p-multiselect), :deep(.p-calendar), :deep(.p-inputnumber) { background-color: rgba(30, 41, 59, 0.5); border-color: rgba(71, 85, 105, 0.5); }
-:deep(.p-dialog) { background-color: #1e293b; }
-:deep(.p-dialog .p-dialog-header) { background-color: #1e293b; border-bottom: 1px solid rgba(71, 85, 105, 0.5); }
-:deep(.p-dialog .p-dialog-content) { background-color: #1e293b; }
-:deep(.p-dialog .p-dialog-footer) { background-color: #1e293b; border-top: 1px solid rgba(71, 85, 105, 0.5); }
-:deep(.p-tabview .p-tabview-nav) { background-color: transparent; border-color: rgba(71, 85, 105, 0.5); }
-:deep(.p-tabview .p-tabview-nav li .p-tabview-nav-link) { background-color: transparent; color: #94a3b8; border-color: transparent; }
-:deep(.p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link) { background-color: transparent; color: #3b82f6; border-color: #3b82f6; }
-:deep(.p-tabview .p-tabview-panels) { background-color: transparent; padding: 1rem 0; }
 </style>

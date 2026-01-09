@@ -123,8 +123,8 @@
             </div>
 
             <!-- Game Promo Specifics -->
-            <div v-if="currentConfig.type === 'game_promo'" class="bg-purple-900/20 p-4 rounded border border-purple-800 space-y-4">
-                 <div class="text-sm font-bold text-purple-300 mb-2">遊戲推廣設定</div>
+            <div v-if="currentConfig.type === 'game_promo'" class="bg-purple-50 dark:bg-purple-900/20 p-4 rounded border border-purple-200 dark:border-purple-800 space-y-4">
+                 <div class="text-sm font-bold text-purple-700 dark:text-purple-300 mb-2">遊戲推廣設定</div>
                  <div class="flex flex-col gap-2">
                     <label class="text-surface-300 text-sm">指定遊戲 (多選)</label>
                     <MultiSelect v-model="currentConfig.selectedGames" :options="gameList" optionLabel="name" placeholder="請選擇遊戲" class="w-full" display="chip" filter />
@@ -136,8 +136,8 @@
             </div>
 
             <!-- Ranking Specifics -->
-            <div v-if="currentConfig.type === 'ranking'" class="bg-blue-900/20 p-4 rounded border border-blue-800 space-y-4">
-                <div class="text-sm font-bold text-blue-300 mb-2">排行榜設定</div>
+            <div v-if="currentConfig.type === 'ranking'" class="bg-blue-50 dark:bg-blue-900/20 p-4 rounded border border-blue-200 dark:border-blue-800 space-y-4">
+                <div class="text-sm font-bold text-blue-700 dark:text-blue-300 mb-2">排行榜設定</div>
                 <div class="flex flex-col gap-2">
                     <label class="text-surface-300 text-sm">統計維度</label>
                     <Dropdown v-model="currentConfig.rankingType" :options="rankingOptions" optionLabel="label" optionValue="value" class="w-full" />
@@ -145,8 +145,8 @@
             </div>
 
             <!-- Reward Standards (Version Aware) -->
-             <div class="border-t border-surface-700 pt-4">
-                 <div class="text-sm font-bold text-white mb-4">獎勵配置 ({{ currentConfig.version === 'platform' ? '包網模式' : '上架模式' }})</div>
+             <div class="border-t border-surface-200 dark:border-surface-700 pt-4">
+                 <div class="text-sm font-bold text-surface-900 dark:text-white mb-4">獎勵配置 ({{ currentConfig.version === 'platform' ? '包網模式' : '上架模式' }})</div>
                  
                  <!-- Platform Mode Fields -->
                  <div v-if="currentConfig.version === 'platform'" class="grid grid-cols-2 gap-4">

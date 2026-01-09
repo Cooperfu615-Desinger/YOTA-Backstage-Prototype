@@ -1,19 +1,19 @@
 <template>
   <div class="p-6 space-y-6">
     <!-- Breadcrumb -->
-    <div class="flex items-center gap-2 text-sm text-surface-400">
-      <i class="pi pi-users text-blue-400"></i>
-      <span class="text-surface-300">會員管理</span>
+    <div class="flex items-center gap-2 text-sm text-surface-600 dark:text-surface-400">
+      <i class="pi pi-users text-blue-500 dark:text-blue-400"></i>
+      <span class="text-surface-500 dark:text-surface-300">會員管理</span>
       <span>></span>
-      <span class="text-white font-medium">標籤管理</span>
+      <span class="text-surface-900 dark:text-white font-medium">標籤管理</span>
     </div>
 
     <!-- Search Section -->
-    <Card class="bg-surface-800/50 border border-surface-700">
+    <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
       <template #title>
         <div class="flex items-center justify-between">
-          <div class="flex items-center gap-2 text-white text-lg">
-            <i class="pi pi-search text-blue-400"></i>
+          <div class="flex items-center gap-2 text-surface-900 dark:text-white text-lg">
+            <i class="pi pi-search text-blue-500 dark:text-blue-400"></i>
             標籤搜尋
           </div>
           <Button label="新增標籤" icon="pi pi-plus" severity="success" @click="showAddDialog = true" />
@@ -23,19 +23,19 @@
         <!-- Search Fields - Fixed Width Left-Aligned Layout -->
         <div class="flex flex-wrap gap-4 mb-4">
           <div class="flex flex-col gap-1">
-            <label class="text-surface-300 text-sm font-medium">標籤名稱</label>
+            <label class="text-surface-900 dark:text-surface-0 text-sm font-medium">標籤名稱</label>
             <InputText v-model="filters.name" placeholder="輸入標籤名稱" class="w-[220px]" />
           </div>
           <div class="flex flex-col gap-1">
-            <label class="text-surface-300 text-sm font-medium">標籤類型</label>
+            <label class="text-surface-900 dark:text-surface-0 text-sm font-medium">標籤類型</label>
             <Dropdown v-model="filters.type" :options="tagTypeOptions" optionLabel="label" optionValue="value" placeholder="選擇標籤類型" class="w-[220px]" showClear />
           </div>
           <div class="flex flex-col gap-1">
-            <label class="text-surface-300 text-sm font-medium">建立者</label>
+            <label class="text-surface-900 dark:text-surface-0 text-sm font-medium">建立者</label>
             <InputText v-model="filters.creator" placeholder="輸入建立者帳號" class="w-[220px]" />
           </div>
           <div class="flex flex-col gap-1">
-            <label class="text-surface-300 text-sm font-medium">建立時間</label>
+            <label class="text-surface-900 dark:text-surface-0 text-sm font-medium">建立時間</label>
             <Calendar v-model="filters.dateRange" selectionMode="range" placeholder="選擇日期區間" class="w-[220px]" dateFormat="yy-mm-dd" showIcon :manualInput="false" />
           </div>
         </div>
@@ -49,12 +49,12 @@
     </Card>
 
     <!-- Tag List Section -->
-    <Card class="bg-surface-800/50 border border-surface-700">
+    <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
       <template #title>
-        <div class="flex items-center gap-2 text-white text-lg">
-          <i class="pi pi-tags text-purple-400"></i>
+        <div class="flex items-center gap-2 text-surface-900 dark:text-white text-lg">
+          <i class="pi pi-tags text-purple-500 dark:text-purple-400"></i>
           標籤列表
-          <span v-if="hasSearched" class="text-sm text-surface-400 font-normal ml-2">(共 {{ tags.length }} 個標籤)</span>
+          <span v-if="hasSearched" class="text-sm text-surface-500 dark:text-surface-400 font-normal ml-2">(共 {{ tags.length }} 個標籤)</span>
         </div>
       </template>
       <template #content>
@@ -64,21 +64,21 @@
             <Button icon="pi pi-angle-double-left" text @click="goToPage(1)" :disabled="currentPage === 1" />
             <Button icon="pi pi-angle-left" text @click="goToPage(currentPage - 1)" :disabled="currentPage === 1" />
             <template v-for="page in visiblePages" :key="page">
-              <Button :label="String(page)" :class="page === currentPage ? 'bg-surface-600' : ''" :text="page !== currentPage" @click="goToPage(page)" />
+              <Button :label="String(page)" :class="page === currentPage ? 'bg-surface-200 dark:bg-surface-700' : ''" :text="page !== currentPage" @click="goToPage(page)" />
             </template>
             <Button icon="pi pi-angle-right" text @click="goToPage(currentPage + 1)" :disabled="currentPage === totalPages" />
             <Button icon="pi pi-angle-double-right" text @click="goToPage(totalPages)" :disabled="currentPage === totalPages" />
-            <span class="text-surface-400 text-sm ml-2">每頁</span>
+            <span class="text-surface-500 dark:text-surface-400 text-sm ml-2">每頁</span>
             <Dropdown v-model="rowsPerPage" :options="[10, 20, 50]" class="w-24" />
-            <span class="text-surface-400 text-sm">筆</span>
+            <span class="text-surface-500 dark:text-surface-400 text-sm">筆</span>
           </div>
 
           <!-- DataTable -->
-          <DataTable :value="hasSearched ? paginatedTags : []" :loading="isSearching" stripedRows class="p-datatable-sm" :pt="{ table: { class: 'min-w-full' }, tbody: { class: 'text-surface-300' } }">
+          <DataTable :value="hasSearched ? paginatedTags : []" :loading="isSearching" stripedRows class="p-datatable-sm" :pt="{ table: { class: 'min-w-full' }, tbody: { class: 'text-surface-700 dark:text-surface-300' } }">
             <template #empty>
               <div class="flex flex-col items-center justify-center py-12 text-center">
-                <i :class="['pi text-5xl mb-3', hasSearched ? 'pi-inbox text-surface-500' : 'pi-search text-surface-600']"></i>
-                <p class="text-surface-400">{{ hasSearched ? '暫無搜尋結果' : '請先設定搜尋條件並點擊「搜尋」按鈕' }}</p>
+                <i :class="['pi text-5xl mb-3', hasSearched ? 'pi-inbox text-surface-500 dark:text-surface-400' : 'pi-search text-surface-600 dark:text-surface-500']"></i>
+                <p class="text-surface-500 dark:text-surface-400">{{ hasSearched ? '暫無搜尋結果' : '請先設定搜尋條件並點擊「搜尋」按鈕' }}</p>
               </div>
             </template>
             <Column field="name" header="標籤預覽" sortable style="min-width: 160px">
@@ -93,11 +93,11 @@
             </Column>
             <Column field="memberCount" header="會員人數" sortable style="min-width: 100px">
               <template #body="slotProps">
-                <span class="text-blue-400 font-medium cursor-pointer hover:underline">{{ slotProps.data.memberCount.toLocaleString() }} 人</span>
+                <span class="text-blue-500 dark:text-blue-400 font-medium cursor-pointer hover:underline">{{ slotProps.data.memberCount.toLocaleString() }} 人</span>
               </template>
             </Column>
             <Column field="description" header="備註說明" style="min-width: 220px">
-              <template #body="slotProps"><span class="text-surface-300">{{ slotProps.data.description }}</span></template>
+              <template #body="slotProps"><span class="text-surface-500 dark:text-surface-300">{{ slotProps.data.description }}</span></template>
             </Column>
             <Column field="enabled" header="狀態" style="min-width: 80px">
               <template #body="slotProps">
@@ -107,8 +107,8 @@
             <Column field="createdBy" header="建立資訊" style="min-width: 160px">
               <template #body="slotProps">
                 <div class="flex flex-col">
-                  <span class="text-white text-sm">{{ slotProps.data.createdBy }}</span>
-                  <span class="text-surface-500 text-xs">{{ slotProps.data.createdAt }}</span>
+                  <span class="text-surface-900 dark:text-white text-sm">{{ slotProps.data.createdBy }}</span>
+                  <span class="text-surface-500 dark:text-surface-400 text-xs">{{ slotProps.data.createdAt }}</span>
                 </div>
               </template>
             </Column>
@@ -121,22 +121,22 @@
     <Dialog v-model:visible="showAddDialog" header="新增標籤" :modal="true" :style="{ width: '450px' }">
       <div class="space-y-4">
         <div class="flex flex-col gap-2">
-          <label class="text-surface-300">標籤名稱</label>
+          <label class="text-surface-900 dark:text-surface-0">標籤名稱</label>
           <InputText v-model="newTag.name" placeholder="請輸入標籤名稱" class="w-full" />
         </div>
         <div class="flex flex-col gap-2">
-          <label class="text-surface-300">標籤類型</label>
+          <label class="text-surface-900 dark:text-surface-0">標籤類型</label>
           <Dropdown v-model="newTag.type" :options="tagTypeOptions" optionLabel="label" optionValue="value" placeholder="選擇類型" class="w-full" />
         </div>
         <div class="flex flex-col gap-2">
-          <label class="text-surface-300">標籤顏色</label>
+          <label class="text-surface-900 dark:text-surface-0">標籤顏色</label>
           <div class="flex gap-2 flex-wrap">
             <div 
               v-for="color in colorOptions" 
               :key="color.bg" 
               class="w-8 h-8 rounded cursor-pointer border-2 flex items-center justify-center transition-all"
               :style="{ backgroundColor: color.bg }"
-              :class="newTag.bgColor === color.bg ? 'border-white scale-110' : 'border-transparent hover:scale-105'"
+              :class="newTag.bgColor === color.bg ? 'border-surface-900 dark:border-white scale-110' : 'border-transparent hover:scale-105'"
               @click="selectColor(color)"
             >
               <i v-if="newTag.bgColor === color.bg" class="pi pi-check text-xs" :style="{ color: color.text }"></i>
@@ -144,12 +144,12 @@
           </div>
         </div>
         <div class="flex flex-col gap-2">
-          <label class="text-surface-300">備註說明</label>
+          <label class="text-surface-900 dark:text-surface-0">備註說明</label>
           <InputText v-model="newTag.description" placeholder="簡述標籤用途" class="w-full" />
         </div>
         <div class="flex flex-col gap-2">
-          <label class="text-surface-300">預覽</label>
-          <div class="bg-surface-700/50 rounded-lg p-3">
+          <label class="text-surface-900 dark:text-surface-0">預覽</label>
+          <div class="bg-surface-100 dark:bg-surface-700/50 rounded-lg p-3">
             <Tag :value="newTag.name || '標籤名稱'" :style="{ backgroundColor: newTag.bgColor, color: newTag.textColor }" />
           </div>
         </div>
@@ -372,14 +372,4 @@ const handleAddTag = () => {
 <style scoped>
 :deep(.p-card .p-card-body) { padding: 1rem; }
 :deep(.p-card .p-card-content) { padding: 0; }
-:deep(.p-datatable .p-datatable-thead > tr > th) { background-color: rgba(30, 41, 59, 0.5); color: #94a3b8; border-color: rgba(71, 85, 105, 0.5); padding: 0.75rem 1rem; font-weight: 600; }
-:deep(.p-datatable .p-datatable-tbody > tr) { background-color: transparent; }
-:deep(.p-datatable .p-datatable-tbody > tr:nth-child(even)) { background-color: rgba(30, 41, 59, 0.3); }
-:deep(.p-datatable .p-datatable-tbody > tr > td) { border-color: rgba(71, 85, 105, 0.3); padding: 0.75rem 1rem; }
-:deep(.p-datatable .p-datatable-tbody > tr:hover) { background-color: rgba(59, 130, 246, 0.1); }
-:deep(.p-inputtext), :deep(.p-dropdown), :deep(.p-calendar) { background-color: rgba(30, 41, 59, 0.5); border-color: rgba(71, 85, 105, 0.5); }
-:deep(.p-dialog) { background-color: #1e293b; }
-:deep(.p-dialog .p-dialog-header) { background-color: #1e293b; border-bottom: 1px solid rgba(71, 85, 105, 0.5); }
-:deep(.p-dialog .p-dialog-content) { background-color: #1e293b; }
-:deep(.p-dialog .p-dialog-footer) { background-color: #1e293b; border-top: 1px solid rgba(71, 85, 105, 0.5); }
 </style>

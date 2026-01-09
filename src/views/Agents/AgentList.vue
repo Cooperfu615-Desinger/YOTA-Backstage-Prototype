@@ -84,7 +84,7 @@
                         <span class="font-mono text-sm">
                             <span class="text-green-400 font-bold">{{ slotProps.data.directMembers }}</span>
                             <span class="text-surface-500"> / </span>
-                            <span class="text-white">{{ slotProps.data.totalMembers }}</span>
+                            <span class="text-surface-900 dark:text-white">{{ slotProps.data.totalMembers }}</span>
                         </span>
                     </div>
                 </template>
@@ -140,8 +140,8 @@
                         <div class="text-surface-900 dark:text-surface-0">{{ currentAgent.phone }}</div>
                     </div>
                     <div>
-                        <label class="text-surface-400 text-sm">上級代理</label>
-                        <div class="text-white">{{ currentAgent.superior || '頂級代理' }}</div>
+                        <label class="text-surface-600 dark:text-surface-400 text-sm">上級代理</label>
+                        <div class="text-surface-900 dark:text-white">{{ currentAgent.superior || '頂級代理' }}</div>
                     </div>
                     <div>
                         <label class="text-surface-400 text-sm">代理等級</label>
@@ -152,16 +152,16 @@
                         <div class="text-green-400 font-mono font-bold">{{ currentAgent.directMembers }}</div>
                     </div>
                     <div>
-                        <label class="text-surface-400 text-sm">團隊總人數</label>
-                        <div class="text-white font-mono font-bold">{{ currentAgent.totalMembers }}</div>
+                        <label class="text-surface-600 dark:text-surface-400 text-sm">團隊總人數</label>
+                        <div class="text-surface-900 dark:text-white font-mono font-bold">{{ currentAgent.totalMembers }}</div>
                     </div>
                     <div>
                         <label class="text-surface-400 text-sm">錢包餘額</label>
                         <div class="text-green-400 font-mono font-bold">{{ formatCurrency(currentAgent.walletBalance) }}</div>
                     </div>
                     <div>
-                        <label class="text-surface-400 text-sm">註冊日期</label>
-                        <div class="text-white">{{ currentAgent.registerDate }}</div>
+                        <label class="text-surface-600 dark:text-surface-400 text-sm">註冊日期</label>
+                        <div class="text-surface-900 dark:text-white">{{ currentAgent.registerDate }}</div>
                     </div>
                 </div>
                 
