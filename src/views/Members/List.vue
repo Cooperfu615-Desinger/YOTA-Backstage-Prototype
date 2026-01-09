@@ -69,7 +69,7 @@
         <!-- Search & Reset Buttons - Right Aligned -->
         <div class="flex justify-end gap-3">
           <Button label="重置" icon="pi pi-refresh" severity="secondary" outlined @click="handleReset" />
-          <Button label="搜尋" icon="pi pi-search" :loading="isSearching" @click="handleSearch" class="px-6" />
+          <Button label="搜尋" icon="pi pi-search" :loading="isSearching" @click="handleSearch" class="px-6 !text-white" />
         </div>
       </template>
     </Card>
@@ -83,7 +83,7 @@
             會員列表
             <span v-if="hasSearched" class="text-sm text-surface-500 dark:text-surface-400 font-normal ml-2">(共 {{ members.length }} 筆)</span>
           </div>
-          <Button label="新增會員" icon="pi pi-plus" severity="success" @click="showAddMemberDialog = true" />
+          <Button label="新增會員" icon="pi pi-plus" severity="success" @click="showAddMemberDialog = true" class="!text-white" />
         </div>
       </template>
       <template #content>
@@ -1119,4 +1119,21 @@ const handleFreezeAccount = () => toast.add({ severity: 'info', summary: '帳號
 <style scoped>
 :deep(.p-card .p-card-body) { padding: 1rem; }
 :deep(.p-card .p-card-content) { padding: 0; }
+
+/* 1. Calendar Component Style Adjustment */
+:deep(.p-calendar .p-button) {
+  background-color: #4b5563 !important; /* bg-surface-600 */
+  border-color: #4b5563 !important;
+  color: white !important;
+  width: 3rem !important; /* Slightly increased width */
+}
+
+/* 3. DataTable Striped Rows Correction */
+:deep(.p-datatable-striped .p-datatable-tbody > tr:nth-child(even)) {
+  background-color: #f9fafb; /* bg-surface-50 */
+}
+
+:global(.dark) :deep(.p-datatable-striped .p-datatable-tbody > tr:nth-child(even)) {
+  background-color: rgba(30, 41, 59, 0.5) !important; /* bg-surface-800/50 */
+}
 </style>
