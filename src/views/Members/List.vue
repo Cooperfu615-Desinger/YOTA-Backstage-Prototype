@@ -68,7 +68,7 @@
 
         <!-- Search & Reset Buttons - Right Aligned -->
         <div class="flex justify-end gap-3">
-          <Button label="重置" icon="pi pi-refresh" severity="secondary" outlined @click="handleReset" />
+          <Button label="重置" icon="pi pi-refresh" severity="secondary" @click="handleReset" class="border-none bg-surface-100 dark:bg-surface-700 text-surface-600 dark:text-surface-200 hover:bg-surface-200 dark:hover:bg-surface-600" />
           <Button label="搜尋" icon="pi pi-search" :loading="isSearching" @click="handleSearch" class="px-6 !text-white" />
         </div>
       </template>
@@ -1125,15 +1125,21 @@ const handleFreezeAccount = () => toast.add({ severity: 'info', summary: '帳號
   background-color: #4b5563 !important; /* bg-surface-600 */
   border-color: #4b5563 !important;
   color: white !important;
-  width: 3rem !important; /* Slightly increased width */
+  /* Ensure sufficient horizontal padding and no rigid width limit */
+  padding-left: 0.75rem !important; /* px-3 */
+  padding-right: 0.75rem !important; /* px-3 */
+  width: auto !important; /* Allow auto width */
 }
 
 /* 3. DataTable Striped Rows Correction */
+/* Light Mode */
 :deep(.p-datatable-striped .p-datatable-tbody > tr:nth-child(even)) {
-  background-color: #f9fafb; /* bg-surface-50 */
+  background-color: #f9fafb !important; /* bg-surface-50 */
 }
 
+/* Dark Mode - Specific Override */
 :global(.dark) :deep(.p-datatable-striped .p-datatable-tbody > tr:nth-child(even)) {
+  /* Using higher specificity or !important to force dark mode color */
   background-color: rgba(30, 41, 59, 0.5) !important; /* bg-surface-800/50 */
 }
 </style>
