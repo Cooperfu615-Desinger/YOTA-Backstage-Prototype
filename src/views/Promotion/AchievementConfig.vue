@@ -345,7 +345,4 @@ const saveRate = () => {
 :deep(.p-card .p-card-body) { padding: 1.5rem; }
 :deep(.p-inputnumber-input) { text-align: center; } 
 :deep(.p-datatable-tbody > tr > td) { padding: 0.75rem 1rem; }
-:deep(.p-tabview-nav) { background: transparent; border-bottom: 1px solid var(--surface-border); }
-:deep(.p-tabview-nav-link) { background: transparent !important; color: var(--surface-500); border: none; font-weight: 500; }
-:deep(.p-highlight .p-tabview-nav-link) { color: var(--primary-color) !important; border-bottom: 2px solid var(--primary-color); }
 </style>
