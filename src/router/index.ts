@@ -494,8 +494,8 @@ const routes: RouteRecordRaw[] = [
     },
     {
         path: '/reports/deposit',
-        name: 'DepositReports',
-        component: () => import('@/views/Reports/Deposit.vue'),
+        name: 'ReportOnlineDeposit',
+        component: () => import('@/views/Reports/OnlineDeposit.vue'),
         meta: { title: '在線存款', icon: 'pi-credit-card', parent: 'Reports' }
     },
     {
