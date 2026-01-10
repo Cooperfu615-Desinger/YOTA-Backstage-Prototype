@@ -3,15 +3,13 @@ import { ref, watch, computed } from 'vue'
 // Theme state - reactive and shared across components
 const isDark = ref(true)
 
-// Initialize theme from localStorage
+// Initialize theme - LOCKED TO DARK MODE
+// NOTE: Theme toggle is temporarily disabled for development stability
 const initTheme = () => {
-    const savedTheme = localStorage.getItem('theme')
-    if (savedTheme) {
-        isDark.value = savedTheme === 'dark'
-    } else {
-        // Default to dark mode
-        isDark.value = true
-    }
+    // Force dark mode regardless of localStorage or browser preference
+    isDark.value = true
+    document.documentElement.classList.add('dark')
+    document.documentElement.classList.remove('light')
     applyTheme()
 }
 

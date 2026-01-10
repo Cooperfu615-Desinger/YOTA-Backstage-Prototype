@@ -37,8 +37,9 @@
           <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
         </button>
 
-        <!-- Theme Toggle -->
+        <!-- Theme Toggle (HIDDEN: Temporarily disabled for development stability) -->
         <button 
+          v-if="false"
           @click="toggleTheme" 
           :class="['p-2 rounded-lg transition-colors', isDark ? 'hover:bg-surface-800' : 'hover:bg-gray-100']"
           :title="isDark ? '切換為淺色模式' : '切換為深色模式'"
