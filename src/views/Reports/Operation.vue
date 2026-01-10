@@ -5,22 +5,16 @@
       <i class="pi pi-chart-line text-orange-500 dark:text-orange-400"></i>
       <span class="text-surface-500 dark:text-surface-300">報表管理</span>
       <span>></span>
-      <span class="text-surface-900 dark:text-white font-medium">營運報表</span>
+      <span class="text-surface-900 dark:text-surface-0 font-medium">營運報表</span>
     </div>
 
-    <!-- Search Section -->
+    <!-- Filters Section -->
     <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
-      <template #title>
-        <div class="flex items-center gap-2 text-surface-900 dark:text-white text-lg">
-          <i class="pi pi-search text-blue-500 dark:text-blue-400"></i>
-          篩選條件
-        </div>
-      </template>
       <template #content>
-        <!-- Filter Fields -->
         <div class="flex flex-wrap gap-4 mb-4">
+          <!-- Date Range -->
           <div class="flex flex-col gap-1">
-            <label class="text-surface-900 dark:text-surface-300 text-sm font-medium">日期區間</label>
+            <label class="text-surface-500 dark:text-surface-300 text-sm font-medium">日期區間</label>
             <DatePicker 
               v-model="filters.dateRange" 
               selectionMode="range" 
@@ -31,8 +25,9 @@
               dateFormat="yy/mm/dd"
             />
           </div>
+          <!-- Report Type -->
           <div class="flex flex-col gap-1">
-            <label class="text-surface-900 dark:text-surface-300 text-sm font-medium">報表類型</label>
+            <label class="text-surface-500 dark:text-surface-300 text-sm font-medium">報表類型</label>
             <Select 
               v-model="filters.reportType" 
               :options="reportTypeOptions" 
@@ -43,8 +38,9 @@
               showClear 
             />
           </div>
+          <!-- Dimension -->
           <div class="flex flex-col gap-1">
-            <label class="text-surface-900 dark:text-surface-300 text-sm font-medium">資料維度</label>
+            <label class="text-surface-500 dark:text-surface-300 text-sm font-medium">資料維度</label>
             <Select 
               v-model="filters.dimension" 
               :options="dimensionOptions" 
@@ -55,8 +51,9 @@
               showClear 
             />
           </div>
+          <!-- Site -->
           <div class="flex flex-col gap-1">
-            <label class="text-surface-900 dark:text-surface-300 text-sm font-medium">站點</label>
+            <label class="text-surface-500 dark:text-surface-300 text-sm font-medium">站點</label>
             <Select 
               v-model="filters.site" 
               :options="siteOptions" 
@@ -80,7 +77,7 @@
 
     <!-- Summary Cards -->
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
-      <!-- Total Bets -->
+      <!-- Total Bets Card -->
       <Card class="bg-surface-0 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
         <template #content>
           <div class="flex items-start justify-between">
@@ -99,7 +96,7 @@
         </template>
       </Card>
 
-      <!-- Total Payout -->
+      <!-- Total Payout Card -->
       <Card class="bg-surface-0 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
         <template #content>
           <div class="flex items-start justify-between">
@@ -118,7 +115,7 @@
         </template>
       </Card>
 
-      <!-- Net Profit -->
+      <!-- Net Profit (GGR) Card -->
       <Card class="bg-surface-0 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
         <template #content>
           <div class="flex items-start justify-between">
@@ -139,7 +136,7 @@
         </template>
       </Card>
 
-      <!-- Active Users -->
+      <!-- Active Users Card -->
       <Card class="bg-surface-0 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
         <template #content>
           <div class="flex items-start justify-between">
@@ -176,10 +173,6 @@
           paginator 
           :rows="10" 
           :rowsPerPageOptions="[10, 20, 50]"
-          :pt="{
-            table: { class: 'min-w-full' },
-            tbody: { class: 'text-surface-700 dark:text-surface-300' }
-          }"
         >
           <template #empty>
             <div class="flex flex-col items-center justify-center py-12 text-center">
@@ -195,42 +188,42 @@
             </template>
           </Column>
 
-          <!-- Registration Column -->
+          <!-- Registrations Column -->
           <Column field="registrations" header="新註冊" sortable style="min-width: 100px">
             <template #body="slotProps">
               <span class="text-surface-700 dark:text-surface-300">{{ slotProps.data.registrations.toLocaleString() }}</span>
             </template>
           </Column>
 
-          <!-- First Deposit Users -->
+          <!-- First Deposit Users Column -->
           <Column field="firstDepositUsers" header="首存人數" sortable style="min-width: 100px">
             <template #body="slotProps">
               <span class="text-blue-500 font-medium">{{ slotProps.data.firstDepositUsers.toLocaleString() }}</span>
             </template>
           </Column>
 
-          <!-- Total Deposit -->
+          <!-- Total Deposit Column -->
           <Column field="totalDeposit" header="總存款" sortable style="min-width: 140px">
             <template #body="slotProps">
               <span class="font-mono text-emerald-500 font-bold">{{ formatCurrency(slotProps.data.totalDeposit) }}</span>
             </template>
           </Column>
 
-          <!-- Total Withdrawal -->
+          <!-- Total Withdrawal Column -->
           <Column field="totalWithdrawal" header="總提款" sortable style="min-width: 140px">
             <template #body="slotProps">
               <span class="font-mono text-orange-500 font-bold">{{ formatCurrency(slotProps.data.totalWithdrawal) }}</span>
             </template>
           </Column>
 
-          <!-- Total Bets -->
+          <!-- Total Bets Column -->
           <Column field="totalBets" header="總投注" sortable style="min-width: 140px">
             <template #body="slotProps">
               <span class="font-mono text-surface-700 dark:text-surface-300">{{ formatCurrency(slotProps.data.totalBets) }}</span>
             </template>
           </Column>
 
-          <!-- GGR -->
+          <!-- GGR Column -->
           <Column field="ggr" header="損益 (GGR)" sortable style="min-width: 140px">
             <template #body="slotProps">
               <span class="font-mono font-bold" :class="slotProps.data.ggr >= 0 ? 'text-emerald-500' : 'text-red-500'">
@@ -239,14 +232,14 @@
             </template>
           </Column>
 
-          <!-- Active Users -->
+          <!-- Active Users Column -->
           <Column field="activeUsers" header="活躍人數" sortable style="min-width: 100px">
             <template #body="slotProps">
               <Tag :value="slotProps.data.activeUsers.toLocaleString()" severity="info" />
             </template>
           </Column>
 
-          <!-- Kill Rate -->
+          <!-- Kill Rate Column -->
           <Column field="killRate" header="殺率" sortable style="min-width: 100px">
             <template #body="slotProps">
               <Tag 
