@@ -105,12 +105,12 @@
               icon="pi pi-exclamation-triangle" 
               severity="danger" 
               outlined 
-              @click="handleBulkMaintenance" 
+              @click="openBulkMaintenance" 
             />
             <Button 
               label="新增平台" 
               icon="pi pi-plus" 
-              @click="handleAddPlatform" 
+              @click="openNew" 
             />
           </div>
         </div>
@@ -208,7 +208,7 @@
                   severity="info" 
                   text 
                   size="small" 
-                  @click="handleEdit(slotProps.data)" 
+                  @click="editPlatform(slotProps.data)" 
                 />
                 <Button 
                   icon="pi pi-wrench" 
@@ -216,7 +216,7 @@
                   severity="danger" 
                   text 
                   size="small" 
-                  @click="handleMaintenance(slotProps.data)" 
+                  @click="openMaintenance(slotProps.data)" 
                 />
               </div>
             </template>
@@ -224,6 +224,147 @@
         </DataTable>
       </template>
     </Card>
+
+    <!-- Platform Upsert Dialog -->
+    <Dialog 
+      v-model:visible="upsertDialogVisible" 
+      :header="isEditMode ? '編輯平台' : '新增平台'" 
+      modal 
+      :style="{ width: '550px' }"
+    >
+      <div class="flex flex-col gap-4">
+        <!-- Logo URL -->
+        <div class="flex flex-col gap-2">
+          <label class="font-medium text-surface-700 dark:text-surface-300">Logo URL</label>
+          <InputText v-model="platformForm.logoUrl" placeholder="https://example.com/logo.png" />
+          <div v-if="platformForm.logoUrl" class="w-16 h-16 rounded-lg bg-surface-100 dark:bg-surface-700 flex items-center justify-center overflow-hidden">
+            <img :src="platformForm.logoUrl" alt="Preview" class="w-full h-full object-cover" @error="(e: Event) => (e.target as HTMLImageElement).style.display = 'none'" />
+          </div>
+        </div>
+
+        <!-- Platform Name -->
+        <div class="flex flex-col gap-2">
+          <label class="font-medium text-surface-700 dark:text-surface-300">平台名稱 <span class="text-red-500">*</span></label>
+          <InputText v-model="platformForm.name" placeholder="PG Soft" />
+        </div>
+
+        <!-- Platform Code -->
+        <div class="flex flex-col gap-2">
+          <label class="font-medium text-surface-700 dark:text-surface-300">平台代碼 <span class="text-red-500">*</span></label>
+          <InputText v-model="platformForm.code" placeholder="PG" :disabled="isEditMode" />
+        </div>
+
+        <!-- Game Types -->
+        <div class="flex flex-col gap-2">
+          <label class="font-medium text-surface-700 dark:text-surface-300">遊戲類型</label>
+          <MultiSelect 
+            v-model="platformForm.gameTypes" 
+            :options="gameTypeOptions" 
+            optionLabel="label" 
+            optionValue="value" 
+            placeholder="選擇類型" 
+            display="chip" 
+          />
+        </div>
+
+        <!-- Wallet Mode -->
+        <div class="flex flex-col gap-2">
+          <label class="font-medium text-surface-700 dark:text-surface-300">錢包模式</label>
+          <div class="flex gap-4">
+            <div class="flex items-center gap-2">
+              <RadioButton v-model="platformForm.wallet" inputId="wallet1" value="single" />
+              <label for="wallet1" class="text-surface-700 dark:text-surface-300">單一錢包</label>
+            </div>
+            <div class="flex items-center gap-2">
+              <RadioButton v-model="platformForm.wallet" inputId="wallet2" value="transfer" />
+              <label for="wallet2" class="text-surface-700 dark:text-surface-300">轉帳錢包</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cost Rate -->
+        <div class="flex flex-col gap-2">
+          <label class="font-medium text-surface-700 dark:text-surface-300">成本佔成</label>
+          <InputNumber v-model="platformForm.rate" suffix="%" :min="0" :max="100" />
+        </div>
+
+        <!-- Status -->
+        <div class="flex flex-col gap-2">
+          <label class="font-medium text-surface-700 dark:text-surface-300">狀態</label>
+          <Select 
+            v-model="platformForm.status" 
+            :options="platformStatusOptions" 
+            optionLabel="label" 
+            optionValue="value" 
+          />
+        </div>
+      </div>
+
+      <template #footer>
+        <div class="flex justify-end gap-2">
+          <Button label="取消" severity="secondary" @click="upsertDialogVisible = false" />
+          <Button label="儲存" icon="pi pi-check" @click="savePlatform" />
+        </div>
+      </template>
+    </Dialog>
+
+    <!-- Maintenance Dialog -->
+    <Dialog 
+      v-model:visible="maintenanceDialogVisible" 
+      header="維護設定" 
+      modal 
+      :style="{ width: '500px' }"
+      class="p-fluid"
+    >
+      <div class="flex flex-col gap-4">
+        <!-- Target Platform -->
+        <div class="flex flex-col gap-2">
+          <label class="font-medium text-surface-700 dark:text-surface-300">維護平台</label>
+          <div class="p-3 bg-surface-100 dark:bg-surface-700 rounded-lg">
+            <span class="font-medium text-surface-900 dark:text-white">{{ maintenanceForm.targetName }}</span>
+          </div>
+        </div>
+
+        <!-- Maintenance Time Range -->
+        <div class="flex flex-col gap-2">
+          <label class="font-medium text-surface-700 dark:text-surface-300">維護時間</label>
+          <DatePicker 
+            v-model="maintenanceForm.dateRange" 
+            selectionMode="range" 
+            showTime 
+            hourFormat="24" 
+            placeholder="選擇開始與結束時間" 
+          />
+        </div>
+
+        <!-- Maintenance Reason -->
+        <div class="flex flex-col gap-2">
+          <label class="font-medium text-surface-700 dark:text-surface-300">維護原因</label>
+          <Textarea v-model="maintenanceForm.reason" rows="3" placeholder="請輸入維護原因..." />
+        </div>
+
+        <!-- Show Announcement -->
+        <div class="flex flex-col gap-2">
+          <div class="flex items-center gap-2">
+            <InputSwitch v-model="maintenanceForm.showAnnouncement" />
+            <label class="font-medium text-surface-700 dark:text-surface-300">前台公告</label>
+          </div>
+          <Textarea 
+            v-if="maintenanceForm.showAnnouncement" 
+            v-model="maintenanceForm.announcementContent" 
+            rows="2" 
+            placeholder="輸入對玩家顯示的維護公告..." 
+          />
+        </div>
+      </div>
+
+      <template #footer>
+        <div class="flex justify-end gap-2">
+          <Button label="取消" severity="secondary" @click="maintenanceDialogVisible = false" />
+          <Button label="確認維護" icon="pi pi-exclamation-triangle" severity="danger" @click="confirmMaintenance" />
+        </div>
+      </template>
+    </Dialog>
   </div>
 </template>
 
@@ -237,6 +378,13 @@ import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import Tag from 'primevue/tag'
 import Avatar from 'primevue/avatar'
+import Dialog from 'primevue/dialog'
+import MultiSelect from 'primevue/multiselect'
+import RadioButton from 'primevue/radiobutton'
+import InputNumber from 'primevue/inputnumber'
+import DatePicker from 'primevue/datepicker'
+import Textarea from 'primevue/textarea'
+import InputSwitch from 'primevue/inputswitch'
 import { useToast } from 'primevue/usetoast'
 
 const toast = useToast()
@@ -253,6 +401,19 @@ const walletOptions = ref([
   { label: '全部', value: 'all' },
   { label: '單一錢包', value: 'single' },
   { label: '轉帳錢包', value: 'transfer' }
+])
+
+const gameTypeOptions = ref([
+  { label: '電子', value: 'slots' },
+  { label: '真人', value: 'live' },
+  { label: '體育', value: 'sports' },
+  { label: '彩票', value: 'lottery' }
+])
+
+const platformStatusOptions = ref([
+  { label: '啟用', value: '啟用' },
+  { label: '維護', value: '維護' },
+  { label: '停用', value: '停用' }
 ])
 
 // Filter State
@@ -326,20 +487,138 @@ const getStatusSeverity = (status: string): string => {
   return severityMap[status] || 'info'
 }
 
-// Actions
-const handleAddPlatform = () => {
-  toast.add({ severity: 'info', summary: '新增平台', detail: '開啟新增平台對話框...', life: 2000 })
+// ========================================
+// Upsert Dialog Logic
+// ========================================
+const upsertDialogVisible = ref(false)
+const isEditMode = ref(false)
+
+interface PlatformForm {
+  id: number | null
+  logoUrl: string
+  name: string
+  code: string
+  gameTypes: string[]
+  wallet: 'single' | 'transfer'
+  rate: number
+  status: string
 }
 
-const handleBulkMaintenance = () => {
-  toast.add({ severity: 'warn', summary: '一鍵維護', detail: '確認要將所有平台設為維護狀態？', life: 3000 })
+const platformForm = ref<PlatformForm>({
+  id: null,
+  logoUrl: '',
+  name: '',
+  code: '',
+  gameTypes: [],
+  wallet: 'single',
+  rate: 12,
+  status: '啟用'
+})
+
+const resetPlatformForm = () => {
+  platformForm.value = {
+    id: null,
+    logoUrl: '',
+    name: '',
+    code: '',
+    gameTypes: [],
+    wallet: 'single',
+    rate: 12,
+    status: '啟用'
+  }
 }
 
-const handleEdit = (platform: Platform) => {
-  toast.add({ severity: 'info', summary: '編輯平台', detail: `編輯 ${platform.name} 設定...`, life: 2000 })
+const openNew = () => {
+  resetPlatformForm()
+  isEditMode.value = false
+  upsertDialogVisible.value = true
 }
 
-const handleMaintenance = (platform: Platform) => {
-  toast.add({ severity: 'warn', summary: '進入維護', detail: `${platform.name} 已設為維護狀態`, life: 2000 })
+const editPlatform = (platform: Platform) => {
+  isEditMode.value = true
+  platformForm.value = {
+    id: platform.id,
+    logoUrl: '',
+    name: platform.name,
+    code: platform.code,
+    gameTypes: platform.type.split('/').map(t => t.trim().toLowerCase()),
+    wallet: platform.wallet,
+    rate: platform.rate,
+    status: platform.status
+  }
+  upsertDialogVisible.value = true
+}
+
+const savePlatform = () => {
+  if (!platformForm.value.name || !platformForm.value.code) {
+    toast.add({ severity: 'error', summary: '驗證失敗', detail: '請填寫必填欄位', life: 3000 })
+    return
+  }
+
+  const action = isEditMode.value ? '更新' : '新增'
+  toast.add({ severity: 'success', summary: `${action}成功`, detail: `平台「${platformForm.value.name}」已${action}`, life: 3000 })
+  upsertDialogVisible.value = false
+}
+
+// ========================================
+// Maintenance Dialog Logic
+// ========================================
+const maintenanceDialogVisible = ref(false)
+
+interface MaintenanceForm {
+  targetId: number | null
+  targetName: string
+  dateRange: Date[] | null
+  reason: string
+  showAnnouncement: boolean
+  announcementContent: string
+}
+
+const maintenanceForm = ref<MaintenanceForm>({
+  targetId: null,
+  targetName: '',
+  dateRange: null,
+  reason: '',
+  showAnnouncement: false,
+  announcementContent: ''
+})
+
+const resetMaintenanceForm = () => {
+  maintenanceForm.value = {
+    targetId: null,
+    targetName: '',
+    dateRange: null,
+    reason: '',
+    showAnnouncement: false,
+    announcementContent: ''
+  }
+}
+
+const openMaintenance = (platform: Platform) => {
+  resetMaintenanceForm()
+  maintenanceForm.value.targetId = platform.id
+  maintenanceForm.value.targetName = platform.name
+  maintenanceDialogVisible.value = true
+}
+
+const openBulkMaintenance = () => {
+  resetMaintenanceForm()
+  maintenanceForm.value.targetName = '所有平台'
+  maintenanceDialogVisible.value = true
+}
+
+const confirmMaintenance = () => {
+  if (!maintenanceForm.value.dateRange || maintenanceForm.value.dateRange.length < 2) {
+    toast.add({ severity: 'error', summary: '驗證失敗', detail: '請選擇維護時間區間', life: 3000 })
+    return
+  }
+
+  toast.add({ 
+    severity: 'warn', 
+    summary: '維護已設定', 
+    detail: `「${maintenanceForm.value.targetName}」將於指定時間進入維護`, 
+    life: 3000 
+  })
+  maintenanceDialogVisible.value = false
 }
 </script>
