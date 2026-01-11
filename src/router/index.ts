@@ -399,7 +399,23 @@ const routes: RouteRecordRaw[] = [
     },
 
     // ========================================
-    // 10. 推廣活動 (Promotions)
+    // 10. 遊戲管理 (Games)
+    // ========================================
+    {
+        path: '/games',
+        name: 'Games',
+        component: () => import('@/views/Games/Platforms.vue'),
+        meta: { title: '遊戲管理', icon: 'pi-play' }
+    },
+    {
+        path: '/games/platforms',
+        name: 'GamePlatforms',
+        component: () => import('@/views/Games/Platforms.vue'),
+        meta: { title: '遊戲平台', icon: 'pi-server', parent: 'Games' }
+    },
+
+    // ========================================
+    // 11. 推廣活動 (Promotions)
     // ========================================
     {
         path: '/promotions',
