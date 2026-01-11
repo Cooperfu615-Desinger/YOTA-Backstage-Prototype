@@ -88,7 +88,7 @@
     </TabView>
 
     <!-- Template Editor Dialog -->
-    <Dialog v-model:visible="editorDialogVisible" :header="isEditMode ? '編輯模板' : '新增模板'" modal maximizable :style="{ width: '900px' }" class="p-fluid">
+    <Dialog v-model:visible="editorDialogVisible" :header="isEditMode ? '編輯模板' : '新增模板'" modal :style="{ width: '900px' }" class="p-fluid">
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <!-- Left: Settings -->
         <div class="flex flex-col gap-4">
