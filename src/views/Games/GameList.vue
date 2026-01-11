@@ -74,52 +74,15 @@
         <div class="flex flex-wrap items-center justify-between gap-4">
           <!-- Filters -->
           <div class="flex flex-wrap gap-4">
-            <InputText 
-              v-model="filters.search" 
-              placeholder="遊戲名稱/ID" 
-              class="w-[180px]"
-            />
-            <Select 
-              v-model="filters.provider" 
-              :options="providerOptions" 
-              optionLabel="label" 
-              optionValue="value" 
-              placeholder="供應商" 
-              class="w-[140px]" 
-              showClear 
-            />
-            <Select 
-              v-model="filters.type" 
-              :options="typeOptions" 
-              optionLabel="label" 
-              optionValue="value" 
-              placeholder="類型" 
-              class="w-[140px]" 
-              showClear 
-            />
-            <Select 
-              v-model="filters.volatility" 
-              :options="volatilityOptions" 
-              optionLabel="label" 
-              optionValue="value" 
-              placeholder="波動率" 
-              class="w-[140px]" 
-              showClear 
-            />
+            <InputText v-model="filters.search" placeholder="遊戲名稱/ID" class="w-[180px]" />
+            <Select v-model="filters.provider" :options="providerOptions" optionLabel="label" optionValue="value" placeholder="供應商" class="w-[140px]" showClear />
+            <Select v-model="filters.type" :options="typeOptions" optionLabel="label" optionValue="value" placeholder="類型" class="w-[140px]" showClear />
+            <Select v-model="filters.volatility" :options="volatilityOptions" optionLabel="label" optionValue="value" placeholder="波動率" class="w-[140px]" showClear />
           </div>
           <!-- Actions -->
           <div class="flex gap-3">
-            <Button 
-              label="同步遊戲" 
-              icon="pi pi-sync" 
-              severity="secondary" 
-              @click="handleSync" 
-            />
-            <Button 
-              label="新增遊戲" 
-              icon="pi pi-plus" 
-              @click="handleAddGame" 
-            />
+            <Button label="同步遊戲" icon="pi pi-sync" severity="secondary" @click="openSyncDialog" />
+            <Button label="新增遊戲" icon="pi pi-plus" @click="openNew" />
           </div>
         </div>
       </template>
@@ -135,13 +98,7 @@
         </div>
       </template>
       <template #content>
-        <DataTable 
-          :value="filteredGames" 
-          stripedRows 
-          paginator 
-          :rows="10" 
-          :rowsPerPageOptions="[10, 20, 50]"
-        >
+        <DataTable :value="filteredGames" stripedRows paginator :rows="10" :rowsPerPageOptions="[10, 20, 50]">
           <!-- Game Info Column -->
           <Column header="遊戲資訊" style="min-width: 250px">
             <template #body="slotProps">
@@ -189,33 +146,9 @@
           <Column header="行銷標籤" style="min-width: 120px">
             <template #body="slotProps">
               <div class="flex gap-1">
-                <Button 
-                  v-if="slotProps.data.isHot" 
-                  icon="pi pi-fire" 
-                  severity="danger" 
-                  text 
-                  rounded 
-                  size="small" 
-                  v-tooltip="'Hot'" 
-                />
-                <Button 
-                  v-if="slotProps.data.isNew" 
-                  icon="pi pi-sparkles" 
-                  severity="success" 
-                  text 
-                  rounded 
-                  size="small" 
-                  v-tooltip="'New'" 
-                />
-                <Button 
-                  v-if="slotProps.data.isTop" 
-                  icon="pi pi-star-fill" 
-                  severity="warn" 
-                  text 
-                  rounded 
-                  size="small" 
-                  v-tooltip="'Top'" 
-                />
+                <Button v-if="slotProps.data.isHot" icon="pi pi-fire" severity="danger" text rounded size="small" v-tooltip="'Hot'" @click="toggleTag(slotProps.data, 'isHot')" />
+                <Button v-if="slotProps.data.isNew" icon="pi pi-sparkles" severity="success" text rounded size="small" v-tooltip="'New'" @click="toggleTag(slotProps.data, 'isNew')" />
+                <Button v-if="slotProps.data.isTop" icon="pi pi-star-fill" severity="warn" text rounded size="small" v-tooltip="'Top'" @click="toggleTag(slotProps.data, 'isTop')" />
                 <span v-if="!slotProps.data.isHot && !slotProps.data.isNew && !slotProps.data.isTop" class="text-surface-400">-</span>
               </div>
             </template>
@@ -224,10 +157,7 @@
           <!-- Status Column -->
           <Column field="status" header="狀態" sortable style="min-width: 100px">
             <template #body="slotProps">
-              <InputSwitch 
-                v-model="slotProps.data.isActive" 
-                @change="handleStatusChange(slotProps.data)" 
-              />
+              <InputSwitch v-model="slotProps.data.isActive" @change="handleStatusChange(slotProps.data)" />
             </template>
           </Column>
 
@@ -235,28 +165,108 @@
           <Column header="操作" style="min-width: 150px">
             <template #body="slotProps">
               <div class="flex gap-2">
-                <Button 
-                  icon="pi pi-pencil" 
-                  label="編輯" 
-                  severity="info" 
-                  text 
-                  size="small" 
-                  @click="handleEdit(slotProps.data)" 
-                />
-                <Button 
-                  icon="pi pi-play" 
-                  label="試玩" 
-                  severity="secondary" 
-                  text 
-                  size="small" 
-                  @click="handleDemo(slotProps.data)" 
-                />
+                <Button icon="pi pi-pencil" label="編輯" severity="info" text size="small" @click="editGame(slotProps.data)" />
+                <Button icon="pi pi-play" label="試玩" severity="secondary" text size="small" @click="handleDemo(slotProps.data)" />
               </div>
             </template>
           </Column>
         </DataTable>
       </template>
     </Card>
+
+    <!-- Game Editor Dialog -->
+    <Dialog v-model:visible="editorDialogVisible" :header="isEditMode ? '編輯遊戲' : '新增遊戲'" modal :style="{ width: '650px' }" class="p-fluid">
+      <div class="flex flex-col gap-4">
+        <!-- Row 1: Basic Info -->
+        <div class="grid grid-cols-3 gap-4">
+          <div class="flex flex-col gap-2">
+            <label class="font-medium text-surface-700 dark:text-surface-300">遊戲名稱 <span class="text-red-500">*</span></label>
+            <InputText v-model="gameForm.name" placeholder="Gates of Olympus" />
+          </div>
+          <div class="flex flex-col gap-2">
+            <label class="font-medium text-surface-700 dark:text-surface-300">遊戲代碼</label>
+            <InputText v-model="gameForm.gameId" placeholder="PG001" :disabled="isEditMode" />
+          </div>
+          <div class="flex flex-col gap-2">
+            <label class="font-medium text-surface-700 dark:text-surface-300">所屬平台</label>
+            <Select v-model="gameForm.provider" :options="providerSelectOptions" optionLabel="label" optionValue="value" placeholder="選擇平台" />
+          </div>
+        </div>
+
+        <!-- Row 2: Numeric Settings -->
+        <div class="grid grid-cols-3 gap-4">
+          <div class="flex flex-col gap-2">
+            <label class="font-medium text-surface-700 dark:text-surface-300">RTP (%) <span class="text-red-500">*</span></label>
+            <InputNumber v-model="gameForm.rtp" suffix="%" :min="0" :max="100" :minFractionDigits="1" :maxFractionDigits="1" />
+          </div>
+          <div class="flex flex-col gap-2">
+            <label class="font-medium text-surface-700 dark:text-surface-300">波動率</label>
+            <Select v-model="gameForm.volatility" :options="volatilitySelectOptions" optionLabel="label" optionValue="value" placeholder="選擇波動率" />
+          </div>
+          <div class="flex flex-col gap-2">
+            <label class="font-medium text-surface-700 dark:text-surface-300">排序權重</label>
+            <InputNumber v-model="gameForm.sort" :min="0" :max="9999" />
+          </div>
+        </div>
+
+        <!-- Row 3: Marketing Settings -->
+        <div class="grid grid-cols-2 gap-4">
+          <div class="flex flex-col gap-2">
+            <label class="font-medium text-surface-700 dark:text-surface-300">行銷標籤</label>
+            <MultiSelect v-model="gameForm.tags" :options="tagOptions" optionLabel="label" optionValue="value" placeholder="選擇標籤" display="chip" />
+          </div>
+          <div class="flex flex-col gap-2">
+            <label class="font-medium text-surface-700 dark:text-surface-300">縮圖網址</label>
+            <InputText v-model="gameForm.thumbnail" placeholder="https://example.com/game.jpg" />
+          </div>
+        </div>
+
+        <!-- Thumbnail Preview -->
+        <div v-if="gameForm.thumbnail" class="flex gap-4 items-center">
+          <span class="text-surface-500 text-sm">預覽：</span>
+          <div class="w-20 h-20 rounded-lg bg-surface-100 dark:bg-surface-700 overflow-hidden">
+            <img :src="gameForm.thumbnail" alt="Preview" class="w-full h-full object-cover" @error="(e: Event) => (e.target as HTMLImageElement).style.display = 'none'" />
+          </div>
+        </div>
+
+        <!-- Status Switch -->
+        <div class="flex items-center gap-3 pt-2 border-t border-surface-200 dark:border-surface-700">
+          <InputSwitch v-model="gameForm.isActive" />
+          <label class="font-medium text-surface-700 dark:text-surface-300">{{ gameForm.isActive ? '已上架' : '已下架' }}</label>
+        </div>
+      </div>
+
+      <template #footer>
+        <div class="flex justify-end gap-2">
+          <Button label="取消" severity="secondary" @click="editorDialogVisible = false" />
+          <Button label="儲存" icon="pi pi-check" @click="saveGame" />
+        </div>
+      </template>
+    </Dialog>
+
+    <!-- Sync Simulation Dialog -->
+    <Dialog v-model:visible="syncDialogVisible" header="同步遊戲資料" modal :closable="!isSyncing" :style="{ width: '450px' }">
+      <div class="flex flex-col gap-4 py-4">
+        <div class="text-center">
+          <i :class="['pi', syncComplete ? 'pi-check-circle text-green-500' : 'pi-sync pi-spin text-blue-500']" style="font-size: 3rem"></i>
+        </div>
+        
+        <ProgressBar :value="syncProgress" :mode="syncProgress < 100 ? 'indeterminate' : 'determinate'" class="h-2" />
+        
+        <p class="text-center text-surface-700 dark:text-surface-300">{{ syncMessage }}</p>
+        
+        <div v-if="syncComplete" class="text-center">
+          <Tag value="同步完成" severity="success" class="text-lg px-4 py-2" />
+        </div>
+      </div>
+
+      <template #footer>
+        <div class="flex justify-center">
+          <Button v-if="syncComplete" label="關閉" @click="syncDialogVisible = false" />
+          <Button v-else label="取消同步" severity="secondary" @click="cancelSync" />
+        </div>
+      </template>
+    </Dialog>
   </div>
 </template>
 
@@ -270,6 +280,10 @@ import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import Tag from 'primevue/tag'
 import InputSwitch from 'primevue/inputswitch'
+import Dialog from 'primevue/dialog'
+import InputNumber from 'primevue/inputnumber'
+import MultiSelect from 'primevue/multiselect'
+import ProgressBar from 'primevue/progressbar'
 import { useToast } from 'primevue/usetoast'
 
 const toast = useToast()
@@ -277,6 +291,14 @@ const toast = useToast()
 // Filter Options
 const providerOptions = ref([
   { label: '全部', value: 'all' },
+  { label: 'PG Soft', value: 'PG' },
+  { label: 'JDB', value: 'JDB' },
+  { label: 'Pragmatic Play', value: 'PP' },
+  { label: 'JILI', value: 'JILI' },
+  { label: 'CQ9', value: 'CQ9' }
+])
+
+const providerSelectOptions = ref([
   { label: 'PG Soft', value: 'PG' },
   { label: 'JDB', value: 'JDB' },
   { label: 'Pragmatic Play', value: 'PP' },
@@ -297,6 +319,19 @@ const volatilityOptions = ref([
   { label: '高', value: 'high' },
   { label: '中', value: 'medium' },
   { label: '低', value: 'low' }
+])
+
+const volatilitySelectOptions = ref([
+  { label: 'High', value: 'High' },
+  { label: 'Medium', value: 'Medium' },
+  { label: 'Low', value: 'Low' }
+])
+
+const tagOptions = ref([
+  { label: 'Hot', value: 'hot' },
+  { label: 'New', value: 'new' },
+  { label: 'Featured', value: 'featured' },
+  { label: 'Bonus', value: 'bonus' }
 ])
 
 // Filter State
@@ -346,63 +381,160 @@ const games = ref<Game[]>([
 // Computed Filtered Games
 const filteredGames = computed(() => {
   return games.value.filter(game => {
-    const matchSearch = !filters.value.search || 
-      game.name.toLowerCase().includes(filters.value.search.toLowerCase()) ||
-      game.gameId.toLowerCase().includes(filters.value.search.toLowerCase())
-    
-    const matchProvider = !filters.value.provider || filters.value.provider === 'all' ||
-      game.provider === filters.value.provider
-    
-    const matchType = !filters.value.type || filters.value.type === 'all' ||
-      game.type.toLowerCase().includes(filters.value.type)
-    
-    const matchVolatility = !filters.value.volatility || filters.value.volatility === 'all' ||
-      game.volatility.toLowerCase() === filters.value.volatility
-    
+    const matchSearch = !filters.value.search || game.name.toLowerCase().includes(filters.value.search.toLowerCase()) || game.gameId.toLowerCase().includes(filters.value.search.toLowerCase())
+    const matchProvider = !filters.value.provider || filters.value.provider === 'all' || game.provider === filters.value.provider
+    const matchType = !filters.value.type || filters.value.type === 'all' || game.type.toLowerCase().includes(filters.value.type)
+    const matchVolatility = !filters.value.volatility || filters.value.volatility === 'all' || game.volatility.toLowerCase() === filters.value.volatility
     return matchSearch && matchProvider && matchType && matchVolatility
   })
 })
 
 // Severity Helpers
 const getProviderSeverity = (provider: string): string => {
-  const severityMap: Record<string, string> = {
-    'PG': 'info',
-    'JDB': 'warn',
-    'PP': 'danger',
-    'JILI': 'success',
-    'CQ9': 'secondary'
-  }
+  const severityMap: Record<string, string> = { 'PG': 'info', 'JDB': 'warn', 'PP': 'danger', 'JILI': 'success', 'CQ9': 'secondary' }
   return severityMap[provider] || 'secondary'
 }
 
 const getVolatilitySeverity = (volatility: string): string => {
-  const severityMap: Record<string, string> = {
-    'High': 'danger',
-    'Medium': 'warn',
-    'Low': 'success'
-  }
+  const severityMap: Record<string, string> = { 'High': 'danger', 'Medium': 'warn', 'Low': 'success' }
   return severityMap[volatility] || 'info'
 }
 
-// Actions
-const handleSync = () => {
-  toast.add({ severity: 'info', summary: '同步遊戲', detail: '正在從供應商同步遊戲資料...', life: 3000 })
+// ========================================
+// Game Editor Dialog
+// ========================================
+const editorDialogVisible = ref(false)
+const isEditMode = ref(false)
+
+interface GameForm {
+  id: number | null
+  gameId: string
+  name: string
+  provider: string
+  rtp: number
+  volatility: string
+  sort: number
+  tags: string[]
+  thumbnail: string
+  isActive: boolean
 }
 
-const handleAddGame = () => {
-  toast.add({ severity: 'info', summary: '新增遊戲', detail: '開啟新增遊戲對話框...', life: 2000 })
+const gameForm = ref<GameForm>({
+  id: null,
+  gameId: '',
+  name: '',
+  provider: '',
+  rtp: 96.5,
+  volatility: 'Medium',
+  sort: 0,
+  tags: [],
+  thumbnail: '',
+  isActive: true
+})
+
+const resetGameForm = () => {
+  gameForm.value = { id: null, gameId: '', name: '', provider: '', rtp: 96.5, volatility: 'Medium', sort: 0, tags: [], thumbnail: '', isActive: true }
 }
 
-const handleEdit = (game: Game) => {
-  toast.add({ severity: 'info', summary: '編輯遊戲', detail: `編輯 ${game.name} 設定...`, life: 2000 })
+const openNew = () => {
+  resetGameForm()
+  isEditMode.value = false
+  editorDialogVisible.value = true
 }
 
-const handleDemo = (game: Game) => {
-  toast.add({ severity: 'success', summary: '試玩模式', detail: `啟動 ${game.name} 試玩...`, life: 2000 })
+const editGame = (game: Game) => {
+  isEditMode.value = true
+  const tags: string[] = []
+  if (game.isHot) tags.push('hot')
+  if (game.isNew) tags.push('new')
+  if (game.isTop) tags.push('featured')
+  
+  gameForm.value = {
+    id: game.id,
+    gameId: game.gameId,
+    name: game.name,
+    provider: game.provider,
+    rtp: game.rtp,
+    volatility: game.volatility,
+    sort: 0,
+    tags,
+    thumbnail: '',
+    isActive: game.isActive
+  }
+  editorDialogVisible.value = true
+}
+
+const saveGame = () => {
+  if (!gameForm.value.name) {
+    toast.add({ severity: 'error', summary: '驗證失敗', detail: '請填寫遊戲名稱', life: 3000 })
+    return
+  }
+  const action = isEditMode.value ? '更新' : '新增'
+  toast.add({ severity: 'success', summary: `${action}成功`, detail: `遊戲「${gameForm.value.name}」已${action}`, life: 3000 })
+  editorDialogVisible.value = false
+}
+
+// ========================================
+// Sync Simulation Dialog
+// ========================================
+const syncDialogVisible = ref(false)
+const isSyncing = ref(false)
+const syncComplete = ref(false)
+const syncProgress = ref(0)
+const syncMessage = ref('')
+let syncTimer: ReturnType<typeof setTimeout> | null = null
+
+const openSyncDialog = () => {
+  syncComplete.value = false
+  syncProgress.value = 0
+  syncMessage.value = '正在連接供應商 API...'
+  isSyncing.value = true
+  syncDialogVisible.value = true
+  
+  // Simulate sync process
+  setTimeout(() => {
+    syncMessage.value = '正在更新圖檔資源...'
+    syncProgress.value = 50
+  }, 1000)
+  
+  setTimeout(() => {
+    syncMessage.value = '正在同步遊戲資料...'
+    syncProgress.value = 80
+  }, 2000)
+  
+  syncTimer = setTimeout(() => {
+    syncMessage.value = '同步完成！'
+    syncProgress.value = 100
+    syncComplete.value = true
+    isSyncing.value = false
+    toast.add({ severity: 'success', summary: '同步完成', detail: '成功同步 15 款新遊戲', life: 3000 })
+  }, 3000)
+}
+
+const cancelSync = () => {
+  if (syncTimer) clearTimeout(syncTimer)
+  isSyncing.value = false
+  syncDialogVisible.value = false
+  toast.add({ severity: 'warn', summary: '同步取消', detail: '已取消同步操作', life: 2000 })
+}
+
+// ========================================
+// Table Actions
+// ========================================
+const toggleTag = (game: Game, tag: 'isHot' | 'isNew' | 'isTop') => {
+  game[tag] = !game[tag]
+  const status = game[tag] ? '已新增' : '已移除'
+  const tagName = { isHot: 'Hot', isNew: 'New', isTop: 'Top' }[tag]
+  toast.add({ severity: 'info', summary: '標籤變更', detail: `${game.name} ${tagName} 標籤${status}`, life: 2000 })
 }
 
 const handleStatusChange = (game: Game) => {
-  const action = game.isActive ? '上架' : '下架'
-  toast.add({ severity: 'success', summary: '狀態變更', detail: `${game.name} 已${action}`, life: 2000 })
+  const status = game.isActive ? '上架' : '下架'
+  toast.add({ severity: 'success', summary: '狀態變更', detail: `${game.name} 已${status}`, life: 2000 })
+}
+
+const handleDemo = (game: Game) => {
+  toast.add({ severity: 'info', summary: '試玩模式', detail: `正在開啟 ${game.name}...`, life: 2000 })
+  window.open('https://www.google.com', '_blank')
 }
 </script>
