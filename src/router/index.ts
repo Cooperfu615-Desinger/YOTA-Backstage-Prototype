@@ -404,8 +404,14 @@ const routes: RouteRecordRaw[] = [
     {
         path: '/games',
         name: 'Games',
-        component: () => import('@/views/Games/Platforms.vue'),
+        component: () => import('@/views/Games/Overview.vue'),
         meta: { title: '遊戲管理', icon: 'pi-play' }
+    },
+    {
+        path: '/games/overview',
+        name: 'GameOverview',
+        component: () => import('@/views/Games/Overview.vue'),
+        meta: { title: '遊戲總覽', icon: 'pi-chart-pie', parent: 'Games' }
     },
     {
         path: '/games/platforms',
