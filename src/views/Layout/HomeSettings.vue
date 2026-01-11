@@ -304,7 +304,7 @@ const saveLobbySettings = () => {
 }
 
 const saveFeaturedGames = () => {
-  toast.add({ severity: 'success', summary: '儲存成功', detail: `已設定 ${featuredGames.value[1].length} 款精選遊戲`, life: 3000 })
+  toast.add({ severity: 'success', summary: '儲存成功', detail: `已設定 ${featuredGames.value[1]?.length ?? 0} 款精選遊戲`, life: 3000 })
 }
 
 const saveTagOrder = () => {
