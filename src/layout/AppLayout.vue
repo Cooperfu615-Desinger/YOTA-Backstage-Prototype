@@ -260,7 +260,7 @@ const menuItems: MenuItem[] = [
       { path: '/system-settings/overview', title: '總覽', icon: 'pi-chart-pie' },
       { path: '/system-settings/announcements', title: '公告管理', icon: 'pi-megaphone' },
       { path: '/system-settings/parameters', title: '系統參數', icon: 'pi-sliders-h' },
-      { path: '/system-settings/bank-wallet', title: '銀行與錢包', icon: 'pi-wallet' },
+      { path: '/system-settings/bank-wallet', title: '支付通道配置', icon: 'pi-wallet' },
     ]
   },
   { 
