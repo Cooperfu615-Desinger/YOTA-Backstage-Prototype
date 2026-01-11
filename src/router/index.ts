@@ -109,9 +109,9 @@ const routes: RouteRecordRaw[] = [
     },
     {
         path: '/system-settings/bank-wallet',
-        name: 'BankWallet',
-        component: () => import('@/views/SystemSettings/BankWallet.vue'),
-        meta: { title: '銀行與錢包', icon: 'pi-building-columns', parent: 'SystemSettings' }
+        name: 'SystemPaymentChannels',
+        component: () => import('@/views/SystemSettings/PaymentChannels.vue'),
+        meta: { title: '銀行與錢包', icon: 'pi-wallet', parent: 'SystemSettings' }
     },
 
     // ========================================
