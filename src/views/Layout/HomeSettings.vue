@@ -18,8 +18,8 @@
     <TabView>
       <!-- Tab 1: Visual Assets -->
       <TabPanel value="0" header="視覺素材">
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <!-- Loading Page -->
+        <div class="space-y-6">
+          <!-- Loading Page Card -->
           <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
             <template #title>
               <div class="flex items-center gap-2 text-surface-900 dark:text-white">
@@ -28,33 +28,56 @@
               </div>
             </template>
             <template #content>
-              <div class="flex flex-col gap-4">
-                <div class="flex flex-col gap-2">
-                  <label class="font-medium text-surface-700 dark:text-surface-300">啟動圖片 (9:16)</label>
-                  <FileUpload mode="basic" accept="image/*" :maxFileSize="5000000" chooseLabel="上傳圖片" class="w-full" />
-                </div>
-                <div class="p-4 bg-surface-100 dark:bg-surface-700 rounded-lg">
-                  <p class="text-sm text-surface-500 mb-2 text-center">預覽</p>
-                  <div class="mx-auto w-24 h-40 bg-surface-900 rounded-xl border-4 border-surface-600 flex items-center justify-center">
-                    <i class="pi pi-image text-2xl text-surface-500"></i>
+              <div class="space-y-6">
+                <!-- Dual Orientation Upload -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <!-- Portrait -->
+                  <div class="flex flex-col gap-4 p-4 bg-surface-100 dark:bg-surface-700 rounded-lg">
+                    <div class="flex items-center gap-2">
+                      <i class="pi pi-mobile text-blue-500"></i>
+                      <span class="font-medium text-surface-900 dark:text-white">直式 (Portrait)</span>
+                    </div>
+                    <FileUpload mode="basic" accept="image/jpeg, image/png" :maxFileSize="5000000" chooseLabel="上傳直式圖片" class="w-full" />
+                    <small class="text-red-500">尺寸限定 720x1280，格式 jpg/png</small>
+                    <div class="mx-auto w-20 h-36 bg-surface-900 rounded-xl border-4 border-surface-600 flex items-center justify-center">
+                      <i class="pi pi-image text-xl text-surface-500"></i>
+                    </div>
+                  </div>
+
+                  <!-- Landscape -->
+                  <div class="flex flex-col gap-4 p-4 bg-surface-100 dark:bg-surface-700 rounded-lg">
+                    <div class="flex items-center gap-2">
+                      <i class="pi pi-desktop text-green-500"></i>
+                      <span class="font-medium text-surface-900 dark:text-white">橫式 (Landscape)</span>
+                    </div>
+                    <FileUpload mode="basic" accept="image/jpeg, image/png" :maxFileSize="5000000" chooseLabel="上傳橫式圖片" class="w-full" />
+                    <small class="text-red-500">尺寸限定 1280x720，格式 jpg/png</small>
+                    <div class="mx-auto w-36 h-20 bg-surface-900 rounded-xl border-4 border-surface-600 flex items-center justify-center">
+                      <i class="pi pi-image text-xl text-surface-500"></i>
+                    </div>
                   </div>
                 </div>
-                <div class="flex items-center justify-between p-3 bg-surface-100 dark:bg-surface-700 rounded-lg">
-                  <span class="text-surface-700 dark:text-surface-300">顯示進度條</span>
-                  <InputSwitch v-model="loadingSettings.showProgress" />
+
+                <!-- Shared Settings -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div class="flex items-center justify-between p-3 bg-surface-100 dark:bg-surface-700 rounded-lg">
+                    <span class="text-surface-700 dark:text-surface-300">顯示進度條</span>
+                    <InputSwitch v-model="loadingSettings.showProgress" />
+                  </div>
+                  <div class="flex items-center justify-between p-3 bg-surface-100 dark:bg-surface-700 rounded-lg">
+                    <span class="text-surface-700 dark:text-surface-300">顯示 Logo</span>
+                    <InputSwitch v-model="loadingSettings.showLogo" />
+                  </div>
                 </div>
-                <div class="flex items-center justify-between p-3 bg-surface-100 dark:bg-surface-700 rounded-lg">
-                  <span class="text-surface-700 dark:text-surface-300">顯示 Logo</span>
-                  <InputSwitch v-model="loadingSettings.showLogo" />
-                </div>
+
                 <div class="flex justify-end pt-2 border-t border-surface-200 dark:border-surface-700">
-                  <Button label="儲存設定" icon="pi pi-check" size="small" @click="saveLoadingSettings" />
+                  <Button label="儲存啟動頁設定" icon="pi pi-check" @click="saveLoadingSettings" />
                 </div>
               </div>
             </template>
           </Card>
 
-          <!-- Lobby Background -->
+          <!-- Lobby Background Card -->
           <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
             <template #title>
               <div class="flex items-center gap-2 text-surface-900 dark:text-white">
@@ -63,23 +86,44 @@
               </div>
             </template>
             <template #content>
-              <div class="flex flex-col gap-4">
-                <div class="flex flex-col gap-2">
-                  <label class="font-medium text-surface-700 dark:text-surface-300">背景圖片</label>
-                  <FileUpload mode="basic" accept="image/*" :maxFileSize="5000000" chooseLabel="上傳圖片" class="w-full" />
-                </div>
-                <div class="p-4 bg-surface-100 dark:bg-surface-700 rounded-lg">
-                  <p class="text-sm text-surface-500 mb-2 text-center">目前底圖</p>
-                  <div class="w-full h-24 rounded-lg bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center">
-                    <span class="text-white text-sm">YOTA Lobby</span>
+              <div class="space-y-6">
+                <!-- Dual Orientation Upload -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <!-- Portrait -->
+                  <div class="flex flex-col gap-4 p-4 bg-surface-100 dark:bg-surface-700 rounded-lg">
+                    <div class="flex items-center gap-2">
+                      <i class="pi pi-mobile text-blue-500"></i>
+                      <span class="font-medium text-surface-900 dark:text-white">直式 (Portrait)</span>
+                    </div>
+                    <FileUpload mode="basic" accept="image/jpeg, image/png" :maxFileSize="5000000" chooseLabel="上傳直式底圖" class="w-full" />
+                    <small class="text-red-500">尺寸限定 720x1280，格式 jpg/png</small>
+                    <div class="mx-auto w-20 h-36 rounded-lg bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center">
+                      <span class="text-white text-xs">直式</span>
+                    </div>
+                  </div>
+
+                  <!-- Landscape -->
+                  <div class="flex flex-col gap-4 p-4 bg-surface-100 dark:bg-surface-700 rounded-lg">
+                    <div class="flex items-center gap-2">
+                      <i class="pi pi-desktop text-green-500"></i>
+                      <span class="font-medium text-surface-900 dark:text-white">橫式 (Landscape)</span>
+                    </div>
+                    <FileUpload mode="basic" accept="image/jpeg, image/png" :maxFileSize="5000000" chooseLabel="上傳橫式底圖" class="w-full" />
+                    <small class="text-red-500">尺寸限定 1280x720，格式 jpg/png</small>
+                    <div class="mx-auto w-36 h-20 rounded-lg bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center">
+                      <span class="text-white text-xs">橫式</span>
+                    </div>
                   </div>
                 </div>
-                <div class="flex flex-col gap-2">
+
+                <!-- Style Selection -->
+                <div class="flex flex-col gap-2 max-w-xs">
                   <label class="font-medium text-surface-700 dark:text-surface-300">顯示樣式</label>
                   <Select v-model="lobbySettings.style" :options="styleOptions" optionLabel="label" optionValue="value" />
                 </div>
+
                 <div class="flex justify-end pt-2 border-t border-surface-200 dark:border-surface-700">
-                  <Button label="儲存設定" icon="pi pi-check" size="small" @click="saveLobbySettings" />
+                  <Button label="儲存底圖設定" icon="pi pi-check" @click="saveLobbySettings" />
                 </div>
               </div>
             </template>
@@ -296,11 +340,11 @@ const seoSettings = ref({
 
 // Save Handlers
 const saveLoadingSettings = () => {
-  toast.add({ severity: 'success', summary: '儲存成功', detail: '啟動頁設定已更新', life: 3000 })
+  toast.add({ severity: 'success', summary: '儲存成功', detail: '啟動頁設定已更新 (直式+橫式)', life: 3000 })
 }
 
 const saveLobbySettings = () => {
-  toast.add({ severity: 'success', summary: '儲存成功', detail: '大廳底圖設定已更新', life: 3000 })
+  toast.add({ severity: 'success', summary: '儲存成功', detail: '大廳底圖設定已更新 (直式+橫式)', life: 3000 })
 }
 
 const saveFeaturedGames = () => {
