@@ -268,10 +268,10 @@ const menuItems: MenuItem[] = [
     title: '訊息管理', 
     icon: 'pi-envelope',
     children: [
-      { path: '/messages/overview', title: '總覽', icon: 'pi-chart-pie' },
+      { path: '/messages/overview', title: '訊息總覽', icon: 'pi-chart-pie' },
       { path: '/messages/templates', title: '訊息模板', icon: 'pi-file-edit' },
-      { path: '/messages/system-notify', title: '系統通知', icon: 'pi-bell' },
-      { path: '/messages/records', title: '訊息紀錄', icon: 'pi-inbox' },
+      { path: '/messages/settings', title: '訊息設置', icon: 'pi-cog' },
+      { path: '/messages/logs', title: '訊息紀錄', icon: 'pi-inbox' },
     ]
   },
   { 

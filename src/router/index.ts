@@ -136,16 +136,16 @@ const routes: RouteRecordRaw[] = [
         meta: { title: '訊息模板', icon: 'pi-file-edit', parent: 'Messages' }
     },
     {
-        path: '/messages/system-notify',
-        name: 'SystemNotify',
-        component: () => import('@/views/Messages/SystemNotify.vue'),
-        meta: { title: '系統通知', icon: 'pi-bell', parent: 'Messages' }
+        path: '/messages/settings',
+        name: 'MessageSettings',
+        component: () => import('@/views/Messages/Settings.vue'),
+        meta: { title: '訊息設置', icon: 'pi-cog', parent: 'Messages' }
     },
     {
-        path: '/messages/records',
-        name: 'MessageRecords',
-        component: () => import('@/views/Messages/Records.vue'),
-        meta: { title: '即時訊息紀錄', icon: 'pi-inbox', parent: 'Messages' }
+        path: '/messages/logs',
+        name: 'MessageLogs',
+        component: () => import('@/views/Messages/Logs.vue'),
+        meta: { title: '訊息紀錄', icon: 'pi-inbox', parent: 'Messages' }
     },
 
     // ========================================
