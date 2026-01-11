@@ -205,7 +205,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import Card from 'primevue/card'
 import Button from 'primevue/button'
 import TabView from 'primevue/tabview'
