@@ -209,8 +209,8 @@ const routes: RouteRecordRaw[] = [
     },
     {
         path: '/layout/homepage',
-        name: 'Homepage',
-        component: () => import('@/views/Layout/Homepage.vue'),
+        name: 'LayoutHome',
+        component: () => import('@/views/Layout/HomeSettings.vue'),
         meta: { title: '首頁設定', icon: 'pi-home', parent: 'Layout' }
     },
     {
