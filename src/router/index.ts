@@ -221,9 +221,9 @@ const routes: RouteRecordRaw[] = [
     },
     {
         path: '/layout/articles',
-        name: 'Articles',
-        component: () => import('@/views/Layout/Articles.vue'),
-        meta: { title: '文章管理', icon: 'pi-file', parent: 'Layout' }
+        name: 'LayoutArticles',
+        component: () => import('@/views/Layout/ArticleManagement.vue'),
+        meta: { title: '文章管理', icon: 'pi-file-edit', parent: 'Layout' }
     },
     {
         path: '/layout/payment',

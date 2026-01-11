@@ -294,7 +294,7 @@ const menuItems: MenuItem[] = [
       { path: '/layout/overview', title: '總覽', icon: 'pi-chart-pie' },
       { path: '/layout/homepage', title: '首頁設定', icon: 'pi-home' },
       { path: '/layout/game-config', title: '遊戲配置', icon: 'pi-th-large' },
-      { path: '/layout/articles', title: '文章管理', icon: 'pi-file' },
+      { path: '/layout/articles', title: '文章管理', icon: 'pi-file-edit' },
       { path: '/layout/payment', title: '支付管理', icon: 'pi-credit-card' },
       { path: '/layout/popup-ads', title: '彈跳廣告', icon: 'pi-window-maximize' },
     ]
