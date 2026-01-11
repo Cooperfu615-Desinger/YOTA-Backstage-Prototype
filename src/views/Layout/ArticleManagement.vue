@@ -123,7 +123,7 @@
     </TabView>
 
     <!-- Article Editor Dialog -->
-    <Dialog v-model:visible="articleDialogVisible" header="編輯文章" modal maximizable :style="{ width: '900px' }" class="p-fluid">
+    <Dialog v-model:visible="articleDialogVisible" header="編輯文章" modal :style="{ width: '900px' }" class="p-fluid">
       <div class="flex flex-col gap-4">
         <!-- Basic Settings -->
         <div class="grid grid-cols-2 gap-4">
