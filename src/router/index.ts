@@ -413,6 +413,12 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/Games/Platforms.vue'),
         meta: { title: '遊戲平台', icon: 'pi-server', parent: 'Games' }
     },
+    {
+        path: '/games/list',
+        name: 'GameList',
+        component: () => import('@/views/Games/GameList.vue'),
+        meta: { title: '遊戲列表', icon: 'pi-list', parent: 'Games' }
+    },
 
     // ========================================
     // 11. 推廣活動 (Promotions)

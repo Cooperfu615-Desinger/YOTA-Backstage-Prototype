@@ -349,6 +349,7 @@ const menuItems: MenuItem[] = [
     icon: 'pi-play',
     children: [
       { path: '/games/platforms', title: '遊戲平台', icon: 'pi-server' },
+      { path: '/games/list', title: '遊戲列表', icon: 'pi-list' },
     ]
   },
   { 
