@@ -300,17 +300,6 @@ const menuItems: MenuItem[] = [
     ]
   },
   { 
-    path: '/game-maintenance', 
-    title: '遊戲管理', 
-    icon: 'pi-play',
-    children: [
-      { path: '/game-maintenance/overview', title: '遊戲總覽', icon: 'pi-chart-pie' },
-      { path: '/game-maintenance/platforms', title: '遊戲平台', icon: 'pi-server' },
-      { path: '/game-maintenance/game-list', title: '遊戲列表', icon: 'pi-list' },
-      { path: '/game-maintenance/game-tags', title: '遊戲標籤', icon: 'pi-tags' },
-    ]
-  },
-  { 
     path: '/agents', 
     title: '代理管理', 
     icon: 'pi-sitemap',
