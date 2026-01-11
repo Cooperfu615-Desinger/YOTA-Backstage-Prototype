@@ -214,10 +214,10 @@ const routes: RouteRecordRaw[] = [
         meta: { title: '首頁設定', icon: 'pi-home', parent: 'Layout' }
     },
     {
-        path: '/layout/games',
-        name: 'LayoutGames',
-        component: () => import('@/views/Layout/Games.vue'),
-        meta: { title: '遊戲版面', icon: 'pi-th-large', parent: 'Layout' }
+        path: '/layout/game-config',
+        name: 'LayoutGameConfig',
+        component: () => import('@/views/Layout/GameConfiguration.vue'),
+        meta: { title: '遊戲配置', icon: 'pi-th-large', parent: 'Layout' }
     },
     {
         path: '/layout/articles',
