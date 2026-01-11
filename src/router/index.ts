@@ -227,9 +227,9 @@ const routes: RouteRecordRaw[] = [
     },
     {
         path: '/layout/payment',
-        name: 'PaymentSettings',
-        component: () => import('@/views/Layout/Payment.vue'),
-        meta: { title: '支付管理', icon: 'pi-credit-card', parent: 'Layout' }
+        name: 'LayoutPayment',
+        component: () => import('@/views/Layout/PaymentLayout.vue'),
+        meta: { title: '支付版面', icon: 'pi-credit-card', parent: 'Layout' }
     },
     {
         path: '/layout/popup-ads',
