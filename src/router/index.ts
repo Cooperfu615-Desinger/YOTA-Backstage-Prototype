@@ -320,39 +320,6 @@ const routes: RouteRecordRaw[] = [
 
 
     // ========================================
-    // 8. Promotion Module (推廣活動) - 重構後
-    // ========================================
-    {
-        path: '/promotion/overview',
-        name: 'PromotionOverview',
-        component: () => import('@/views/Promotion/Overview.vue'),
-        meta: { title: '推廣總覽', icon: 'pi-chart-line' }
-    },
-    {
-        path: '/promotion/management',
-        name: 'PromotionManagement',
-        component: () => import('@/views/Promotion/Management.vue'),
-        meta: { title: '優惠管理', icon: 'pi-list' }
-    },
-    {
-        path: '/promotion/event-config',
-        name: 'PromotionEventConfig',
-        component: () => import('@/views/Promotion/EventConfig.vue'),
-        meta: { title: '活動設置', icon: 'pi-cog' }
-    },
-    {
-        path: '/promotion/achievement-config',
-        name: 'PromotionAchievementConfig',
-        component: () => import('@/views/Promotion/AchievementConfig.vue'),
-        meta: { title: '成就設置', icon: 'pi-star' }
-    },
-    {
-        path: '/promotion/check-in/editor',
-        name: 'CheckInEditor',
-        component: () => import('@/views/Promotion/CheckIn/Editor.vue'),
-        meta: { title: '簽到編輯器', icon: 'pi-file-edit' }
-    },
-    // ========================================
     // 9. 財務管理 (Financials)
     // ========================================
     {
@@ -459,10 +426,10 @@ const routes: RouteRecordRaw[] = [
         meta: { title: '特定活動', icon: 'pi-trophy', parent: 'Promotions' }
     },
     {
-        path: '/promotions/lottery',
-        name: 'Lottery',
-        component: () => import('@/views/Promotions/Lottery.vue'),
-        meta: { title: '抽獎系統', icon: 'pi-ticket', parent: 'Promotions' }
+        path: '/promotions/achievements',
+        name: 'Achievements',
+        component: () => import('@/views/Promotions/Achievements.vue'),
+        meta: { title: '成就設置', icon: 'pi-star', parent: 'Promotions' }
     },
 
     // ========================================

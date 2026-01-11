@@ -324,17 +324,6 @@ const menuItems: MenuItem[] = [
     ]
   },
   { 
-    path: '/promotion', 
-    title: '推廣活動', 
-    icon: 'pi-gift',
-    children: [
-      { path: '/promotion/overview', title: '推廣總覽', icon: 'pi-chart-line' },
-      { path: '/promotion/management', title: '優惠管理', icon: 'pi-list' },
-      { path: '/promotion/event-config', title: '活動設置', icon: 'pi-cog' },
-      { path: '/promotion/achievement-config', title: '成就設置', icon: 'pi-star' },
-    ]
-  },
-  { 
     path: '/finance', 
     title: '財務管理', 
     icon: 'pi-wallet',
@@ -371,9 +360,9 @@ const menuItems: MenuItem[] = [
     icon: 'pi-gift',
     children: [
       { path: '/promotions/overview', title: '推廣總覽', icon: 'pi-chart-pie' },
-      { path: '/promotions/offers', title: '優惠管理', icon: 'pi-percentage' },
-      { path: '/promotions/special-events', title: '特定活動', icon: 'pi-trophy' },
-      { path: '/promotions/lottery', title: '抽獎系統', icon: 'pi-ticket' },
+      { path: '/promotions/offers', title: '優惠管理', icon: 'pi-list' },
+      { path: '/promotions/special-events', title: '活動設置', icon: 'pi-cog' },
+      { path: '/promotions/achievements', title: '成就設置', icon: 'pi-star' },
     ]
   },
   { 
