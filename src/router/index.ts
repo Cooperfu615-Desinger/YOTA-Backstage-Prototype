@@ -232,10 +232,10 @@ const routes: RouteRecordRaw[] = [
         meta: { title: '支付版面', icon: 'pi-credit-card', parent: 'Layout' }
     },
     {
-        path: '/layout/popup-ads',
-        name: 'PopupAds',
-        component: () => import('@/views/Layout/PopupAds.vue'),
-        meta: { title: '彈跳廣告', icon: 'pi-window-maximize', parent: 'Layout' }
+        path: '/layout/splash-ads',
+        name: 'LayoutSplashAds',
+        component: () => import('@/views/Layout/SplashAds.vue'),
+        meta: { title: '開屏廣告', icon: 'pi-images', parent: 'Layout' }
     },
 
     // ========================================

@@ -296,7 +296,7 @@ const menuItems: MenuItem[] = [
       { path: '/layout/game-config', title: '遊戲配置', icon: 'pi-th-large' },
       { path: '/layout/articles', title: '文章管理', icon: 'pi-file-edit' },
       { path: '/layout/payment', title: '支付版面', icon: 'pi-credit-card' },
-      { path: '/layout/popup-ads', title: '彈跳廣告', icon: 'pi-window-maximize' },
+      { path: '/layout/splash-ads', title: '開屏廣告', icon: 'pi-images' },
     ]
   },
   { 
