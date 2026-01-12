@@ -1,6 +1,6 @@
 <template>
   <div class="p-6 space-y-6">
-    <!-- Breadcrumb -->
+
     <div class="flex items-center gap-2 text-sm text-surface-400">
       <i class="pi pi-th-large text-blue-400"></i>
       <span class="text-surface-300">遊戲管理</span>

@@ -1,6 +1,6 @@
 <template>
   <div class="p-6 space-y-6">
-    <!-- Breadcrumb -->
+
     <div class="flex items-center gap-2 text-sm text-surface-600 dark:text-surface-400">
       <i class="pi pi-credit-card text-blue-500 dark:text-blue-400"></i>
       <span class="text-surface-500 dark:text-surface-300">金流平台</span>

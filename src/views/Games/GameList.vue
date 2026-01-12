@@ -1,6 +1,6 @@
 <template>
   <div class="p-6 space-y-6">
-    <!-- Breadcrumb -->
+
     <div class="flex items-center gap-2 text-sm text-surface-600 dark:text-surface-400">
       <i class="pi pi-play text-purple-500 dark:text-purple-400"></i>
       <span class="text-surface-500 dark:text-surface-300">遊戲管理</span>
@@ -74,10 +74,10 @@
         <div class="flex flex-wrap items-center justify-between gap-4">
           <!-- Filters -->
           <div class="flex flex-wrap gap-4">
-            <InputText v-model="filters.search" placeholder="遊戲名稱/ID" class="w-[180px]" />
-            <Select v-model="filters.provider" :options="providerOptions" optionLabel="label" optionValue="value" placeholder="供應商" class="w-[140px]" showClear />
-            <Select v-model="filters.type" :options="typeOptions" optionLabel="label" optionValue="value" placeholder="類型" class="w-[140px]" showClear />
-            <Select v-model="filters.volatility" :options="volatilityOptions" optionLabel="label" optionValue="value" placeholder="波動率" class="w-[140px]" showClear />
+            <InputText v-model="filters.search" placeholder="遊戲名稱/ID" class="w-[220px]" />
+            <Select v-model="filters.provider" :options="providerOptions" optionLabel="label" optionValue="value" placeholder="供應商" class="w-[220px]" showClear />
+            <Select v-model="filters.type" :options="typeOptions" optionLabel="label" optionValue="value" placeholder="類型" class="w-[220px]" showClear />
+            <Select v-model="filters.volatility" :options="volatilityOptions" optionLabel="label" optionValue="value" placeholder="波動率" class="w-[220px]" showClear />
           </div>
           <!-- Actions -->
           <div class="flex gap-3">
@@ -98,7 +98,7 @@
         </div>
       </template>
       <template #content>
-        <DataTable :value="filteredGames" stripedRows paginator :rows="10" :rowsPerPageOptions="[10, 20, 50]">
+        <DataTable :value="filteredGames" stripedRows paginator :rows="20" :rowsPerPageOptions="[10, 20, 50]">
           <!-- Game Info Column -->
           <Column header="遊戲資訊" style="min-width: 250px">
             <template #body="slotProps">

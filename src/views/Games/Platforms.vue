@@ -1,6 +1,6 @@
 <template>
   <div class="p-6 space-y-6">
-    <!-- Breadcrumb -->
+
     <div class="flex items-center gap-2 text-sm text-surface-600 dark:text-surface-400">
       <i class="pi pi-play text-purple-500 dark:text-purple-400"></i>
       <span class="text-surface-500 dark:text-surface-300">遊戲管理</span>
@@ -77,7 +77,7 @@
             <InputText 
               v-model="filters.search" 
               placeholder="平台名稱/代碼" 
-              class="w-[200px]"
+              class="w-[220px]"
             />
             <Select 
               v-model="filters.status" 
@@ -85,7 +85,7 @@
               optionLabel="label" 
               optionValue="value" 
               placeholder="狀態" 
-              class="w-[150px]" 
+              class="w-[220px]" 
               showClear 
             />
             <Select 
@@ -94,7 +94,7 @@
               optionLabel="label" 
               optionValue="value" 
               placeholder="錢包類型" 
-              class="w-[150px]" 
+              class="w-[220px]" 
               showClear 
             />
           </div>
@@ -131,7 +131,7 @@
           :value="filteredPlatforms" 
           stripedRows 
           paginator 
-          :rows="10" 
+          :rows="20" 
           :rowsPerPageOptions="[10, 20, 50]"
         >
           <!-- Logo Column -->

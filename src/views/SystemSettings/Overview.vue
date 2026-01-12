@@ -1,6 +1,6 @@
 <template>
   <div class="p-6 space-y-6">
-    <!-- Breadcrumb -->
+
     <div class="flex items-center gap-2 text-sm text-surface-400">
       <i class="pi pi-cog text-slate-400"></i>
       <span class="text-surface-300">系統設定</span>

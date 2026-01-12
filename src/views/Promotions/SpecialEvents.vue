@@ -1,6 +1,6 @@
 <template>
   <div class="p-6 space-y-6">
-    <!-- Breadcrumb -->
+
     <div class="flex items-center gap-2 text-sm text-surface-600 dark:text-surface-400">
       <i class="pi pi-gift text-blue-500 dark:text-blue-400"></i>
       <span class="text-surface-500 dark:text-surface-300">推廣活動</span>
@@ -360,8 +360,5 @@ const getCostModeSeverity = (event: any) => {
 :deep(.p-datatable-tbody > tr > td) { padding: 0.75rem 1rem; }
 :deep(.p-inputnumber-input) { text-align: center; } /* Reinforce center align */
 
-/* Custom SelectButton Styles */
-/* :deep(.p-selectbutton .p-button.p-highlight) { background: #3b82f6; border-color: #3b82f6; color: white; } */
-/* :deep(.p-selectbutton .p-button) { background: #1e293b; border-color: #334155; color: #94a3b8; } */
-/* :deep(.p-selectbutton .p-button:hover) { background: #0f172a; } */
+
 </style>
