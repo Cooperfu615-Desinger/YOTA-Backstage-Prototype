@@ -1,408 +1,320 @@
-# YOTA Backstage Prototype - Project Snapshot
+<![CDATA[# Antigravity — 架構白皮書
 
-**Generated**: 2026-01-07  
-**Version**: 1.0
-
-## Naming Convention
-
-### Route Path Standards
-
-- **Format**: Singular, lowercase, kebab-case (e.g., `/finance/`, `/member/`, `/operator/`)
-- **NOT**: Plural forms (`/financials/`), mixed case, or underscores
-- **Consistency**: All routes follow `/module/sub-page` pattern
-
-### Why Singular?
-
-- Cleaner URLs and easier to remember
-- Consistent with modern web standards
-- Avoids confusion between plural/singular forms
-- Better for i18n and localization
+> **Generated**: 2026-01-12  
+> **Version**: Phase 1 Complete (Mock Data Mode)
 
 ---
 
-## UI Design Specifications
+## 目前進度 Current Status
 
-### Input Field Standards
-
-- **Fixed Width**: All search input fields use `w-[220px]` (220px) for consistency
-- **Layout**: Left-aligned with consistent gap spacing (`gap-4`)
-
-### Responsive Design - Three-Tier Adaptive Layout
-
-1. **Desktop** (≥1024px): Full multi-column grid layouts
-2. **Tablet** (768px-1023px): Reduced columns, maintained readability
-3. **Mobile** (<768px): Single column, stacked vertically
-
-### Color Coding Conventions
-
-- **Positive amounts**: `text-green-400` (增點, 派彩, 存款)
-- **Negative amounts**: `text-red-400` (扣點, 投注, 提款)
-- **Status badges**: Success (green), Warning (yellow), Danger (red), Info (blue)
-
-### Numeric Input Standards
-
-**Percentage/Ratio Inputs**: All percentage or ratio inputs (commission rates, bonuses, adjustments) must follow:
-
-- **Layout**: Button-less InputNumber for clean, professional interface
-  - *Rationale*: Increment/decrement buttons cause layout fragmentation in 100px containers; manual entry is standard for admin panels
-- **Width Constraint**: Wrap InputNumber in `<div style="width: 100px">` container, apply `class="w-full"` to InputNumber
-  - *100px Width*: Provides compact visual presentation ideal for 0-100 range values
-- **Text Alignment**: Use `inputClass="text-center"` for centered display
-- **Manual Entry**: Operators type values directly - more efficient than button clicking
-
-**Operation Buttons**:
-
-- **Isolation**: Buttons (e.g., Delete/Remove) in list items must be visually distinct and separated from input fields
-- **Spacing**: Use `ml-auto` or distinct gaps to preventing overlapping with input components
-
-**Currency Inputs**: Use `w-[220px]` for amount fields with proper locale formatting
-
-### Technical Debt & Solutions (2026-01-09)
-
-- **Problem**: Global striped rows failed in Light Mode due to specificity conflicts with PrimeVue default theme.
-- **Root Cause**: Specificity of `.p-datatable-striped` at component level was insufficient against theme default.
-- **Solution**: Implemented high-specificity global override in `src/style.css` using `body:not(.dark)` and `.light` prefixes.
-- **Guideline**: **Mandatory Global Styling**. Future DataTable striped rows MUST rely on the global definition in `style.css`. Local `:deep` overrides for striped rows are strictly prohibited to ensure consistency.
-
-### Additional UI Refinements (2026-01-09)
-
-- **Calendar Components**:
-  - Button Padding: `px-3` or `0.75rem` for better touch target
-  - Width: `w-[220px]` (including button)
-  - CSS Override:
-
-    ```css
-    :deep(.p-calendar-w-btn .p-button) {
-      padding-left: 0.75rem !important;
-      padding-right: 0.75rem !important;
-      width: auto !important;
-    }
-    ```
-
-- **Striped Rows (Updated 2026-01-09)**:
-  - **Approach**: Opacity Overlay (Texture over uniform color)
-  - Light Mode: `rgba(0, 0, 0, 0.02) !important` (Subtle density)
-  - Dark Mode: `rgba(255, 255, 255, 0.05) !important` (Light enhancement)
-  - **No local overrides required**
-  
-- **Reset Buttons**:
-  - Style: Borderless, soft background
-  - Light Mode: `bg-surface-100 text-surface-600 hover:bg-surface-200`
-  - Dark Mode: `bg-surface-700 text-surface-200 hover:bg-surface-600`
+| 階段 | 狀態 | 說明 |
+|------|------|------|
+| **Phase 1** | ✅ 已完成 | Mock Data Mode — 全模組 UI 開發完成，前端權限系統建立 |
+| Phase 2 | 🔜 規劃中 | Backend API 串接 |
+| Phase 3 | 📋 待排程 | WebSocket 即時更新、多語系支援 |
 
 ---
 
-## Route Mapping
+## 目錄結構 Directory Structure
 
-### Dashboard (儀表板)
-
-- `/dashboard/overview` - Dashboard Overview (儀表板總覽)
-- `/dashboard/website-data` - Website Data (網站數據)
-- `/dashboard/operational-data` - Operational Data (營運數據)
-- `/dashboard/game-monitor` - Game Monitor (遊戲監控)
-
-### Operators (操作員管理)
-
-- `/operators/overview` - Operator Overview (操作員總覽)
-- `/operators/maintenance` - Operator Maintenance (操作員維護)
-- `/operators/groups` - Group Maintenance (權限群組維護)
-- `/operators/logs` - Operator Logs (操作員日誌)
-- `/operators/exports` - Data Export (數據匯出)
-
-### Members (會員管理)
-
-- `/members/overview` - Member Overview (會員總覽)
-- `/members/list` - Member List (會員列表)
-- `/members/memo-record` - Member Logs (會員日誌)
-- `/members/level-settings` - Member Levels (會員等級)
-- `/members/tags` - Member Tags (會員標籤)
-
-### Agents (代理管理)
-
-- `/agent/overview` - Agent Overview (代理總覽)
-- `/agent/list` - Agent List (代理列表)
-- `/agent/maintenance` - Agent Maintenance (代理商維護)
-- `/agent/levels` - Agent Level System (代理等級)
-- `/agent/commission` - Commission Settings (佣金設定)
-- `/agent/settlement` - Settlement Report (佣金結算報表)
-
-### Promotion Module (推廣活動)
-
-- `/promotion/overview` - Promotion Overview (推廣總覽)
-- `/promotion/management` - Promotion Management (優惠管理)
-- `/promotion/event-config` - Event Configuration (活動設置)
-- `/promotion/achievement-config` - Achievement Configuration (成就設置)
-
-### System Settings (系統設置)
-
-- `/finance` - Finance Dashboard (財務儀表板)
-- `/finance/overview` - Finance Overview (財務總覽)
-- `/finance/records` - Transaction Records (交易紀錄)
-
-### Finance Audit Management (財務審核管理)
-
-- `/finance/manual-deposit` - Manual Deposit Audit (手工存款審核)
-- `/finance/online-deposit` - Online Deposit Inquiry (在線存款查詢)
-- `/finance/withdrawals` - Withdrawal Audit (提款審核)
-- `/finance/order-locks` - Order Lock Management (鎖單管理)
-
-### Finance Records (財務紀錄查詢)
-
-- `/finance/betting-records` - Betting Records (下注紀錄)
-- `/finance/balance-logs` - Balance Transaction Logs (資金流水紀錄)
-- `/finance/adjustment-logs` - Manual Adjustment Logs (人工存提紀錄)
-
-### Finance Tools (財務工具)
-
-- `/finance/points-rewards` - Points & Rewards Management (點數與獎勵管理)
-- `/finance/auto-payment` - Auto Payment Configuration (自動金流配置)
-
-### Game Management (遊戲管理)
-
-- `/game-maintenance/overview` - Game Overview (遊戲總覽)
-- `/game-maintenance/platforms` - Game Platforms (遊戲平台)
-- `/game-maintenance/game-list` - Game List (遊戲列表)
-- `/game-maintenance/game-tags` - Game Tags (遊戲標籤)
-
-### Messages (訊息管理)
-
-- `/messages/overview` - Messages Overview (訊息總覽)
-- `/messages/records` - Message Records (訊息紀錄)
-- `/messages/system-notify` - System Notifications (系統通知)
-
-### Payments (支付管理)
-
-- `/payments/overview` - Payments Overview (支付總覽)
-- `/payments/banks` - Bank Management (銀行管理)
-- `/payments/overview` - Payments Overview (支付總覽)
-- `/payments/banks` - Bank Management (銀行管理)
-- `/payments/merchants` - Merchant Management (商號管理)
-- `/payments/app-purchase` - Mobile Payment Monitor (行動支付監控)
-
----
-
-## Key Implementation Logic
-
-### 1. Lock Order System
-
-**Location**: `useFinanceData.ts` composable
-
-**Purpose**: Prevent concurrent processing of financial orders
-
-**Mechanism**:
-
-- `lockOrder(orderId, processor)`: Sets order status to '審核中', assigns processor
-- `unlockOrder(orderId)`: Reverts to '待審核', clears processor
-- `lockedOrders`: Computed property filters all locked orders
-
-**UI Integration**:
-
-- Withdrawal Audit: "我要審核" button locks order
-- Lock Order Management: Displays all locked orders with timeout warnings (>15min)
-- Force unlock available for supervisors
-
-### 2. Member Tag Linking System
-
-**Location**: `Members/Tags.vue`
-
-**Features**:
-
-- Dynamic tag creation with color selection
-- Real-time tag application to members
-- Tag-based filtering in member lists
-- Risk tags (高風險, VIP) display in audit modals
-
-### 3. Rollover Verification
-
-**Location**: Withdrawal audit modal
-
-**Logic**:
-
-```typescript
-rolloverPercentage = (current / required) * 100
-autoApprove = rolloverPercentage >= 100 && amount <= maxAmount && vipLevel >= minLevel
+```
+src/
+├── App.vue                   # 根元件，動態 Layout 切換
+├── main.ts                   # 應用程式進入點
+├── router/
+│   └── index.ts              # 路由定義 + Navigation Guards
+├── stores/
+│   └── auth.ts               # Pinia 認證 Store (Mock RBAC)
+├── layout/
+│   ├── AppLayout.vue         # Dashboard 主佈局 (Sidebar + Header)
+│   ├── AppMenu.vue           # 側邊欄選單 (權限過濾)
+│   └── AppTopbar.vue         # 頂部工具列
+└── views/
+    ├── Dashboard/            # 儀表板模組
+    │   ├── index.vue         # 預設導向
+    │   ├── Overview.vue      # 總覽頁面
+    │   ├── WebsiteAnalytics.vue
+    │   ├── OperationAnalytics.vue
+    │   └── PlayerMonitoring.vue
+    ├── Operators/            # 人員管理
+    │   ├── Overview.vue
+    │   ├── StaffMaintenance.vue   # 帳號維護 (含 IP 白名單)
+    │   ├── GroupMaintenance.vue   # 群組權限
+    │   ├── OperationLogs.vue      # 操作日誌
+    │   └── ExportManager.vue      # 匯出中心
+    ├── Members/              # 會員管理
+    │   ├── Overview.vue
+    │   ├── List.vue          # 會員列表 + 詳情 Modal
+    │   ├── Logs.vue          # 會員日誌
+    │   ├── LevelSettings.vue # 等級維護
+    │   └── Tags.vue          # 標籤管理
+    ├── Layout/               # 版面設定
+    │   ├── Overview.vue
+    │   ├── HomeSettings.vue       # 首頁設定
+    │   ├── GameConfiguration.vue  # 遊戲配置 (拖曳排序)
+    │   ├── ArticleManagement.vue  # 文章管理 (WebView)
+    │   ├── PaymentLayout.vue      # 支付版面 (APP/Web)
+    │   └── SplashAds.vue          # 開屏廣告 (互斥邏輯)
+    ├── Finance/              # 財務管理
+    │   ├── Overview.vue
+    │   ├── ManualDeposit.vue      # 手工存款審核
+    │   ├── OnlineDeposit.vue      # 在線存款查詢
+    │   ├── Withdrawals.vue        # 提款審核 (流水驗證)
+    │   ├── OrderLocks.vue         # 鎖單管理
+    │   ├── BalanceLogs.vue        # 資金流水紀錄
+    │   ├── AdjustmentLogs.vue     # 人工存提紀錄
+    │   ├── BettingRecords.vue     # 下注紀錄
+    │   ├── PointsRewards.vue      # 點數與獎勵
+    │   └── AutoPayment.vue        # 自動金流
+    ├── Agents/               # 代理管理
+    │   ├── Overview.vue
+    │   ├── AgentList.vue
+    │   ├── AgentLevels.vue
+    │   ├── CommissionSettings.vue
+    │   ├── AgentMaintenance.vue
+    │   └── SettlementReport.vue
+    ├── Games/                # 遊戲管理
+    │   ├── Overview.vue
+    │   ├── Platforms.vue
+    │   ├── GameList.vue
+    │   └── Categories.vue
+    ├── Promotions/           # 推廣活動
+    │   ├── Overview.vue
+    │   ├── Offers.vue
+    │   ├── SpecialEvents.vue
+    │   └── Achievements.vue
+    ├── Reports/              # 報表管理
+    │   ├── Overview.vue
+    │   ├── GamePerformance.vue
+    │   ├── Cash.vue
+    │   ├── OnlineDeposit.vue
+    │   ├── Bonus.vue
+    │   └── Operations.vue
+    ├── Payments/             # 金流平台
+    │   ├── Overview.vue
+    │   ├── Banks.vue
+    │   └── AppPurchase.vue
+    ├── Messages/             # 訊息管理
+    │   ├── Overview.vue
+    │   ├── Templates.vue
+    │   ├── Settings.vue
+    │   └── Logs.vue
+    ├── SystemSettings/       # 系統設定
+    │   ├── Overview.vue
+    │   ├── Announcements.vue
+    │   ├── Parameters.vue
+    │   └── PaymentChannels.vue
+    └── Pages/                # 系統頁面
+        └── Login.vue         # 登入頁 (含自動填入功能)
 ```
 
-**Visual Feedback**:
+---
 
-- Green progress bar: ≥100% (eligible for auto-approval)
-- Red progress bar: <100% (requires manual review)
+## 關鍵架構決策 Architecture Decisions
 
-### 4. Deposit Anomaly Detection
+### 1. 路由守衛 (Navigation Guards)
 
-**Location**: `OnlineDeposit.vue`
+**檔案**：`src/router/index.ts`
 
-**Scenarios**:
+```typescript
+router.beforeEach((to, _from, next) => {
+  const token = localStorage.getItem('auth_token')
 
-- Payment successful but dispatch failed
-- Callback received but balance not updated
-- Re-issue mechanism for failed dispatches
+  // 登入頁特殊處理
+  if (to.path === '/login') {
+    if (token) {
+      next('/dashboard/overview')  // 已登入則跳轉首頁
+    } else {
+      next()
+    }
+    return
+  }
 
-**Indicators**:
+  // 其他頁面需驗證
+  if (!token) {
+    next('/login')  // 未登入導向登入頁
+    return
+  }
 
-- Callback Status Light (green/gray)
-- Dispatch Status tag
-- "Re-issue" button for anomalies
+  next()
+})
+```
 
-### 5. Approval Workflow
-
-**Location**: `PointsRewards.vue`, `ManualDeposit.vue`
-
-**Thresholds**:
-
-- Amount > $10,000: Requires secondary approval
-- High-risk members: Mandatory supervisor review
-- Frequent manual deposits: Warning alert
-
-**Process**:
-
-1. Operator submits → Status: 待審核
-2. Supervisor reviews → Approve/Reject
-3. If approved → Balance updated, Status: 已完成
-
-### 6. Auto-Payment Configuration
-
-**Location**: `AutoPayment.vue`
-
-**Rules Engine**:
-
-- Max amount limit (e.g., ≤ $5,000)
-- Min VIP level requirement
-- Rollover completion percentage (e.g., ≥ 100%)
-
-**Gateway Balancing**:
-
-- Weight-based distribution
-- Success rate monitoring
-- Auto-failover on threshold breach
-
-### 7. Valid Bet Tracking
-
-**Location**: `BettingRecords.vue`
-
-**Purpose**: Track effective wagering for rollover requirements
-
-**Logic**:
-
-- `validBet` may be less than `betAmount` for hedged or cancelled bets
-- Warning indicator shown when `validBet < betAmount`
-- Used for rollover completion calculations
-
-**Visual Indicators**:
-
-- Yellow warning icon for partial validity
-- Tooltip explaining the discrepancy
-- Highlighted in detail dialog
-
-### 8. Agent Level System
-
-**Location**: `AgentLevels.vue`
-
-**Purpose**: Define tier-based promotion system with automatic qualification checking
-
-**Tier Structure**:
-
-- 5 levels: 實習代理 → 銅牌 → 銀牌 → 金牌 → 鑽石總代
-- Progressive thresholds for active members and team P/L
-- Commission bonuses increase by tier (0% → 25%)
-
-**Promotion Criteria**:
-
-- Active members threshold (5, 20, 50, 100, 200)
-- Team monthly P/L threshold ($10K → $1M)
-- Both conditions must be met for automatic promotion
-
-**Features**:
-
-- CRUD operations for level management
-- Enable/disable level status
-- Real-time agent count per level
-- Icon and color customization
-
-**Manual Level Override**:
-
-- Administrators can manually lock an agent's level
-- Bypasses automatic promotion system
-- Requires reason for audit trail
-- Prevents system from auto-adjusting based on performance
-
-### 9. Commission Schemes
-
-**Location**: `CommissionSettings.vue`
-
-**Purpose**: Define profit-sharing models with tiered structures and cost allocation
-
-**Scheme Components**:
-
-- Settlement cycle (daily/weekly/monthly)
-- Tiered commission rates based on profit brackets
-- Game category bonus adjustments (+/- percentages)
-- Cost sharing toggles (bonus deduction, platform fees)
-
-**Mock Schemes**:
-
-1. **全能代理 A 方案**: 4-tier structure (30%→45%), 50% bonus deduction, 20% platform fee
-2. **電子遊戲專攻方案**: Fixed 45% commission, +10% slot bonus, -5% live/-10% sports penalty
-
-**Dynamic Features**:
-
-- Add/remove profit tiers on-the-fly
-- Independent adjustments per game category
-- Flexible cost sharing percentages
+**要點**：
+- 透過 `localStorage.auth_token` 判斷登入狀態
+- 未登入訪問任何頁面均重導至 `/login`
+- 已登入訪問 `/login` 自動跳轉 `/dashboard/overview`
 
 ---
 
-## Mock Data Strategy
+### 2. 動態 Layout 切換
 
-### Centralized State Management
+**檔案**：`src/App.vue`
 
-- `useFinanceData.ts`: Finance audit operations
-- Component-level: Page-specific data (balance logs, tasks)
+```vue
+<template>
+  <AppLayout v-if="useAppLayout">
+    <router-view />
+  </AppLayout>
+  <router-view v-else />
+</template>
 
-### Data Characteristics
+<script setup>
+const useAppLayout = computed(() => {
+  return route.meta.layout !== 'empty'
+})
+</script>
+```
 
-- **Realistic scenarios**: Anomalies, timeouts, high-risk cases
-- **Varied statuses**: Pending, approved, rejected, locked
-- **Time-based**: Recent records sorted by timestamp
-- **Randomized**: Amounts, member IDs, operators for diversity
-
----
-
-## Technical Highlights
-
-### State Management
-
-- Vue 3 Composition API with reactive refs
-- Singleton composables for shared state
-- Computed properties for derived data
-
-### Component Architecture
-
-- PrimeVue for UI components
-- Modular page structure
-- Reusable search panels and data tables
-
-### User Experience
-
-- Toast notifications for all operations
-- Confirmation dialogs for destructive actions
-- Real-time duration updates (lock management)
-- Color-coded financial indicators
+**機制**：
+- 路由設定 `meta: { layout: 'empty' }` 的頁面 (如 Login) 直接渲染，不套用 AppLayout
+- 其他頁面自動包裹 `AppLayout`，顯示完整 Sidebar + Header
 
 ---
 
-## Development Notes
+### 3. 前端 Mock RBAC 權限體系
 
-### Code Conventions
+**檔案**：`src/stores/auth.ts`
 
-- TypeScript for type safety
-- Consistent naming: camelCase for variables, PascalCase for components
-- 220px input fields across all search panels
-- Standardized card layouts with icons
+```typescript
+const MOCK_USERS = {
+  admin: {
+    password: 'admin',
+    user: {
+      name: '超級管理員',
+      role: 'ADMIN',
+      permissions: ['*']  // 全權限
+    }
+  },
+  finance: {
+    password: '123456',
+    user: {
+      name: '財務主管',
+      role: 'FINANCE',
+      permissions: ['Dashboard', 'Finance', 'Report']
+    }
+  },
+  // ... 其他角色
+}
+```
 
-### Future Enhancements
+**權限檢查邏輯**：
+```typescript
+const hasPermission = computed(() => (permission: string) => {
+  if (!user.value) return false
+  if (user.value.permissions.includes('*')) return true
+  return user.value.permissions.includes(permission)
+})
+```
 
-- Real API integration
-- WebSocket for real-time updates
-- Advanced filtering and sorting
-- Export functionality for reports
+**運作方式**：
+1. 登入時比對 `MOCK_USERS` 驗證帳密
+2. 成功後將 `token` 與 `user` 存入 `localStorage`
+3. 側邊欄 `AppMenu.vue` 依據 `permissions` 過濾顯示選單項目
+4. `ADMIN` 角色 (`permissions: ['*']`) 可見所有功能
+
+---
+
+## 功能模組清單 Module Manifest
+
+### 📊 儀表板 Dashboard
+
+| 頁面 | 路徑 | 說明 |
+|------|------|------|
+| 網站數據 | `/dashboard/website-analytics` | 流量、UV/PV、裝置分佈 |
+| 營運數據 | `/dashboard/operations` | **雙軌制**：直營 IAP 模式 / 包網代理模式切換 |
+| 玩家監控 | `/dashboard/monitoring` | 即時在線、**模擬器偵測**、異常行為警示 |
+| 自定義總覽 | `/dashboard/overview` | 可拖曳卡片排序的個人化首頁 |
+
+### 🎨 版面設定 Layout
+
+| 頁面 | 路徑 | 說明 |
+|------|------|------|
+| 首頁設定 | `/layout/homepage` | 輪播橫幅、快捷入口配置 |
+| 遊戲配置 | `/layout/game-config` | 遊戲分類排序、熱門推薦 (拖曳排序) |
+| 文章管理 | `/layout/articles` | **WebView** 內嵌頁面管理 |
+| 支付版面 | `/layout/payment` | **APP / Web 分流**邏輯配置 |
+| 開屏廣告 | `/layout/splash-ads` | 全屏廣告管理 (**互斥邏輯**：同時僅一則啟用) |
+
+### 👥 人員管理 Operators
+
+| 頁面 | 路徑 | 說明 |
+|------|------|------|
+| 管理總覽 | `/operators/overview` | 人員統計、權限分佈圖表 |
+| 帳號維護 | `/operators/maintenance` | 新增/編輯帳號、**IP 白名單**設定 |
+| 群組權限 | `/operators/groups` | 權限群組 CRUD、權限項目勾選 |
+| 操作日誌 | `/operators/logs` | 全站操作記錄、可依操作類型/人員篩選 |
+
+### 🔐 系統核心 Pages
+
+| 頁面 | 路徑 | 說明 |
+|------|------|------|
+| 登入頁 | `/login` | 帳號/密碼/驗證碼表單，**開發測試帳號一鍵填入** |
+| 404 頁面 | (規劃中) | 頁面不存在提示 |
+
+### 💰 財務管理 Finance
+
+- **審核類**：手工存款、在線存款查詢、提款審核
+- **查詢類**：資金流水紀錄、人工存提紀錄、下注紀錄
+- **工具類**：點數與獎勵 (手動派發)、自動金流 (規則引擎)
+- **特殊**：鎖單管理 (防止並行審核)
+
+---
+
+## 待辦事項 Next Steps
+
+### Phase 2: Backend Integration
+
+- [ ] 設計 RESTful API 規格 (OpenAPI)
+- [ ] 串接真實認證 (JWT Token)
+- [ ] 替換所有 Mock Data 為 API 呼叫
+- [ ] 實作統一錯誤處理與 Loading 狀態
+
+### Phase 3: Real-Time Features
+
+- [ ] WebSocket 建立即時連線
+- [ ] 玩家監控即時數據推播
+- [ ] 審核單狀態即時同步
+- [ ] 通知中心即時訊息
+
+### Phase 4: Internationalization
+
+- [ ] Vue I18n 整合
+- [ ] 繁中 / 簡中 / 英文語系檔案
+- [ ] 語系切換 UI
+
+---
+
+## UI 設計規範 Design Specifications
+
+### 輸入欄位
+
+- **搜尋欄位固定寬度**：`w-[220px]` (220px)
+- **百分比輸入**：無按鈕 InputNumber，寬度 100px，置中對齊
+
+### 色彩編碼
+
+| 用途 | Light Mode | Dark Mode |
+|------|------------|-----------|
+| 正數金額 (增點/派彩) | `text-green-600` | `text-green-400` |
+| 負數金額 (扣點/提款) | `text-red-600` | `text-red-400` |
+| 狀態標籤 | Success/Warning/Danger/Info | 同配色系統 |
+
+### 響應式斷點
+
+- **Desktop** (≥1024px)：多欄 Grid 佈局
+- **Tablet** (768-1023px)：雙欄佈局
+- **Mobile** (<768px)：單欄堆疊
+
+---
+
+## Mock Data 生成策略
+
+- **量體**：50+ 交易紀錄、100+ 會員資料、15+ 金流通道
+- **多樣性**：隨機金額/時間戳/狀態，涵蓋異常情境
+- **集中管理**：`useFinanceData.ts` 等 Composables 維護共用狀態
+
+---
+
+*Last Updated: 2026-01-12*
+]]>

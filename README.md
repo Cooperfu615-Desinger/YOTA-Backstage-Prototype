@@ -1,211 +1,172 @@
-# YOTA Backstage Prototype
+<![CDATA[<div align="center">
 
-> **iGaming Admin Platform Prototype** - A comprehensive backend management system for online gaming operations
+# ⚡ Antigravity
 
-## 📋 Project Overview
+### 現代化 iGaming 後台管理系統
 
-YOTA Backstage Prototype is a feature-rich administrative dashboard designed specifically for iGaming platforms. Built with modern web technologies, it provides operators with powerful tools for member management, financial operations, game administration, and real-time monitoring.
+[![Vue 3](https://img.shields.io/badge/Vue-3.5-4FC08D?style=flat-square&logo=vuedotjs)](https://vuejs.org/)
+[![PrimeVue](https://img.shields.io/badge/PrimeVue-4.5-41B883?style=flat-square)](https://primevue.org/)
+[![Pinia](https://img.shields.io/badge/Pinia-3.0-FFD859?style=flat-square)](https://pinia.vuejs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
+[![Vite](https://img.shields.io/badge/Vite-7.2-646CFF?style=flat-square&logo=vite)](https://vitejs.dev/)
 
-## 🛠️ Tech Stack
-
-- **Framework**: [Vue 3](https://vuejs.org/) with Composition API
-- **UI Library**: [PrimeVue](https://primevue.org/) (Aura Dark Theme)
-- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
-- **Build Tool**: [Vite](https://vitejs.dev/)
-- **Language**: TypeScript
-- **Icons**: PrimeIcons
-
-## ✨ Feature Map
-
-### 📊 Dashboard (儀表板)
-
-- Real-time operational metrics
-- Website traffic analytics
-- Player monitoring and alerts
-- Performance indicators
-
-### 👥 Member Management (會員管理)
-
-- **Member List**: Comprehensive player database with advanced search
-- **Level Settings**: VIP tier configuration and benefits
-- **Tag Management**: Dynamic tagging system for categorization
-- **Member Logs**: Activity tracking and audit trails
-- **Member Detail Modal**: 360° view with financial history, risk assessment, and operator notes
-
-### 💰 Finance Audit Management (財務審核管理)
-
-- **Withdrawal Audit**: Multi-factor verification with rollover checks and risk scanning
-- **Manual Deposit Audit**: Attachment preview, member risk snapshot, and dual verification
-- **Online Deposit Query**: 3rd-party callback monitoring and manual re-issue for failed dispatches
-- **Lock Order Management**: Real-time tracking with timeout warnings and force unlock capability
-
-### 📝 Finance Records (財務紀錄查詢)
-
-- **Balance Logs**: Comprehensive transaction history with color-coded amounts
-- **Adjustment Logs**: Manual operation tracking with approval workflow
-
-### 🎁 Finance Tools (財務工具)
-
-- **Points & Rewards**: Manual adjustment console with bulk distribution tasks
-- **Auto Payment**: Automated approval rules and gateway load balancing
-
-### 🎮 Game Management (遊戲管理)
-
-- Game platform integration
-- Game library configuration
-- Tag-based categorization
-- Game performance analytics
-
-### 💳 Payment Management (支付管理)
-
-- Bank account configuration
-- Payment merchant management
-- Gateway weight distribution
-- Success rate monitoring
-
-### 📱 Other Modules
-
-- **Operators**: Admin account management, permissions, and audit logs
-- **Messages**: System notifications and communication center
-- **Layout**: Homepage design, game presentation, promotional content
-- **Agents**: Affiliate management and commission tracking
-- **Promotions**: Campaign creation and bonus configuration
-- **Reports**: Financial reports and player analytics
-- **System Settings**: Platform parameters and configuration
-
-## 🚀 Getting Started
-
-### Prerequisites
-
-- Node.js 18+
-- npm or yarn
-
-### Installation
-
-```bash
-# Clone the repository
-git clone https://github.com/Cooperfu615-Desinger/YOTA-Backstage-Prototype.git
-
-# Navigate to project directory
-cd YOTA-Backstage-Prototype
-
-# Install dependencies
-npm install
-```
-
-### Development
-
-```bash
-# Start development server
-npm run dev
-
-# Access at http://localhost:5173
-```
-
-### Build for Production
-
-```bash
-# Build for production
-npm run build
-
-# Preview production build
-npm run preview
-```
-
-## 🎨 Design Principles
-
-### UI Consistency
-
-- **220px fixed-width inputs** for all search fields
-- **Three-tier responsive design** (Desktop/Tablet/Mobile)
-- **Color-coded financial indicators** (Green for positive, Red for negative)
-
-### User Experience
-
-- Toast notifications for all operations
-- Confirmation dialogs for critical actions
-- Real-time updates for time-sensitive data
-- Visual feedback for all interactions
-
-### Code Quality
-
-- TypeScript for type safety
-- Component-based architecture
-- Centralized state management with composables
-- Reusable utility functions
-
-## 📦 Key Features
-
-### 🔐 Lock Order System
-
-Prevents concurrent processing of financial orders with real-time timeout monitoring and supervisor override capabilities.
-
-### 🏷️ Dynamic Tagging
-
-Flexible member categorization with color-coded tags that link across modules (member list → audit modals → reports).
-
-### 🔄 Approval Workflows
-
-Multi-level authorization for high-value transactions (>$10,000) with automated routing to supervisors.
-
-### 📊 Real-Time Monitoring
-
-Live duration tracking for locked orders, success rate monitoring for payment gateways, and instant alert notifications.
-
-### 🤖 Automation
-
-Configurable rules for auto-approval based on amount limits, VIP levels, and rollover completion.
-
-## 📱 Responsive Design
-
-Built with a mobile-first approach:
-
-- **Desktop (≥1024px)**: Full multi-column layouts with sidebar navigation
-- **Tablet (768px-1023px)**: Optimized 2-column grids
-- **Mobile (<768px)**: Single-column stacked layout
-
-## 🧪 Mock Data
-
-The prototype includes comprehensive mock data generation for:
-
-- 50+ withdrawal and deposit transactions
-- 30+ bulk distribution tasks
-- 20+ adjustment records
-- 15+ payment gateways
-- 100+ member profiles
-
-## 📝 Documentation
-
-- [PROJECT_SNAPSHOT.md](./PROJECT_SNAPSHOT.md) - Detailed technical documentation
-- [Implementation Plans](/.gemini/antigravity/brain/) - Feature development history
-
-## 🔧 Development Status
-
-**Current Version**: 1.0 (Prototype)
-
-✅ **Completed Modules**:
-
-- Dashboard & Analytics
-- Member Management
-- Finance Audit System
-- Payment Configuration
-- Game Management
-
-🚧 **Future Enhancements**:
-
-- Real API integration
-- WebSocket for live updates
-- Advanced reporting engine
-- Multi-language support
-
-## 📄 License
-
-This project is a prototype for demonstration purposes.
-
-## 🤝 Contributing
-
-This is a prototype project. For inquiries or collaboration, please contact the development team.
+</div>
 
 ---
 
+## 📋 專案簡介
+
+**Antigravity** 是一套專為 iGaming 產業設計的全功能後台管理系統原型。系統採用 Vue 3 Composition API 搭配 PrimeVue UI 框架與 Pinia 狀態管理，提供現代化、高效能的管理介面。
+
+### ✨ 核心功能亮點
+
+| 功能 | 說明 |
+|------|------|
+| 🔐 **RBAC 角色權限控制** | 基於角色的動態選單過濾，不同權限看到不同功能模組 |
+| 🎨 **動態版型切換** | Login 獨立版面 vs Dashboard 完整側邊欄，透過路由 `meta.layout` 自動切換 |
+| 📊 **雙軌制數據監控** | 直營 (In-App Purchase) 與包網代理雙模式數據追蹤 |
+| 🎯 **高度客製化版面** | 拖曳排序、即時預覽、開屏廣告管理等豐富的版面配置功能 |
+
+---
+
+## 🛠️ 技術堆疊
+
+| 類別 | 技術 |
+|------|------|
+| **核心框架** | Vue 3 (Composition API) |
+| **建置工具** | Vite 7.2 |
+| **程式語言** | TypeScript 5.9 |
+| **狀態管理** | Pinia 3.0 |
+| **路由管理** | Vue Router 4.6 |
+| **UI 框架** | PrimeVue 4.5 (Aura Dark Theme) |
+| **圖表視覺化** | Chart.js 4.5 |
+| **CSS 框架** | Tailwind CSS 4.1 + Flexbox |
+| **圖示** | PrimeIcons 7.0 |
+
+---
+
+## 🚀 快速開始
+
+### 系統需求
+
+- Node.js 18+
+- npm 或 yarn
+
+### 安裝與執行
+
+```bash
+# 安裝依賴
+npm install
+
+# 啟動開發伺服器
+npm run dev
+
+# 瀏覽器開啟 http://localhost:5173
+```
+
+### 建置生產版本
+
+```bash
+# 建置
+npm run build
+
+# 預覽建置結果
+npm run preview
+```
+
+---
+
+## 👤 測試帳號
+
+> 💡 **提示**：在登入頁面下方提供「開發測試帳號」表格，點擊任一列即可自動填入帳密。
+
+| 角色 | 帳號 | 密碼 | 權限範圍 |
+|------|------|------|----------|
+| **超級管理員** | `admin` | `admin` | 全站功能 (上帝視角) — `permissions: ['*']` |
+| **財務主管** | `finance` | `123456` | 儀表板、財務管理、報表中心 |
+| **營運主管** | `ops` | `123456` | 儀表板、會員管理、遊戲、版面設定、優惠活動 |
+| **產品經理** | `pm` | `123456` | 儀表板、系統設定、操作日誌 |
+| **總代理** | `agent` | `123456` | 儀表板、代理中心、報表中心 |
+
+---
+
+## 📦 功能模組
+
+### 儀表板 Dashboard
+- 網站數據分析
+- 營運數據追蹤 (直營 IAP / 包網代理)
+- 玩家即時監控 (模擬器偵測、異常行為)
+- 可自定義總覽
+
+### 版面設定 Layout
+- 首頁輪播設定
+- 遊戲分類配置 (拖曳排序)
+- 文章管理 (WebView)
+- 支付版面 (APP/Web 分流)
+- 開屏廣告 (互斥邏輯、排程控制)
+
+### 人員管理 Operators
+- 管理總覽
+- 帳號維護 (IP 白名單)
+- 群組權限
+- 操作日誌
+
+### 財務管理 Finance
+- 手工/在線存款審核
+- 提款審核 (流水驗證)
+- 鎖單管理
+- 資金流水紀錄
+
+### 其他模組
+- **會員管理**：會員列表、等級/標籤維護、360° 會員詳情
+- **遊戲管理**：遊戲平台、遊戲列表、分類標籤
+- **代理管理**：代理列表、等級制度、佣金設定、結算報表
+- **推廣活動**：優惠管理、特定活動、成就設置
+- **報表中心**：遊戲表現、現金/贈金報表、營運報表
+
+---
+
+## 🔐 權限機制
+
+系統採用前端 **Mock RBAC** 模式：
+
+1. 登入時驗證帳密，取得 `role` 與 `permissions` 陣列
+2. Sidebar 選單根據 `permissions` 動態過濾顯示
+3. `ADMIN` 角色擁有 `['*']` 全權限
+4. 權限資訊儲存於 `localStorage`，支援重新整理後保持登入狀態
+
+---
+
+## 📄 文件導覽
+
+| 文件 | 說明 |
+|------|------|
+| [PROJECT_SNAPSHOT.md](./PROJECT_SNAPSHOT.md) | 架構白皮書 — 目錄結構、關鍵架構決策、模組清單 |
+| [CHANGELOG](#) | 版本更新紀錄 (規劃中) |
+
+---
+
+## 📝 開發狀態
+
+**目前版本**：Phase 1 完成 (Mock Data Mode)
+
+✅ **已完成**
+- RBAC 權限登入系統
+- 動態 Layout 切換
+- 全模組頁面開發
+- 響應式設計 (Desktop/Tablet/Mobile)
+
+🚧 **下階段規劃**
+- 串接真實 Backend API
+- WebSocket 即時數據推播
+- 多語系 (i18n) 支援
+- 進階報表引擎
+
+---
+
+<div align="center">
+
 **Built with ❤️ for modern iGaming operations**
+
+</div>
+]]>
