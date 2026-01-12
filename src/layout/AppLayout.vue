@@ -177,7 +177,7 @@
       ]"
     >
       <div class="p-0">
-        <router-view />
+        <slot />
       </div>
     </main>
   </div>
