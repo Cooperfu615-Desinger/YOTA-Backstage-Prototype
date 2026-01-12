@@ -48,14 +48,26 @@
         </button>
 
         <!-- User Menu -->
-        <div :class="['flex items-center gap-2 pl-3 border-l', isDark ? 'border-surface-700' : 'border-gray-200']">
+        <div :class="['flex items-center gap-3 pl-3 border-l', isDark ? 'border-surface-700' : 'border-gray-200']">
           <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
             <i class="pi pi-user text-sm text-white"></i>
           </div>
           <div class="hidden sm:block">
-            <div class="text-sm font-medium">Admin</div>
-            <div :class="['text-xs', isDark ? 'text-surface-400' : 'text-gray-500']">超級管理員</div>
+            <div class="text-sm font-medium">{{ authStore.user?.name || 'Guest' }}</div>
+            <div :class="['text-xs', isDark ? 'text-surface-400' : 'text-gray-500']">
+              <Tag :value="getRoleLabel(authStore.user?.role)" :severity="getRoleSeverity(authStore.user?.role)" class="text-[10px] px-1.5 py-0" />
+            </div>
           </div>
+          <!-- Logout Button -->
+          <Button 
+            icon="pi pi-sign-out" 
+            severity="danger" 
+            text 
+            rounded
+            v-tooltip.bottom="'登出'"
+            @click="onLogout"
+            class="ml-1"
+          />
         </div>
       </div>
     </header>
@@ -187,10 +199,43 @@
 import { ref, reactive, watch, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useTheme } from '@/composables/useTheme'
+import { useAuthStore } from '@/stores/auth'
+import Button from 'primevue/button'
+import Tag from 'primevue/tag'
 
 const route = useRoute()
 const router = useRouter()
 const { isDark, toggleTheme, initTheme } = useTheme()
+const authStore = useAuthStore()
+
+// Logout handler
+const onLogout = () => {
+  authStore.logout()
+  router.push('/login')
+}
+
+// Role label and severity helpers
+const getRoleLabel = (role?: string) => {
+  const labels: Record<string, string> = {
+    'ADMIN': '超級管理員',
+    'FINANCE': '財務主管',
+    'OPS': '營運人員',
+    'PM': '專案經理',
+    'AGENT': '代理商'
+  }
+  return labels[role || ''] || '訪客'
+}
+
+const getRoleSeverity = (role?: string): 'danger' | 'info' | 'warn' | 'success' | 'secondary' => {
+  const severities: Record<string, 'danger' | 'info' | 'warn' | 'success' | 'secondary'> = {
+    'ADMIN': 'danger',
+    'FINANCE': 'info',
+    'OPS': 'warn',
+    'PM': 'success',
+    'AGENT': 'secondary'
+  }
+  return severities[role || ''] || 'secondary'
+}
 
 const sidebarCollapsed = ref(false)
 const expandedMenus = reactive<Record<string, boolean>>({})
