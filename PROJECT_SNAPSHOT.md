@@ -1,7 +1,8 @@
 <![CDATA[# Antigravity — 架構白皮書
 
 > **Generated**: 2026-01-12  
-> **Version**: Phase 1 Complete (Mock Data Mode)
+> **Version**: Phase 1 Complete (Stable & Polished)  
+> **Last Updated**: 2026-01-12
 
 ---
 
@@ -10,6 +11,7 @@
 | 階段 | 狀態 | 說明 |
 |------|------|------|
 | **Phase 1** | ✅ 已完成 | Mock Data Mode — 全模組 UI 開發完成，前端權限系統建立 |
+| **Phase 1.5** | ✅ 已完成 | UI/UX 深度優化 — 一致性色碼、EmptyState 元件、Dialog 規範 |
 | Phase 2 | 🔜 規劃中 | Backend API 串接 |
 | Phase 3 | 📋 待排程 | WebSocket 即時更新、多語系支援 |
 
@@ -80,7 +82,7 @@ src/
     │   └── Categories.vue
     ├── Promotions/           # 推廣活動
     │   ├── Overview.vue
-    │   ├── Offers.vue
+    │   ├── Offers.vue             # 優惠管理 (單一列表)
     │   ├── SpecialEvents.vue
     │   └── Achievements.vue
     ├── Reports/              # 報表管理
@@ -100,7 +102,7 @@ src/
     │   ├── Settings.vue
     │   └── Logs.vue
     ├── SystemSettings/       # 系統設定
-    │   ├── Overview.vue
+    │   ├── index.vue              # 系統導覽 (System Guide)
     │   ├── Announcements.vue
     │   ├── Parameters.vue
     │   └── PaymentChannels.vue
@@ -259,6 +261,30 @@ const hasPermission = computed(() => (permission: string) => {
 - **工具類**：點數與獎勵 (手動派發)、自動金流 (規則引擎)
 - **特殊**：鎖單管理 (防止並行審核)
 
+### ⚙️ 系統設定 System
+
+| 頁面 | 路徑 | 說明 |
+|------|------|------|
+| 系統導覽 | `/system/overview` | 提供系統基礎資訊與操作指引 |
+| 公告管理 | `/system/announcements` | 系統公告維護 |
+| 參數設定 | `/system/parameters` | 全域參數配置 |
+| 支付通道 | `/system/payment-channels` | 支付通道配置 |
+
+### 🎁 推廣活動 Promotions
+
+| 頁面 | 路徑 | 說明 |
+|------|------|------|
+| 優惠管理 | `/promotions/offers` | 優惠活動單一列表管理 |
+| 特殊活動 | `/promotions/special-events` | 限時活動配置 |
+| 成就系統 | `/promotions/achievements` | 玩家成就管理 |
+
+### 🧩 共用元件 Shared Components
+
+| 元件 | 路徑 | 說明 |
+|------|------|------|
+| EmptyState.vue | `src/components/Common/` | 空狀態插圖元件 (標準化空列表顯示) |
+| AppLayout.vue | `src/layout/` | Dashboard 主佈局 (含 AppTopbar 登出/用戶資訊) |
+
 ---
 
 ## 待辦事項 Next Steps
@@ -317,4 +343,14 @@ const hasPermission = computed(() => (permission: string) => {
 ---
 
 *Last Updated: 2026-01-12*
+
+---
+
+## ✨ Phase 1.5 優化摘要 UI/UX Enhancement Summary
+
+- **一致性色碼**：統一正負金額、狀態標籤配色規範
+- **EmptyState 元件**：新增空狀態插圖，提升空列表視覺體驗
+- **Dialog 規範**：統一 Modal 與對話框樣式規範
+- **選單命名優化**：系統設定 Overview → 系統導覽 (System Guide)
+- **AppTopbar 強化**：完善登出功能與用戶資訊顯示
 ]]>
