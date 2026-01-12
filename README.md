@@ -1,9 +1,9 @@
-# ⚡ Antigravity
+# ⚡ Yota Platform backend
 
 > **現代化 iGaming 後台管理系統**  
 > Vue 3 + PrimeVue + Pinia + TypeScript
 
-Antigravity 是一套專為 iGaming 產業設計的全功能後台管理系統原型。  
+Yota Platform backend 是一套專為 iGaming 產業設計的全功能後台管理系統原型。  
 系統採用 Vue 3 Composition API 搭配 PrimeVue UI 框架與 Pinia 狀態管理，提供極致流暢的操作體驗與高度可擴展的架構。
 
 ---
