@@ -22,10 +22,10 @@ const routes: RouteRecordRaw[] = [
         meta: { title: '儀表板總覽', icon: 'pi-chart-bar', parent: 'Dashboard' }
     },
     {
-        path: '/dashboard/website-data',
-        name: 'WebsiteData',
-        component: () => import('@/views/Dashboard/WebsiteData.vue'),
-        meta: { title: '網站數據', icon: 'pi-globe', parent: 'Dashboard' }
+        path: '/dashboard/website-analytics',
+        name: 'DashboardWebsite',
+        component: () => import('@/views/Dashboard/WebsiteAnalytics.vue'),
+        meta: { title: '網站數據', icon: 'pi-chart-line', parent: 'Dashboard' }
     },
     {
         path: '/dashboard/operational-data',
