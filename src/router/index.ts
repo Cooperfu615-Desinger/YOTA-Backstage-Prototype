@@ -6,6 +6,12 @@ const routes: RouteRecordRaw[] = [
         path: '/',
         redirect: '/dashboard'
     },
+    {
+        path: '/login',
+        name: 'Login',
+        component: () => import('@/views/Pages/Login.vue'),
+        meta: { title: '登入', layout: 'empty' }
+    },
     // ========================================
     // 1. 儀表板 (Dashboard)
     // ========================================
@@ -550,6 +556,33 @@ const routes: RouteRecordRaw[] = [
 const router = createRouter({
     history: createWebHashHistory(import.meta.env.BASE_URL),
     routes
+})
+
+// ========================================
+// Navigation Guards
+// ========================================
+router.beforeEach((to, _from, next) => {
+    const token = localStorage.getItem('auth_token')
+
+    // If going to login page
+    if (to.path === '/login') {
+        if (token) {
+            // Already logged in, redirect to dashboard
+            next('/dashboard/overview')
+        } else {
+            next()
+        }
+        return
+    }
+
+    // For all other routes, check if logged in
+    if (!token) {
+        // Not logged in, redirect to login
+        next('/login')
+        return
+    }
+
+    next()
 })
 
 export default router
