@@ -302,7 +302,7 @@ const menuItems: MenuItem[] = [
     title: '系統設定', 
     icon: 'pi-cog',
     children: [
-      { path: '/system-settings/overview', title: '總覽', icon: 'pi-chart-pie' },
+      { path: '/system-settings/overview', title: '系統導覽', icon: 'pi-chart-pie' },
       { path: '/system-settings/announcements', title: '公告管理', icon: 'pi-megaphone' },
       { path: '/system-settings/parameters', title: '系統參數', icon: 'pi-sliders-h' },
       { path: '/system-settings/bank-wallet', title: '支付通道配置', icon: 'pi-wallet' },

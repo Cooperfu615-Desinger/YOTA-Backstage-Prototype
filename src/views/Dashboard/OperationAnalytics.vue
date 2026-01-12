@@ -25,8 +25,7 @@
           v-model="dateRange" 
           selectionMode="range"
           :manualInput="false"
-          showIcon
-          iconDisplay="input"
+          :showIcon="false"
           placeholder="選擇日期範圍"
           dateFormat="yy/mm/dd"
           class="w-64"

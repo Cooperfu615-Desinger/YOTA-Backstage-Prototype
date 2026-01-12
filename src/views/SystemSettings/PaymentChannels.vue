@@ -5,7 +5,7 @@
       <i class="pi pi-cog text-blue-500 dark:text-blue-400"></i>
       <span class="text-surface-500 dark:text-surface-300">系統設定</span>
       <span>></span>
-      <span class="text-surface-900 dark:text-surface-0 font-medium">銀行與錢包</span>
+      <span class="text-surface-900 dark:text-surface-0 font-medium">支付通道配置</span>
     </div>
 
     <!-- Header -->

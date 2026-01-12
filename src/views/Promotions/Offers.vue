@@ -14,18 +14,10 @@
         <div class="flex-1 space-y-6">
              <Card class="bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
                 <template #title>
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-2 text-surface-900 dark:text-white text-lg">
+                    <div class="flex items-center gap-2 text-surface-900 dark:text-white text-lg">
                             <i class="pi pi-list text-blue-500 dark:text-blue-400"></i>
                             活動列表管理
                         </div>
-                        <!-- SaaS/Platform Switch -->
-                        <div class="flex items-center gap-2 bg-surface-100 dark:bg-surface-900 px-3 py-1 rounded-full border border-surface-200 dark:border-surface-700">
-                            <span :class="mode === 'saas' ? 'text-surface-900 dark:text-white font-bold' : 'text-surface-500 text-sm'">上架版 (SaaS)</span>
-                            <InputSwitch v-model="isPlatformMode" @change="toggleMode" />
-                            <span :class="mode === 'platform' ? 'text-surface-900 dark:text-white font-bold' : 'text-surface-500 text-sm'">包網版 (Platform)</span>
-                        </div>
-                    </div>
                 </template>
                 <template #content>
                      <DataTable :value="activities" selectionMode="single" v-model:selection="selectedActivity" stripedRows class="p-datatable-sm" :pt="{ table: { class: 'min-w-full' }, tbody: { class: 'text-surface-700 dark:text-surface-300' } }">
@@ -96,16 +88,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import Card from 'primevue/card'
 import Button from 'primevue/button'
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import Tag from 'primevue/tag'
-import InputSwitch from 'primevue/inputswitch'
 
-const isPlatformMode = ref(false)
-const mode = computed(() => isPlatformMode.value ? 'platform' : 'saas')
+const mode = ref('saas')
 
 const activities = ref([
     { id: 1, name: '首存送 100%', status: '啟用', content: '新會員首次存款，最高贈送 10,000 點。\n流水要求：15倍。\n活動對象：所有新註冊會員。' },
@@ -115,10 +105,6 @@ const activities = ref([
 
 const selectedActivity = ref<any | null>(activities.value[0])
 
-const toggleMode = () => {
-    // Switch logic here
-    selectedActivity.value = null
-}
 </script>
 
 <style scoped>
