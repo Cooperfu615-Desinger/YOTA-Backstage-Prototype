@@ -18,7 +18,7 @@ const routes: RouteRecordRaw[] = [
     {
         path: '/dashboard/overview',
         name: 'DashboardOverview',
-        component: () => import('@/views/Dashboard/index.vue'),
+        component: () => import('@/views/Dashboard/Overview.vue'),
         meta: { title: '儀表板總覽', icon: 'pi-chart-bar', parent: 'Dashboard' }
     },
     {
