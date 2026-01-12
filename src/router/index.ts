@@ -41,43 +41,43 @@ const routes: RouteRecordRaw[] = [
     },
 
     // ========================================
-    // 2. 操作員管理 (Operators)
+    // 2. 人員管理 (Operators)
     // ========================================
     {
         path: '/operators',
         name: 'Operators',
         component: () => import('@/views/Operators/index.vue'),
-        meta: { title: '操作員管理', icon: 'pi-users' }
+        meta: { title: '人員管理', icon: 'pi-id-card' }
     },
     {
         path: '/operators/overview',
         name: 'OperatorsOverview',
         component: () => import('@/views/Operators/Overview.vue'),
-        meta: { title: '操作員總覽', icon: 'pi-shield', parent: 'Operators' }
+        meta: { title: '管理總覽', icon: 'pi-shield', parent: 'Operators' }
     },
     {
         path: '/operators/maintenance',
         name: 'OperatorMaintenance',
-        component: () => import('@/views/Operators/Maintenance.vue'),
-        meta: { title: '操作員維護', icon: 'pi-user-edit', parent: 'Operators' }
+        component: () => import('@/views/Operators/StaffMaintenance.vue'),
+        meta: { title: '帳號維護', icon: 'pi-user-edit', parent: 'Operators' }
     },
     {
         path: '/operators/groups',
         name: 'OperatorGroups',
-        component: () => import('@/views/Operators/Groups.vue'),
+        component: () => import('@/views/Operators/GroupMaintenance.vue'),
         meta: { title: '群組維護', icon: 'pi-users', parent: 'Operators' }
     },
     {
         path: '/operators/logs',
         name: 'OperatorLogs',
-        component: () => import('@/views/Operators/Logs.vue'),
-        meta: { title: '操作員日誌', icon: 'pi-history', parent: 'Operators' }
+        component: () => import('@/views/Operators/OperationLogs.vue'),
+        meta: { title: '操作日誌', icon: 'pi-history', parent: 'Operators' }
     },
     {
         path: '/operators/exports',
         name: 'OperatorExports',
-        component: () => import('@/views/Operators/Exports.vue'),
-        meta: { title: '匯出管理', icon: 'pi-download', parent: 'Operators' }
+        component: () => import('@/views/Operators/ExportManager.vue'),
+        meta: { title: '匯出中心', icon: 'pi-download', parent: 'Operators' }
     },
 
     // ========================================

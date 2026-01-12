@@ -242,14 +242,14 @@ const menuItems: MenuItem[] = [
   },
   { 
     path: '/operators', 
-    title: '操作員管理', 
-    icon: 'pi-users',
+    title: '人員管理', 
+    icon: 'pi-id-card',
     children: [
-      { path: '/operators/overview', title: '操作員總覽', icon: 'pi-shield' },
-      { path: '/operators/maintenance', title: '操作員維護', icon: 'pi-user-edit' },
+      { path: '/operators/overview', title: '管理總覽', icon: 'pi-shield' },
+      { path: '/operators/maintenance', title: '帳號維護', icon: 'pi-user-edit' },
       { path: '/operators/groups', title: '群組維護', icon: 'pi-users' },
-      { path: '/operators/logs', title: '操作員日誌', icon: 'pi-history' },
-      { path: '/operators/exports', title: '匯出管理', icon: 'pi-download' },
+      { path: '/operators/logs', title: '操作日誌', icon: 'pi-history' },
+      { path: '/operators/exports', title: '匯出中心', icon: 'pi-download' },
     ]
   },
   { 
