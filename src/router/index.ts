@@ -28,10 +28,10 @@ const routes: RouteRecordRaw[] = [
         meta: { title: '網站數據', icon: 'pi-chart-line', parent: 'Dashboard' }
     },
     {
-        path: '/dashboard/operational-data',
-        name: 'OperationalData',
-        component: () => import('@/views/Dashboard/OperationalData.vue'),
-        meta: { title: '營運數據', icon: 'pi-chart-bar', parent: 'Dashboard' }
+        path: '/dashboard/operations',
+        name: 'DashboardOperations',
+        component: () => import('@/views/Dashboard/OperationAnalytics.vue'),
+        meta: { title: '營運數據', icon: 'pi-dollar', parent: 'Dashboard' }
     },
     {
         path: '/dashboard/game-monitor',
