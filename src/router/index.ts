@@ -34,10 +34,10 @@ const routes: RouteRecordRaw[] = [
         meta: { title: '營運數據', icon: 'pi-dollar', parent: 'Dashboard' }
     },
     {
-        path: '/dashboard/game-monitor',
-        name: 'MemberGameMonitor',
-        component: () => import('@/views/Dashboard/MemberGameMonitor.vue'),
-        meta: { title: '玩家遊戲監控', icon: 'pi-eye', parent: 'Dashboard' }
+        path: '/dashboard/monitoring',
+        name: 'DashboardMonitoring',
+        component: () => import('@/views/Dashboard/PlayerMonitoring.vue'),
+        meta: { title: '玩家監控', icon: 'pi-eye', parent: 'Dashboard' }
     },
 
     // ========================================
