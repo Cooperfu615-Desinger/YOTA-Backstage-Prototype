@@ -18,6 +18,7 @@
               <div class="flex items-center gap-2 text-surface-900 dark:text-white text-lg">
                 <i class="pi pi-star text-yellow-500"></i>
                 VIP 等級列表
+                <span class="text-sm text-surface-500 dark:text-surface-400 font-normal ml-2">(共 {{ levels.length }} 階)</span>
               </div>
               <Button label="新增等級" icon="pi pi-plus" severity="success" @click="showEditorDialog('add')" />
             </div>
@@ -38,39 +39,85 @@
                   <p class="text-surface-500 dark:text-surface-400">暫無等級資料</p>
                 </div>
               </template>
-              <Column field="sortOrder" header="排序權重" sortable style="width: 100px">
+              <!-- Column: 等級識別 -->
+              <Column header="等級識別" style="min-width: 180px">
                 <template #body="slotProps">
-                  <span class="font-mono text-surface-600 dark:text-surface-300">{{ slotProps.data.sortOrder }}</span>
-                </template>
-              </Column>
-              <Column field="icon" header="圖示" style="width: 80px">
-                <template #body="slotProps">
-                  <div class="w-10 h-10 rounded-lg flex items-center justify-center" :class="slotProps.data.cssClass || 'bg-gradient-to-br from-yellow-400 to-orange-500'">
-                    <i :class="['text-white text-lg', slotProps.data.iconClass || 'pi pi-star-fill']"></i>
+                  <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-lg flex items-center justify-center shadow-md" :class="slotProps.data.cssClass">
+                      <i :class="['text-white text-lg', slotProps.data.iconClass]"></i>
+                    </div>
+                    <div class="flex flex-col">
+                      <span class="font-bold text-surface-900 dark:text-white">{{ slotProps.data.name }}</span>
+                      <span class="text-xs text-surface-500 dark:text-surface-400">
+                        排序: {{ slotProps.data.sortOrder }} · {{ slotProps.data.memberCount.toLocaleString() }} 人
+                      </span>
+                    </div>
                   </div>
                 </template>
               </Column>
-              <Column field="name" header="等級名稱" sortable style="min-width: 140px">
+              <!-- Column: 晉升門檻 (Pivot) -->
+              <Column header="晉升門檻" style="min-width: 180px">
                 <template #body="slotProps">
-                  <div class="flex flex-col">
-                    <span class="font-semibold text-surface-900 dark:text-white">{{ slotProps.data.name }}</span>
-                    <span class="text-xs text-surface-500 dark:text-surface-400">{{ slotProps.data.memberCount.toLocaleString() }} 位會員</span>
+                  <div class="flex flex-col gap-1 text-sm">
+                    <div class="flex items-center gap-2">
+                      <i class="pi pi-wallet text-green-500 text-xs"></i>
+                      <span class="text-surface-500 dark:text-surface-400">儲:</span>
+                      <span class="font-medium text-green-500">${{ slotProps.data.promotion.depositThreshold.toLocaleString() }}</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                      <i class="pi pi-chart-line text-blue-500 text-xs"></i>
+                      <span class="text-surface-500 dark:text-surface-400">投:</span>
+                      <span class="font-medium text-blue-500">${{ slotProps.data.promotion.betThreshold.toLocaleString() }}</span>
+                    </div>
                   </div>
                 </template>
               </Column>
+              <!-- Column: 保級門檻 (Pivot) -->
+              <Column header="保級門檻" style="min-width: 180px">
+                <template #body="slotProps">
+                  <div v-if="slotProps.data.retention.unconditional" class="flex items-center gap-2">
+                    <i class="pi pi-check-circle text-green-500"></i>
+                    <span class="text-green-500 font-medium">無條件保級</span>
+                  </div>
+                  <div v-else class="flex flex-col gap-1 text-sm">
+                    <div class="flex items-center gap-2">
+                      <i class="pi pi-wallet text-orange-500 text-xs"></i>
+                      <span class="text-surface-500 dark:text-surface-400">儲:</span>
+                      <span class="font-medium text-orange-500">${{ slotProps.data.retention.depositThreshold.toLocaleString() }}</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                      <i class="pi pi-chart-line text-cyan-500 text-xs"></i>
+                      <span class="text-surface-500 dark:text-surface-400">投:</span>
+                      <span class="font-medium text-cyan-500">${{ slotProps.data.retention.betThreshold.toLocaleString() }}</span>
+                    </div>
+                  </div>
+                </template>
+              </Column>
+              <!-- Column: 核心福利 (Pivot) -->
+              <Column header="核心福利" style="min-width: 200px">
+                <template #body="slotProps">
+                  <div class="flex flex-col gap-1 text-sm">
+                    <div class="flex items-center gap-2">
+                      <i class="pi pi-heart text-red-500 text-xs"></i>
+                      <span class="text-surface-500 dark:text-surface-400">救濟:</span>
+                      <span class="font-medium text-red-400">{{ slotProps.data.rewards.rescueRate }}%</span>
+                      <span class="text-surface-400 text-xs">(上限 ${{ slotProps.data.rewards.rescueMaxAmount.toLocaleString() }})</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                      <i class="pi pi-calendar text-purple-500 text-xs"></i>
+                      <span class="text-surface-500 dark:text-surface-400">月禮:</span>
+                      <span class="font-medium text-purple-400">${{ slotProps.data.rewards.monthlyAllowance.toLocaleString() }}</span>
+                    </div>
+                  </div>
+                </template>
+              </Column>
+              <!-- Column: 狀態 -->
               <Column field="enabled" header="狀態" style="width: 100px">
                 <template #body="slotProps">
                   <Tag :value="slotProps.data.enabled ? '啟用' : '停用'" :severity="slotProps.data.enabled ? 'success' : 'danger'" />
                 </template>
               </Column>
-              <Column field="updatedAt" header="最後修改" style="min-width: 160px">
-                <template #body="slotProps">
-                  <div class="flex flex-col">
-                    <span class="text-surface-900 dark:text-white text-sm">{{ slotProps.data.updatedBy }}</span>
-                    <span class="text-surface-500 dark:text-surface-400 text-xs">{{ slotProps.data.updatedAt }}</span>
-                  </div>
-                </template>
-              </Column>
+              <!-- Column: 操作 -->
               <Column header="操作" style="width: 100px">
                 <template #body="slotProps">
                   <Button icon="pi pi-pencil" severity="info" text rounded @click="showEditorDialog('edit', slotProps.data)" v-tooltip.top="'編輯'" />
@@ -213,9 +260,15 @@
                     <span class="text-xs text-surface-600 dark:text-surface-300">{{ slotProps.data.createdAt }}</span>
                   </template>
                 </Column>
-                <Column field="username" header="會員" style="width: 100px">
+                <!-- Column: 會員 (Quick View Link) -->
+                <Column field="username" header="會員" style="width: 120px">
                   <template #body="slotProps">
-                    <span class="font-medium text-blue-500 dark:text-blue-400">{{ slotProps.data.username }}</span>
+                    <Button 
+                      :label="slotProps.data.username" 
+                      link 
+                      class="p-0 text-blue-500 dark:text-blue-400 font-medium hover:underline"
+                      @click="showMemberQuickView(slotProps.data)"
+                    />
                   </template>
                 </Column>
                 <Column header="等級變更" style="min-width: 140px">
@@ -445,11 +498,71 @@
         <Button :label="editorMode === 'add' ? '新增' : '儲存'" icon="pi pi-check" @click="handleSaveLevel" :disabled="!editorData.name" />
       </template>
     </Dialog>
+
+    <!-- Member Quick View Dialog -->
+    <Dialog v-model:visible="memberQuickViewVisible" header="會員概況" modal :style="{ width: '480px' }">
+      <div v-if="quickViewMember" class="space-y-6">
+        <!-- Member Header -->
+        <div class="flex items-center gap-4 p-4 rounded-lg bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-surface-200 dark:border-surface-600">
+          <div class="w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-lg">
+            <i class="pi pi-user text-white text-2xl"></i>
+          </div>
+          <div class="flex-1">
+            <div class="font-bold text-lg text-surface-900 dark:text-white">{{ quickViewMember.username }}</div>
+            <div class="text-sm text-surface-500 dark:text-surface-400">UID: {{ quickViewMember.uid }}</div>
+            <Tag :value="quickViewMember.currentLevel" :severity="getLevelSeverity(quickViewMember.currentLevel)" class="mt-1" />
+          </div>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="grid grid-cols-2 gap-4">
+          <div class="p-4 rounded-lg bg-surface-100 dark:bg-surface-700/50 border border-surface-200 dark:border-surface-600">
+            <div class="flex items-center gap-2 mb-2">
+              <i class="pi pi-wallet text-green-500"></i>
+              <span class="text-sm text-surface-500 dark:text-surface-400">目前餘額</span>
+            </div>
+            <div class="text-xl font-bold text-green-500">${{ quickViewMember.balance.toLocaleString() }}</div>
+          </div>
+          <div class="p-4 rounded-lg bg-surface-100 dark:bg-surface-700/50 border border-surface-200 dark:border-surface-600">
+            <div class="flex items-center gap-2 mb-2">
+              <i class="pi pi-arrow-up text-blue-500"></i>
+              <span class="text-sm text-surface-500 dark:text-surface-400">總儲值</span>
+            </div>
+            <div class="text-xl font-bold text-blue-500">${{ quickViewMember.totalDeposit.toLocaleString() }}</div>
+          </div>
+          <div class="p-4 rounded-lg bg-surface-100 dark:bg-surface-700/50 border border-surface-200 dark:border-surface-600">
+            <div class="flex items-center gap-2 mb-2">
+              <i class="pi pi-chart-line text-purple-500"></i>
+              <span class="text-sm text-surface-500 dark:text-surface-400">總投注</span>
+            </div>
+            <div class="text-xl font-bold text-purple-500">${{ quickViewMember.totalBet.toLocaleString() }}</div>
+          </div>
+          <div class="p-4 rounded-lg bg-surface-100 dark:bg-surface-700/50 border border-surface-200 dark:border-surface-600">
+            <div class="flex items-center gap-2 mb-2">
+              <i class="pi pi-calendar text-orange-500"></i>
+              <span class="text-sm text-surface-500 dark:text-surface-400">註冊日期</span>
+            </div>
+            <div class="text-lg font-bold text-surface-900 dark:text-white">{{ quickViewMember.registerDate }}</div>
+          </div>
+        </div>
+
+        <!-- Additional Info -->
+        <div class="flex items-center justify-between p-3 rounded-lg bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-600">
+          <span class="text-surface-500 dark:text-surface-400">活躍天數</span>
+          <span class="font-bold text-surface-900 dark:text-white">{{ quickViewMember.activeDays }} 天</span>
+        </div>
+      </div>
+      <template #footer>
+        <Button label="關閉" severity="secondary" @click="memberQuickViewVisible = false" />
+        <Button label="查看完整資料" icon="pi pi-external-link" @click="goToMemberDetail" />
+      </template>
+    </Dialog>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { ref, reactive, computed } from 'vue'
+import { useRouter } from 'vue-router'
 import TabView from 'primevue/tabview'
 import TabPanel from 'primevue/tabpanel'
 import Card from 'primevue/card'
@@ -470,12 +583,12 @@ import Divider from 'primevue/divider'
 import { useToast } from 'primevue/usetoast'
 
 const toast = useToast()
+const router = useRouter()
 
 // ========================================
-// Level Configuration State
+// Level Data Types
 // ========================================
-const isLoading = ref(false)
-const levels = ref<Array<{
+interface LevelData {
   id: number
   name: string
   sortOrder: number
@@ -485,31 +598,86 @@ const levels = ref<Array<{
   memberCount: number
   updatedBy: string
   updatedAt: string
-}>>([])
+  promotion: {
+    period: string
+    logic: string
+    depositThreshold: number
+    betThreshold: number
+    activeDaysThreshold: number
+  }
+  retention: {
+    unconditional: boolean
+    logic: string
+    depositThreshold: number
+    betThreshold: number
+    activeDaysThreshold: number
+  }
+  rewards: {
+    monthlyAllowance: number
+    weeklyAllowance: number
+    birthdayBonus: number
+    firstPromotionBonus: number
+    rescueRate: number
+    rescueMaxAmount: number
+  }
+}
 
-// Generate mock levels
-const generateMockLevels = () => {
-  const levelData = [
-    { name: 'VIP0', sortOrder: 0, icon: 'pi-star', css: 'bg-gradient-to-br from-gray-400 to-gray-600', members: 12500 },
-    { name: 'VIP1', sortOrder: 1, icon: 'pi-star-fill', css: 'bg-gradient-to-br from-green-400 to-green-600', members: 8200 },
-    { name: 'VIP2', sortOrder: 2, icon: 'pi-star-fill', css: 'bg-gradient-to-br from-blue-400 to-blue-600', members: 4500 },
-    { name: 'VIP3', sortOrder: 3, icon: 'pi-star-fill', css: 'bg-gradient-to-br from-purple-400 to-purple-600', members: 1800 },
-    { name: 'VIP4', sortOrder: 4, icon: 'pi-star-fill', css: 'bg-gradient-to-br from-yellow-400 to-orange-500', members: 650 },
-    { name: 'VIP5', sortOrder: 5, icon: 'pi-crown', css: 'bg-gradient-to-br from-yellow-500 to-red-500', members: 120 },
-    { name: 'SVIP', sortOrder: 10, icon: 'pi-crown', css: 'bg-gradient-to-br from-pink-500 to-purple-700', members: 25 }
+// ========================================
+// Level Configuration State
+// ========================================
+const isLoading = ref(false)
+const levels = ref<LevelData[]>([])
+
+// Generate VIP0 ~ VIP10 mock data with logical progression
+const generateVIPLevels = (): LevelData[] => {
+  const levelConfigs = [
+    { name: 'VIP0', sort: 0, icon: 'pi-star', css: 'bg-gradient-to-br from-gray-400 to-gray-600', members: 25000, deposit: 0, bet: 0, retDeposit: 0, retBet: 0, unconditional: true, rescue: 0, rescueMax: 0, monthly: 0, weekly: 0, birthday: 0, firstBonus: 0 },
+    { name: 'VIP1', sort: 1, icon: 'pi-star-fill', css: 'bg-gradient-to-br from-green-400 to-green-600', members: 12000, deposit: 1000, bet: 5000, retDeposit: 500, retBet: 2500, unconditional: false, rescue: 0.5, rescueMax: 100, monthly: 50, weekly: 10, birthday: 50, firstBonus: 88 },
+    { name: 'VIP2', sort: 2, icon: 'pi-star-fill', css: 'bg-gradient-to-br from-teal-400 to-teal-600', members: 8500, deposit: 5000, bet: 25000, retDeposit: 2000, retBet: 10000, unconditional: false, rescue: 1, rescueMax: 300, monthly: 100, weekly: 20, birthday: 100, firstBonus: 188 },
+    { name: 'VIP3', sort: 3, icon: 'pi-star-fill', css: 'bg-gradient-to-br from-blue-400 to-blue-600', members: 5200, deposit: 15000, bet: 75000, retDeposit: 5000, retBet: 25000, unconditional: false, rescue: 1.5, rescueMax: 500, monthly: 200, weekly: 40, birthday: 200, firstBonus: 388 },
+    { name: 'VIP4', sort: 4, icon: 'pi-star-fill', css: 'bg-gradient-to-br from-indigo-400 to-indigo-600', members: 3100, deposit: 30000, bet: 150000, retDeposit: 10000, retBet: 50000, unconditional: false, rescue: 2, rescueMax: 800, monthly: 350, weekly: 70, birthday: 350, firstBonus: 588 },
+    { name: 'VIP5', sort: 5, icon: 'pi-star-fill', css: 'bg-gradient-to-br from-purple-400 to-purple-600', members: 1800, deposit: 60000, bet: 300000, retDeposit: 20000, retBet: 100000, unconditional: false, rescue: 2.5, rescueMax: 1200, monthly: 500, weekly: 100, birthday: 500, firstBonus: 888 },
+    { name: 'VIP6', sort: 6, icon: 'pi-crown', css: 'bg-gradient-to-br from-pink-400 to-pink-600', members: 920, deposit: 100000, bet: 500000, retDeposit: 35000, retBet: 175000, unconditional: false, rescue: 3, rescueMax: 1800, monthly: 800, weekly: 150, birthday: 800, firstBonus: 1288 },
+    { name: 'VIP7', sort: 7, icon: 'pi-crown', css: 'bg-gradient-to-br from-orange-400 to-orange-600', members: 480, deposit: 180000, bet: 900000, retDeposit: 60000, retBet: 300000, unconditional: false, rescue: 3.5, rescueMax: 2500, monthly: 1200, weekly: 250, birthday: 1200, firstBonus: 1888 },
+    { name: 'VIP8', sort: 8, icon: 'pi-crown', css: 'bg-gradient-to-br from-yellow-400 to-yellow-600', members: 210, deposit: 300000, bet: 1500000, retDeposit: 100000, retBet: 500000, unconditional: false, rescue: 4, rescueMax: 3500, monthly: 1800, weekly: 400, birthday: 1800, firstBonus: 2888 },
+    { name: 'VIP9', sort: 9, icon: 'pi-crown', css: 'bg-gradient-to-br from-amber-500 to-red-500', members: 85, deposit: 500000, bet: 2500000, retDeposit: 150000, retBet: 800000, unconditional: false, rescue: 4.5, rescueMax: 5000, monthly: 2800, weekly: 600, birthday: 2800, firstBonus: 3888 },
+    { name: 'VIP10', sort: 10, icon: 'pi-crown', css: 'bg-gradient-to-br from-yellow-300 via-yellow-500 to-amber-600', members: 32, deposit: 1000000, bet: 5000000, retDeposit: 300000, retBet: 1500000, unconditional: false, rescue: 5, rescueMax: 10000, monthly: 5000, weekly: 1000, birthday: 5000, firstBonus: 8888 }
   ]
+
   const operators = ['admin_super', 'op_linda', 'system']
-  
-  return levelData.map((level, idx) => ({
+
+  return levelConfigs.map((cfg, idx) => ({
     id: 100 + idx,
-    name: level.name,
-    sortOrder: level.sortOrder,
-    iconClass: level.icon,
-    cssClass: level.css,
+    name: cfg.name,
+    sortOrder: cfg.sort,
+    iconClass: cfg.icon,
+    cssClass: cfg.css,
     enabled: true,
-    memberCount: level.members,
-    updatedBy: operators[Math.floor(Math.random() * operators.length)]!,
-    updatedAt: generateRandomDate()
+    memberCount: cfg.members,
+    updatedBy: operators[idx % operators.length]!,
+    updatedAt: generateRandomDate(),
+    promotion: {
+      period: 'month',
+      logic: 'all',
+      depositThreshold: cfg.deposit,
+      betThreshold: cfg.bet,
+      activeDaysThreshold: Math.floor(cfg.sort * 3)
+    },
+    retention: {
+      unconditional: cfg.unconditional,
+      logic: 'all',
+      depositThreshold: cfg.retDeposit,
+      betThreshold: cfg.retBet,
+      activeDaysThreshold: Math.floor(cfg.sort * 2)
+    },
+    rewards: {
+      monthlyAllowance: cfg.monthly,
+      weeklyAllowance: cfg.weekly,
+      birthdayBonus: cfg.birthday,
+      firstPromotionBonus: cfg.firstBonus,
+      rescueRate: cfg.rescue,
+      rescueMaxAmount: cfg.rescueMax
+    }
   }))
 }
 
@@ -520,8 +688,8 @@ const generateRandomDate = () => {
   return date.toISOString().replace('T', ' ').substring(0, 16)
 }
 
-// Initialize mock data
-levels.value = generateMockLevels()
+// Initialize VIP0-VIP10 data
+levels.value = generateVIPLevels()
 
 // ========================================
 // Editor Dialog State
@@ -577,7 +745,7 @@ const periodOptions = [
   { label: '每季', value: 'quarter' }
 ]
 
-const showEditorDialog = (mode: 'add' | 'edit', level?: typeof levels.value[0]) => {
+const showEditorDialog = (mode: 'add' | 'edit', level?: LevelData) => {
   editorMode.value = mode
   if (mode === 'edit' && level) {
     Object.assign(editorData, {
@@ -587,7 +755,10 @@ const showEditorDialog = (mode: 'add' | 'edit', level?: typeof levels.value[0]) 
       sortOrder: level.sortOrder,
       enabled: level.enabled,
       cssClass: level.cssClass,
-      iconClass: level.iconClass
+      iconClass: level.iconClass,
+      promotion: { ...level.promotion },
+      retention: { ...level.retention },
+      rewards: { ...level.rewards }
     })
   } else {
     Object.assign(editorData, { ...defaultEditorData })
@@ -607,7 +778,10 @@ const handleSaveLevel = () => {
       enabled: editorData.enabled,
       memberCount: 0,
       updatedBy: 'current_user',
-      updatedAt: new Date().toISOString().replace('T', ' ').substring(0, 16)
+      updatedAt: new Date().toISOString().replace('T', ' ').substring(0, 16),
+      promotion: { ...editorData.promotion },
+      retention: { ...editorData.retention },
+      rewards: { ...editorData.rewards }
     })
     toast.add({ severity: 'success', summary: '新增成功', detail: `等級「${editorData.name}」已建立`, life: 3000 })
   } else {
@@ -621,7 +795,10 @@ const handleSaveLevel = () => {
         cssClass: editorData.cssClass,
         iconClass: editorData.iconClass,
         updatedBy: 'current_user',
-        updatedAt: new Date().toISOString().replace('T', ' ').substring(0, 16)
+        updatedAt: new Date().toISOString().replace('T', ' ').substring(0, 16),
+        promotion: { ...editorData.promotion },
+        retention: { ...editorData.retention },
+        rewards: { ...editorData.rewards }
       }
       toast.add({ severity: 'success', summary: '儲存成功', detail: `等級「${editorData.name}」已更新`, life: 3000 })
     }
@@ -636,7 +813,7 @@ const memberSearch = ref('')
 const isSearchingMember = ref(false)
 const isAdjusting = ref(false)
 
-interface FoundMember {
+interface MemberData {
   uid: string
   username: string
   currentLevel: string
@@ -644,9 +821,10 @@ interface FoundMember {
   totalBet: number
   activeDays: number
   registerDate: string
+  balance: number
 }
 
-const foundMember = ref<FoundMember | null>(null)
+const foundMember = ref<MemberData | null>(null)
 
 const adjustment = reactive({
   targetLevel: '',
@@ -654,7 +832,7 @@ const adjustment = reactive({
   password: ''
 })
 
-const levelOptions = levels.value.map(l => ({ label: l.name, value: l.name }))
+const levelOptions = computed(() => levels.value.map(l => ({ label: l.name, value: l.name })))
 
 const handleSearchMember = () => {
   if (!memberSearch.value.trim()) {
@@ -664,15 +842,15 @@ const handleSearchMember = () => {
   
   isSearchingMember.value = true
   setTimeout(() => {
-    // Mock found member
     foundMember.value = {
       uid: `U${Math.floor(Math.random() * 90000) + 10000}`,
       username: memberSearch.value,
-      currentLevel: 'VIP2',
+      currentLevel: ['VIP0', 'VIP1', 'VIP2', 'VIP3', 'VIP4', 'VIP5'][Math.floor(Math.random() * 6)]!,
       totalDeposit: Math.floor(Math.random() * 500000) + 10000,
       totalBet: Math.floor(Math.random() * 2000000) + 50000,
       activeDays: Math.floor(Math.random() * 365) + 30,
-      registerDate: '2024-03-15'
+      registerDate: '2024-03-15',
+      balance: Math.floor(Math.random() * 50000) + 1000
     }
     isSearchingMember.value = false
     toast.add({ severity: 'success', summary: '查詢成功', detail: `已找到會員: ${memberSearch.value}`, life: 2000 })
@@ -682,25 +860,28 @@ const handleSearchMember = () => {
 const handleAdjustLevel = () => {
   isAdjusting.value = true
   setTimeout(() => {
-    // Add to history
     adjustmentHistory.value.unshift({
       id: Date.now(),
       createdAt: new Date().toISOString().replace('T', ' ').substring(0, 16),
       username: foundMember.value!.username,
+      uid: foundMember.value!.uid,
       fromLevel: foundMember.value!.currentLevel,
       toLevel: adjustment.targetLevel,
       reason: adjustment.reason,
-      operator: 'current_user'
+      operator: 'current_user',
+      totalDeposit: foundMember.value!.totalDeposit,
+      totalBet: foundMember.value!.totalBet,
+      balance: foundMember.value!.balance,
+      activeDays: foundMember.value!.activeDays,
+      registerDate: foundMember.value!.registerDate
     })
     
-    // Keep only last 10
     if (adjustmentHistory.value.length > 10) {
       adjustmentHistory.value = adjustmentHistory.value.slice(0, 10)
     }
     
     toast.add({ severity: 'success', summary: '調級成功', detail: `已將「${foundMember.value!.username}」調整為「${adjustment.targetLevel}」`, life: 3000 })
     
-    // Reset
     foundMember.value = null
     memberSearch.value = ''
     adjustment.targetLevel = ''
@@ -711,23 +892,74 @@ const handleAdjustLevel = () => {
 }
 
 // ========================================
-// Adjustment History
+// Adjustment History with Enhanced Data
 // ========================================
-const adjustmentHistory = ref<Array<{
+interface AdjustmentRecord {
   id: number
   createdAt: string
   username: string
+  uid: string
   fromLevel: string
   toLevel: string
   reason: string
   operator: string
-}>>([
-  { id: 1, createdAt: '2026-01-12 14:30', username: 'player_jack', fromLevel: 'VIP1', toLevel: 'VIP3', reason: '客訴補償 - 系統異常導致投注遺失', operator: 'cs_linda' },
-  { id: 2, createdAt: '2026-01-11 10:15', username: 'highroller88', fromLevel: 'VIP3', toLevel: 'VIP5', reason: 'VIP 專案特殊邀請', operator: 'vip_manager' },
-  { id: 3, createdAt: '2026-01-10 16:45', username: 'test_user01', fromLevel: 'VIP2', toLevel: 'VIP0', reason: '帳戶違規 - 套利行為', operator: 'risk_mike' },
-  { id: 4, createdAt: '2026-01-09 09:20', username: 'lucky_star', fromLevel: 'VIP4', toLevel: 'SVIP', reason: '年度頂級玩家升級', operator: 'admin_super' },
-  { id: 5, createdAt: '2026-01-08 11:30', username: 'newbie123', fromLevel: 'VIP0', toLevel: 'VIP1', reason: '新手禮遇計畫', operator: 'marketing_amy' }
+  totalDeposit: number
+  totalBet: number
+  balance: number
+  activeDays: number
+  registerDate: string
+}
+
+const adjustmentHistory = ref<AdjustmentRecord[]>([
+  { id: 1, createdAt: '2026-01-12 14:30', username: 'player_jack', uid: 'U58231', fromLevel: 'VIP1', toLevel: 'VIP3', reason: '客訴補償 - 系統異常導致投注遺失', operator: 'cs_linda', totalDeposit: 85000, totalBet: 420000, balance: 12500, activeDays: 180, registerDate: '2024-06-15' },
+  { id: 2, createdAt: '2026-01-11 10:15', username: 'highroller88', uid: 'U42819', fromLevel: 'VIP3', toLevel: 'VIP5', reason: 'VIP 專案特殊邀請', operator: 'vip_manager', totalDeposit: 250000, totalBet: 1200000, balance: 45000, activeDays: 320, registerDate: '2023-12-01' },
+  { id: 3, createdAt: '2026-01-10 16:45', username: 'test_user01', uid: 'U71923', fromLevel: 'VIP2', toLevel: 'VIP0', reason: '帳戶違規 - 套利行為', operator: 'risk_mike', totalDeposit: 15000, totalBet: 78000, balance: 230, activeDays: 45, registerDate: '2025-09-20' },
+  { id: 4, createdAt: '2026-01-09 09:20', username: 'lucky_star', uid: 'U33847', fromLevel: 'VIP4', toLevel: 'VIP6', reason: '年度頂級玩家升級', operator: 'admin_super', totalDeposit: 180000, totalBet: 890000, balance: 28000, activeDays: 410, registerDate: '2023-08-10' },
+  { id: 5, createdAt: '2026-01-08 11:30', username: 'newbie123', uid: 'U92841', fromLevel: 'VIP0', toLevel: 'VIP1', reason: '新手禮遇計畫', operator: 'marketing_amy', totalDeposit: 2500, totalBet: 12000, balance: 850, activeDays: 15, registerDate: '2025-12-28' }
 ])
+
+// ========================================
+// Member Quick View
+// ========================================
+const memberQuickViewVisible = ref(false)
+const quickViewMember = ref<{
+  username: string
+  uid: string
+  currentLevel: string
+  balance: number
+  totalDeposit: number
+  totalBet: number
+  activeDays: number
+  registerDate: string
+} | null>(null)
+
+const showMemberQuickView = (record: AdjustmentRecord) => {
+  quickViewMember.value = {
+    username: record.username,
+    uid: record.uid,
+    currentLevel: record.toLevel,
+    balance: record.balance,
+    totalDeposit: record.totalDeposit,
+    totalBet: record.totalBet,
+    activeDays: record.activeDays,
+    registerDate: record.registerDate
+  }
+  memberQuickViewVisible.value = true
+}
+
+const getLevelSeverity = (level: string): 'success' | 'info' | 'warn' | 'danger' | 'secondary' => {
+  const num = parseInt(level.replace('VIP', ''))
+  if (num >= 8) return 'danger'
+  if (num >= 5) return 'warn'
+  if (num >= 2) return 'info'
+  return 'secondary'
+}
+
+const goToMemberDetail = () => {
+  memberQuickViewVisible.value = false
+  router.push('/members/list')
+  toast.add({ severity: 'info', summary: '導航提示', detail: '已導航至會員列表，請搜尋該會員查看完整資料', life: 3000 })
+}
 </script>
 
 <style scoped>
