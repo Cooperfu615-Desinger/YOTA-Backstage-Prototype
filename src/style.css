@@ -172,3 +172,19 @@ body,
 }
 
 /* Global component overrides removed - using PrimeVue native styles */
+
+/* ========================================
+ * Dialog Alignment Fix
+ * 強制將所有對話框改為「頂部靠齊」，避免內容高度變化時發生垂直跳動
+ * ======================================== */
+.p-dialog-mask {
+  align-items: flex-start !important;
+  /* 從預設的 center 改為靠上 */
+  padding-top: 4rem !important;
+  /* 距離頂部留出呼吸空間 (約 64px) */
+  padding-bottom: 4rem !important;
+  /* 底部也留出空間，避免過長時貼底 */
+}
+
+/* 針對較小的確認視窗 (ConfirmDialog)，若希望保持置中，可額外排除 (選用) */
+/* 但為了整體一致性，建議先統一全部靠上 */
