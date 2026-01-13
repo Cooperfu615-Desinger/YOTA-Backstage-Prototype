@@ -186,9 +186,9 @@ const routes: RouteRecordRaw[] = [
         redirect: '/members/memo-record'
     },
     {
-        path: '/members/level-settings',
-        name: 'LevelSettings',
-        component: () => import('@/views/Members/LevelSettings.vue'),
+        path: '/members/levels',
+        name: 'MemberLevels',
+        component: () => import('@/views/Members/LevelMaintenance.vue'),
         meta: { title: '等級維護', icon: 'pi-star', parent: 'Members' }
     },
     {

@@ -326,8 +326,8 @@ const menuItems: MenuItem[] = [
     children: [
       { path: '/members/overview', title: '會員總覽', icon: 'pi-chart-line' },
       { path: '/members/list', title: '會員列表', icon: 'pi-users' },
+      { path: '/members/levels', title: '等級維護', icon: 'pi-star' },
       { path: '/members/memo-record', title: '會員日誌', icon: 'pi-book' },
-      { path: '/members/level-settings', title: '等級維護', icon: 'pi-star' },
       { path: '/members/tags', title: '標籤管理', icon: 'pi-tag' },
     ]
   },
