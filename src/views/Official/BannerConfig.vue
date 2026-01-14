@@ -73,7 +73,7 @@
         <DataTable :value="banners" stripedRows>
           <Column field="order" header="排序" sortable style="min-width: 80px">
             <template #body="slotProps">
-              <InputNumber v-model="slotProps.data.order" :min="1" :max="99" class="w-16" size="small" />
+              <InputNumber v-model="slotProps.data.order" :min="1" :max="99" :showButtons="false" inputClass="text-center" :style="{ width: '60px' }" />
             </template>
           </Column>
           <Column header="預覽" style="min-width: 150px">
