@@ -70,10 +70,18 @@
         </div>
       </template>
       <template #content>
-        <DataTable :value="banners" stripedRows>
-          <Column field="order" header="排序" sortable style="min-width: 80px">
+        <div class="mb-4 p-3 bg-blue-500/10 border border-blue-500/30 rounded-lg">
+          <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
+            <i class="pi pi-info-circle"></i>
+            <span class="text-sm">拖曳列可調整廣告順序，順序會即時生效。</span>
+          </div>
+        </div>
+
+        <DataTable :value="banners" stripedRows reorderableRows @row-reorder="onRowReorder">
+          <Column :rowReorder="true" headerStyle="width: 3rem" />
+          <Column field="order" header="順序" style="min-width: 60px">
             <template #body="slotProps">
-              <InputNumber v-model="slotProps.data.order" :min="1" :max="99" :showButtons="false" inputClass="text-center" :style="{ width: '60px' }" />
+              <Tag :value="'#' + slotProps.data.order" severity="info" />
             </template>
           </Column>
           <Column header="預覽" style="min-width: 150px">
@@ -144,10 +152,6 @@
         </div>
 
         <div class="grid grid-cols-2 gap-4">
-          <div class="flex flex-col gap-2">
-            <label class="font-medium text-surface-700 dark:text-surface-300">排序</label>
-            <InputNumber v-model="form.order" :min="1" :max="99" />
-          </div>
           <div class="flex items-center gap-3 p-3 bg-surface-100 dark:bg-surface-700 rounded-lg">
             <InputSwitch v-model="form.active" />
             <label class="text-surface-700 dark:text-surface-300">啟用廣告</label>
@@ -170,9 +174,10 @@ import { ref, computed } from 'vue'
 import Card from 'primevue/card'
 import Button from 'primevue/button'
 import DataTable from 'primevue/datatable'
+import type { DataTableRowReorderEvent } from 'primevue/datatable'
 import Column from 'primevue/column'
+import Tag from 'primevue/tag'
 import InputText from 'primevue/inputtext'
-import InputNumber from 'primevue/inputnumber'
 import InputSwitch from 'primevue/inputswitch'
 import FileUpload from 'primevue/fileupload'
 import Dialog from 'primevue/dialog'
@@ -235,5 +240,14 @@ const saveBanner = () => {
 
 const handleDelete = (banner: Banner) => {
   toast.add({ severity: 'warn', summary: '刪除', detail: `「${banner.title}」已刪除`, life: 2000 })
+}
+
+const onRowReorder = (event: DataTableRowReorderEvent) => {
+  banners.value = event.value as Banner[]
+  // Update order numbers based on new position
+  banners.value.forEach((banner, index) => {
+    banner.order = index + 1
+  })
+  toast.add({ severity: 'success', summary: '排序更新', detail: '廣告順序已調整', life: 2000 })
 }
 </script>
