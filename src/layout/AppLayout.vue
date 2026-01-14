@@ -345,6 +345,18 @@ const menuItems: MenuItem[] = [
     ]
   },
   { 
+    path: '/official', 
+    title: '官網管理', 
+    icon: 'pi-globe',
+    children: [
+      { path: '/official/hero', title: '首圖配置', icon: 'pi-image' },
+      { path: '/official/banners', title: '廣告輪播', icon: 'pi-images' },
+      { path: '/official/news', title: '最新消息', icon: 'pi-megaphone' },
+      { path: '/official/games', title: '遊戲介紹', icon: 'pi-play' },
+      { path: '/official/seo', title: '站點資訊', icon: 'pi-cog' },
+    ]
+  },
+  { 
     path: '/agents', 
     title: '代理管理', 
     icon: 'pi-sitemap',

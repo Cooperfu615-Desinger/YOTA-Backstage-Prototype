@@ -550,6 +550,46 @@ const routes: RouteRecordRaw[] = [
         name: 'AppPurchase',
         component: () => import('@/views/Payments/AppPurchase.vue'),
         meta: { title: '行動支付管理', icon: 'pi-apple', parent: 'Payments' }
+    },
+
+    // ========================================
+    // 13. 官網管理 (Official Site)
+    // ========================================
+    {
+        path: '/official',
+        name: 'Official',
+        component: () => import('@/views/Official/index.vue'),
+        meta: { title: '官網管理', icon: 'pi-globe' }
+    },
+    {
+        path: '/official/hero',
+        name: 'OfficialHero',
+        component: () => import('@/views/Official/HeroConfig.vue'),
+        meta: { title: '首圖配置', icon: 'pi-image', parent: 'Official' }
+    },
+    {
+        path: '/official/banners',
+        name: 'OfficialBanners',
+        component: () => import('@/views/Official/BannerConfig.vue'),
+        meta: { title: '廣告輪播', icon: 'pi-images', parent: 'Official' }
+    },
+    {
+        path: '/official/news',
+        name: 'OfficialNews',
+        component: () => import('@/views/Official/NewsList.vue'),
+        meta: { title: '最新消息', icon: 'pi-megaphone', parent: 'Official' }
+    },
+    {
+        path: '/official/games',
+        name: 'OfficialGames',
+        component: () => import('@/views/Official/GameShowcase.vue'),
+        meta: { title: '遊戲介紹', icon: 'pi-play', parent: 'Official' }
+    },
+    {
+        path: '/official/seo',
+        name: 'OfficialSeo',
+        component: () => import('@/views/Official/SiteSeo.vue'),
+        meta: { title: '站點資訊', icon: 'pi-cog', parent: 'Official' }
     }
 ]
 
