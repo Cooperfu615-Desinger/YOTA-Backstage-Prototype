@@ -1,4 +1,4 @@
-<![CDATA[<template>
+<template>
   <div class="flex flex-col items-center justify-center py-12 text-center">
     <div class="w-20 h-20 rounded-full bg-surface-100 dark:bg-surface-800 flex items-center justify-center mb-4">
       <i class="pi pi-folder-open text-4xl text-surface-400"></i>
@@ -21,4 +21,4 @@ withDefaults(defineProps<{
   subtitle: '目前沒有相關紀錄'
 })
 </script>
-]]>
+

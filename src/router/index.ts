@@ -340,12 +340,8 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/Finance/Overview.vue'),
         meta: { title: '財務總覽', icon: 'pi-chart-line', parent: 'Finance' }
     },
-    {
-        path: '/finance/records',
-        name: 'FinanceRecords',
-        component: () => import('@/views/Finance/Records.vue'),
-        meta: { title: '紀錄類', icon: 'pi-file-edit', parent: 'Finance' }
-    },
+
+
     {
         path: '/finance/betting-records',
         name: 'BettingRecords',
@@ -371,37 +367,37 @@ const routes: RouteRecordRaw[] = [
         path: '/finance/manual-deposit',
         name: 'ManualDeposit',
         component: () => import('@/views/Finance/ManualDeposit.vue'),
-        meta: { title: '手工存款審核', icon: 'pi-file-edit', parent: 'Financials' }
+        meta: { title: '手工存款審核', icon: 'pi-file-edit', parent: 'Finance' }
     },
     {
         path: '/finance/online-deposit',
         name: 'OnlineDeposit',
         component: () => import('@/views/Finance/OnlineDeposit.vue'),
-        meta: { title: '在線存款查詢', icon: 'pi-search', parent: 'Financials' }
+        meta: { title: '在線存款查詢', icon: 'pi-search', parent: 'Finance' }
     },
     {
         path: '/finance/withdrawals',
         name: 'Withdrawals',
         component: () => import('@/views/Finance/Withdrawals.vue'),
-        meta: { title: '提款審核', icon: 'pi-wallet', parent: 'Financials' }
+        meta: { title: '提款審核', icon: 'pi-wallet', parent: 'Finance' }
     },
     {
         path: '/finance/order-locks',
         name: 'OrderLocks',
         component: () => import('@/views/Finance/OrderLocks.vue'),
-        meta: { title: '鎖單管理', icon: 'pi-lock', parent: 'Financials' }
+        meta: { title: '鎖單管理', icon: 'pi-lock', parent: 'Finance' }
     },
     {
         path: '/finance/balance-logs',
         name: 'BalanceLogs',
         component: () => import('@/views/Finance/BalanceLogs.vue'),
-        meta: { title: '資金流水紀錄', icon: 'pi-list', parent: 'Financials' }
+        meta: { title: '資金流水紀錄', icon: 'pi-list', parent: 'Finance' }
     },
     {
         path: '/finance/adjustment-logs',
         name: 'AdjustmentLogs',
         component: () => import('@/views/Finance/AdjustmentLogs.vue'),
-        meta: { title: '人工存提紀錄', icon: 'pi-pencil', parent: 'Financials' }
+        meta: { title: '人工存提紀錄', icon: 'pi-pencil', parent: 'Finance' }
     },
 
     // ========================================
