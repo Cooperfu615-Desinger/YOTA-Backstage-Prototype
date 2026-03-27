@@ -176,52 +176,56 @@ Payments Domain
 
 ## 三、API 統計與優先序分布
 
-### API 總數：125 個
+### API 總數：184 個
 
 | 優先序 | 數量 | 百分比 | 說明 |
 |---|---|---|---|
-| **P0** | 27 個 | 21.6% | 核心基礎設施 + Auth + 會員 + 財務必要操作 |
-| **P1** | 76 個 | 60.8% | 業務主流程擴展 + 報表 + 三方整合 |
-| **P2** | 22 個 | 17.6% | 內容管理 + 官網 + 支付配置 |
+| **P0** | 29 個 | 16.3% | 核心基礎設施 + Auth + 會員 + 財務必要操作 |
+| **P1** | 119 個 | 67.0% | 業務主流程擴展 + 代理 + 遊戲 + 報表 + 三方整合 |
+| **P2** | 40 個 | 22.5% | 內容管理 + 官網 + 支付配置 |
 
-### P0 API 清單（27 個）
+### P0 API 清單（29 個）
 
-**基礎設施（5 個）**
+**Auth（5 個）**
 1. `POST /auth/login` — 後台登入
 2. `POST /auth/logout` — 後台登出
-3. `GET /permissions` — 取得權限清單
-4. `GET /roles` — 取得角色清單
-5. `GET /audit-logs` — 查詢審計日誌
+3. `POST /auth/refresh` — 刷新 token
+4. `GET /auth/me` — 取得當前登入者資訊
+5. `POST /auth/change-password` — 修改密碼
 
-**操作人員（3 個）**
-6. `GET /operators` — 查詢操作人員列表
-7. `GET /operators/{id}` — 取得操作人員詳情
-8. `PATCH /operators/{id}/status` — 更新操作人員狀態
+**RBAC（3 個）**
+6. `GET /permissions` — 取得系統權限定義清單
+7. `GET /roles` — 取得角色列表
+8. `GET /operator-groups` — 取得操作群組列表
 
-**會員（3 個）**
-9. `GET /members` — 查詢會員列表
-10. `GET /members/{id}` — 取得會員詳情
-11. `PATCH /members/{id}/status` — 更新會員狀態
+**Audit（1 個）**
+9. `GET /audit-logs` — 查詢後台審計日誌
 
-**財務（10 個）**
-12. `GET /dashboard/summary` ⚠️ **注：此為聚合查詢，實際為一個大 API**
-13. `GET /members/{id}/bank-accounts` — 查詢會員提款帳戶 ⭐ **新增**
-14. `POST /members/{id}/bank-accounts` — 新增會員提款帳戶 ⭐ **新增**
-15. `PATCH /members/{id}/bank-accounts/{bankAccountId}` — 編輯提款帳戶 ⭐ **新增**
-16. `DELETE /members/{id}/bank-accounts/{bankAccountId}` — 刪除提款帳戶 ⭐ **新增**
-17. `GET /finance/summary` — 財務總覽
-18. `GET /manual-deposits` — 查詢手工存款單列表
-19. `GET /manual-deposits/{id}` — 取得手工存款單詳情
-20. `GET /online-deposits` — 查詢在線存款單列表
-21. `GET /withdrawals` — 查詢提款單列表
-22. `GET /withdrawals/{id}` — 取得提款單詳情
+**Operators（3 個）**
+10. `GET /operators` — 查詢後台操作人員列表
+11. `GET /operators/{id}` — 取得操作人員詳情
+12. `PATCH /operators/{id}/status` — 啟用、停用或鎖定帳號
 
-**其他系統（6 個）**
-23. `PATCH /operators/{id}/roles` — 指派操作人員角色
-24. `POST /operator-groups` — 建立操作群組
-25. `GET /system-settings` — 取得系統設定
-26. `POST /operators/{id}/audit-check` — 對操作人員進行審計檢查
-27. `GET /login-logs` — 查詢登入紀錄
+**Members（3 個）**
+13. `GET /members` — 查詢會員列表
+14. `GET /members/{id}` — 取得會員詳情
+15. `PATCH /members/{id}/status` — 更新會員狀態
+
+**Finance（14 個）** ⭐ **核心模組**
+16. `GET /finance/summary` — 查詢財務總覽資料
+17. `GET /manual-deposit-orders` — 查詢手工存款單列表
+18. `GET /manual-deposit-orders/{id}` — 取得手工存款單詳情
+19. `POST /manual-deposit-orders/{id}/approve` — 通過手工存款審核
+20. `POST /manual-deposit-orders/{id}/reject` — 拒絕手工存款審核
+21. `GET /online-deposit-orders` — 查詢在線存款單列表
+22. `GET /online-deposit-orders/{id}` — 取得在線存款單詳情
+23. `GET /withdrawal-orders` — 查詢提款單列表
+24. `GET /withdrawal-orders/{id}` — 取得提款單詳情
+25. `POST /withdrawal-orders/{id}/lock` — 鎖定提款單供審核
+26. `POST /withdrawal-orders/{id}/unlock` — 解除提款單鎖定
+27. `POST /withdrawal-orders/{id}/approve` — 通過提款審核
+28. `POST /withdrawal-orders/{id}/reject` — 拒絕提款審核
+29. `GET /balance-logs` — 查詢資金流水紀錄
 
 ---
 
