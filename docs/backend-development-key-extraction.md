@@ -231,44 +231,49 @@ Payments Domain
 
 ## 四、後端開發工作清單統計
 
-### 工作總數：72 項
+### 工作總數：73 項
 
-| 類別 | P0 | P1 | P2 | 合計 |
-|---|---|---|---|---|
-| 基礎平台 | 5 | — | — | 5 |
-| Auth / Token | 3 | — | — | 3 |
-| RBAC | 2 | 2 | — | 4 |
-| Audit | 2 | 2 | — | 4 |
-| Security | 1 | 1 | — | 2 |
-| Queue / Export | — | 2 | — | 2 |
-| Operators | 2 | 3 | — | 5 |
-| Members | 3 | 4 | — | 7 ⭐ **+1 提款帳戶** |
-| Finance | 7 | 4 | — | 11 ⭐ **+1 提款帳戶** |
-| System Settings | — | 3 | — | 3 |
-| Messages | — | 3 | — | 3 |
-| Agents | — | 4 | — | 4 |
-| Games | — | 4 | — | 4 |
-| Promotions | — | 3 | — | 3 |
-| Reports | — | 2 | — | 2 |
-| Layout | — | — | 3 | 3 |
-| Official Site | — | — | 2 | 2 |
-| Payments | — | — | 3 | 3 |
-| Integration | — | 2 | 2 | 4 |
-| Quality | — | 3 | — | 3 |
-| Delivery | — | 1 | — | 1 |
-| **總計** | **26** | **39** | **10** | **75** |
+| 類別 | P0 | P0/P1 | P1 | P2 | 合計 |
+|---|---|---|---|---|---|
+| 基礎平台 | 5 | — | — | — | 5 |
+| Auth | 3 | — | — | — | 3 |
+| RBAC | 2 | — | 2 | — | 4 |
+| Audit | 2 | — | 2 | — | 4 |
+| Security | — | 1 | — | — | 1 |
+| Queue / Export | — | — | 2 | — | 2 |
+| Operators | 2 | — | 2 | — | 4 |
+| Members | 3 | — | 4 | — | 7 |
+| Finance | 7 | — | 5 | — | 12 |
+| System Settings | — | — | 3 | — | 3 |
+| Messages | — | — | 3 | — | 3 |
+| Agents | — | — | 4 | — | 4 |
+| Games | — | — | 4 | — | 4 |
+| Promotions | — | — | 3 | — | 3 |
+| Reports | — | — | 2 | — | 2 |
+| Layout | — | — | — | 3 | 3 |
+| Official Site | — | — | — | 2 | 2 |
+| Payments | — | — | — | 3 | 3 |
+| Integration | — | — | 2 | 2 | 4 |
+| Quality | — | — | 3 | — | 3 |
+| Delivery | — | — | 1 | — | 1 |
+| **總計** | **24** | **1** | **38** | **10** | **73** |
 
 ### 優先序分布
 
 ```
-P0 (26 項) ━━━━━━━━━━━━━━━━━ 35%
-   └─ 基礎設施 5 + Auth 3 + RBAC 2 + Audit 2 + Security 1 + Operators 2 + Members 3 + Finance 7 + 其他 1
+P0 (24 項) ━━━━━━━━━━━━━━━ 33%
+   └─ 基礎設施 5 + Auth 3 + RBAC 2 + Audit 2 + Operators 2 + Members 3 + Finance 7
 
-P1 (39 項) ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 52%
-   └─ 業務主流程擴展、報表、整合、測試品質
+P0/P1 (1 項) ━ 1%
+   └─ Security（IP 白名單 P0 建表 + P1 middleware）
 
-P2 (10 項) ━━━━━ 13%
-   └─ 內容管理、官網、支付管理
+P1 (38 項) ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 52%
+   └─ Finance 5 + Members 4 + Operators 2 + Agents 4 + Games 4
+      Promotions 3 + System Settings 3 + Messages 3 + Queue 2
+      Reports 2 + Integration 2 + Quality 3 + Delivery 1
+
+P2 (10 項) ━━━━━ 14%
+   └─ Layout 3 + Official 2 + Payments 3 + Integration 2
 ```
 
 ---
@@ -305,27 +310,55 @@ P2 (10 項) ━━━━━ 13%
 
 **小計：P0 總工時約 9.5 周**
 
-### 第二階段推進（P1 優先順序建議）
+### 第二階段推進（P1 分波策略）
 
-#### 優先度 1：業務主流程（完成 P0 後立即啟動）
-- 會員標籤、等級、備註系統
-- 代理與佣金系統
-- 點數調整與批次任務
+P1 共 **38 項工作 / 119 支 API**，體量大，需再細拆為 4 波並行推進：
 
-#### 優先度 2：系統與運營
-- 系統設定
-- 公告管理
-- 訊息模板與發送
+#### P1 第一波（完成 P0 後立即啟動，2-3 周）
+**目標：讓財務流程完整 + 會員系統可運營**
 
-#### 優先度 3：遊戲與活動
-- 遊戲平台管理
-- 優惠與成就
+| 工作項 | 類別 | 對應 API 數 |
+|---|---|---|
+| 會員備註 / 標籤 / 等級管理 | Members | 7 支 |
+| 會員提款帳戶擴充（驗證、預設邏輯） | Finance | 2 支 |
+| 財務：提款沖正、鎖單查詢 | Finance | 2 支 |
+| 財務：人工存提、下注紀錄、點數調整 | Finance | 6 支 |
+| IP 白名單 middleware 啟用 | Security | 1 支 |
+| 操作人員 IP 白名單、操作日誌 | Operators | 3 支 |
 
-#### 優先度 4：質量與交付
-- 單元 / 整合 / 流程測試
-- 效能優化（查詢、索引、快取）
-- 監控與告警
-- API 文件完善
+#### P1 第二波（約 3-4 周）
+**目標：代理系統 + 系統運營 + 訊息通知**
+
+| 工作項 | 類別 | 對應 API 數 |
+|---|---|---|
+| 代理基本資料、等級、佣金方案 | Agents | 9 支 |
+| 代理結算生成與查詢 | Agents | 3 支 |
+| 系統設定（站點、營運、安全） | System Settings | 4 支 |
+| 公告管理 CRUD | Announcements | 5 支 |
+| 訊息模板 + 通道設定 | Messages | 10 支 |
+| 匯出任務機制 | Queue / Export | 5 支 |
+
+#### P1 第三波（約 3-4 周）
+**目標：遊戲 + 活動 + 報表**
+
+| 工作項 | 類別 | 對應 API 數 |
+|---|---|---|
+| 遊戲平台管理（含維護排程） | Games | 5 支 |
+| 遊戲清單 + 分類管理 | Games | 8 支 |
+| 優惠活動 + 特殊活動 | Promotions | 8 支 |
+| 成就管理 | Promotions | 3 支 |
+| 報表查詢（6 種報表）+ 匯出 | Reports | 7 支 |
+| 第三方金流串接 + 通知服務串接 | Integration | — |
+
+#### P1 第四波（2-3 周，可與第三波部分並行）
+**目標：質量達標 + 技術交付**
+
+| 工作項 | 類別 | 內容 |
+|---|---|---|
+| 單元 / 整合 / 流程測試 | Quality | 測試覆蓋率 |
+| 效能優化（索引、快取） | Quality | 查詢效能 |
+| 監控與告警設置 | Quality | 服務 + 金流監控 |
+| API 文件 + 交接說明 | Delivery | Swagger + 環境文件 |
 
 ---
 
@@ -333,18 +366,26 @@ P2 (10 項) ━━━━━ 13%
 
 ### 時間線估算（基於 5 人後端團隊）
 
-| 里程碑 | 目標 | 預期耗時 | 交付物 |
+| 里程碑 | 目標 | 累積工時 | 交付物 |
 |---|---|---|---|
-| **M1：基礎交付** | 前端可串接核心業務 API | 2.5 周 | 基礎設施 + Auth + Operators + Members 主檔 |
-| **M2：財務上線** | 完整存提款流程 | +2.5 周 | 存款、提款、流水、訂單鎖、餘額快照 |
-| **M3：P0 完成** | 後台能獨立營運 | +4.5 周 | 審計、IP 白名單、所有 P0 工作項 |
-| **M4：業務擴展** | 代理、成就、活動上線 | +4 周 | 代理結算、優惠、成就系統 |
-| **M5：功能完整** | 遊戲、官網、報表上線 | +3 周 | 內容管理、官網、報表匯出 |
-| **M6：質量達標** | 測試覆蓋 + 優化完成 | +2 周 | 測試套件 + 監控告警 + 性能報告 |
+| **M1：基礎可串接** | 前端可開始第一輪 API 串接 | 第 3 周 | 基礎設施 + Auth + RBAC + Operators 主檔 |
+| **M2：財務核心上線** | 完整存提款審核流程可用 | 第 6 周 | Members + Finance P0（29 支 API）|
+| **M3：P0 全部完成** | 後台可獨立運作 + 審計可查 | 第 10 周 | Audit + IP 白名單 + 所有 P0 工作項（24 項）|
+| **M4：P1 第一波** | 財務流程完整 + 會員系統可運營 | 第 13 周 | Finance P1 + Members P1 + Security P1 |
+| **M5：P1 第二波** | 代理系統 + 系統運營 + 通知可用 | 第 17 周 | Agents + System Settings + Messages + Export |
+| **M6：P1 第三波** | 遊戲 + 活動 + 報表上線 | 第 21 周 | Games + Promotions + Reports + Integration |
+| **M7：質量達標** | 測試覆蓋 + 監控 + 文件齊全 | 第 24 周 | 測試套件 + 監控告警 + API 文件 |
+| **M8：P2 完成** | 全功能交付 | 第 28 周 | Layout + Official + Payments（40 支 API）|
 
-**總預期：18.5 周（約 4.5 個月）**
+**總預期：28 周（約 7 個月）**
 
-> 💡 此為理想情況，未考慮學習曲線、第三方整合延遲、變更需求等因素。建議設定 20-24 周的實際預期。
+> ⚠️ **與原始估算 18.5 周的差異說明：**
+> 主要差距來自 P1 API 數量被低估——修正後 P1 有 119 支 API（原估 76 支），P2 有 40 支（原估 22 支）。即使 5 人並行開發，P1 的純開發工時就超過 12 周，加上依賴關係、review、測試、整合的 overhead，合理預期為 14-16 周。
+>
+> 💡 若希望縮短整體工期，可考慮：
+> - P2 模組推遲至 v2.0 版本，集中在 P0 + P1 核心功能（可縮至約 22 周）
+> - 增加人力（+1 後端）到 6 人，可縮短約 2-3 周
+> - 部分 P1 模組（如 Official、Reports）可以低優先度並行開發，不阻塞主流程
 
 ---
 
@@ -352,24 +393,35 @@ P2 (10 項) ━━━━━ 13%
 
 ### 分工模型
 
-| 人員 | 分工 | P0 工作項 | P1 延伸 |
-|---|---|---|---|
-| **後端 Lead** | 架構設計 + Core API | 基礎設施、Auth、Finance | 報表、監控、交付文件 |
-| **後端 A** | 會員 + 代理模組 | Members、Operators | Agents、Settlement |
-| **後端 B** | 財務 + 金流 | Finance、Order Lock | Payments Integration、Settlement |
-| **後端 C** | 系統 + 質量 | Audit、IP Whitelist | Testing、Performance、Messaging |
-| **後端 D** | 內容 + 遊戲 | 基礎架構協助 | Games、Layout、Content |
+| 人員 | 分工領域 | P0 負責 | P1 延伸 | P2 |
+|---|---|---|---|---|
+| **後端 Lead** | 架構 + 財務核心 | 基礎設施、Auth、RBAC、Finance 架構 | Finance P1、Integration、監控 | — |
+| **後端 A** | 會員 + 代理 | Members（7 項）、Operators | Agents（4 項）、Settlement | — |
+| **後端 B** | 財務 + 金流 | Finance P0（7 項）、Order Lock | Finance P1（5 項）、Payment Integration | Payments |
+| **後端 C** | 系統 + 質量 | Audit（2 項）、IP Whitelist | System Settings、Messages、Quality（3 項） | — |
+| **後端 D** | 遊戲 + 內容 | 基礎架構協助 | Games（4 項）、Promotions（3 項）、Reports | Layout、Official |
 
-### 工作項掛載示例
+### 工作項掛載（依里程碑）
 
 ```
-基礎設施（5 項）→ Lead + C 協作
-Auth（3 項） → Lead
-Members（7 項） → A
-Finance（11 項） → B + Lead
-Operators（5 項） → C
-Audit（4 項） → C
-...
+=== M1-M3 (P0 階段) ===
+Lead  → 基礎設施 5 項 + Auth 3 項 + RBAC 2 項
+A     → Members 3 項 + Operators 2 項
+B     → Finance 7 項
+C     → Audit 2 項 + Security(P0 建表)
+D     → 協助 Lead / 提前設計 Games schema
+
+=== M4-M6 (P1 階段) ===
+Lead  → Finance P1（5 項）+ Integration + 監控設計
+A     → Members P1（4 項）+ Agents（4 項）
+B     → Queue/Export（2 項）+ Payment Integration
+C     → Messages（3 項）+ System Settings（3 項）+ Quality
+D     → Games（4 項）+ Promotions（3 項）+ Reports（2 項）
+
+=== M8 (P2 階段) ===
+B+D   → Payments（3 項）
+D     → Layout（3 項）+ Official（2 項）
+C     → Integration（2 項）
 ```
 
 ---
